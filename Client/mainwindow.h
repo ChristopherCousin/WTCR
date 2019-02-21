@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <iostream>
+#include <QTimer>
+#include "websocket.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +20,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Websocket *m_webSocket{};
+
+private slots:
+    void textMessageArrived(QString message);
+    void go();
+
 };
 
 #endif // MAINWINDOW_H
