@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="CLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -36,9 +36,9 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>100</y>
-      <width>191</width>
+      <x>170</x>
+      <y>110</y>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
@@ -49,12 +49,19 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
      </font>
     </property>
     <property name="text">
-     <string>Introduce tu EAN13</string>
+     <string>Escribe tu PIN</string>
     </property>
    </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">clineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

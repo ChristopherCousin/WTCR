@@ -40,59 +40,6 @@ void TestServer::processTextMessage(QString message)
     pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
 
-
-
-    if (xmlToValidate == "order")
-    {
-        QString xmlName = xmlManager.makeFiles("order", message);
-        if (xmlManager.validatexml(xmlName, "newOrder.xsd"))
-        {
-            newOrder();
-        }
-    }
-    else if (xmlToValidate == "find")
-    {
-        QString xmlName = xmlManager.makeFiles("find", message);
-        qDebug() << xmlName;
-        if (xmlManager.validatexml(xmlName, "findOrder.xsd"))
-        {
-            respuesta = xmlManager.writeOrderStatusXml(findOrder());
-
-            pClient->sendTextMessage(respuesta);
-        }
-    }
-    else if (xmlToValidate == "login")
-    {
-        QString xmlName = xmlManager.makeFiles("login", message);
-        if (xmlManager.validatexml(xmlName, "Login.xsd"))
-        {
-            respuesta = checkLogin();
-            pClient->sendTextMessage(respuesta);
-        }
-    }
-    else if (xmlToValidate == "orders")
-    {
-
-        QString xmlName = xmlManager.makeFiles("orders", message);
-        if (xmlManager.validatexml(xmlName, "Orders.xsd"))
-        {
-            pClient->sendTextMessage(xmlManager.writeOrdersXml(dbManager.availableOrders()));
-        }
-    }
-    else if (xmlToValidate == "newOrderStatus")
-    {
-        QString xmlName = xmlManager.makeFiles("newOrderStatus", message);
-        if (xmlManager.validatexml(xmlName, "newOrderStatus.xsd"))
-        {
-            auto tuple = xmlManager.readNewOrderStatus(message);
-            dbManager.newOrderStatus(std::get<0>(tuple), std::get<1>(tuple));
-
-            for(int x = 0;x <= m_clients.count()-1 ; x ++)
-            {
-                m_clients.at(x)->sendTextMessage(message);
-            }
-        }
-    }
 }
 
 

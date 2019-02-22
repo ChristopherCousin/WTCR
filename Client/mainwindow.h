@@ -5,6 +5,8 @@
 #include <iostream>
 #include <QTimer>
 #include "websocket.h"
+#include "jsonmanager.h"
+#include "clineedit.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,15 +19,16 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void pinReaded();
 
 private:
     Ui::MainWindow *ui;
     Websocket *m_webSocket{};
+    JsonManager jsonManager;
 
 private slots:
     void textMessageArrived(QString message);
     void go();
-
 };
 
 #endif // MAINWINDOW_H

@@ -15,9 +15,9 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
+#include <clineedit.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -25,7 +25,7 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QLineEdit *lineEdit;
+    CLineEdit *lineEdit;
     QLabel *label;
 
     void setupUi(QMainWindow *MainWindow)
@@ -35,7 +35,7 @@ public:
         MainWindow->resize(482, 354);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        lineEdit = new QLineEdit(centralWidget);
+        lineEdit = new CLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
         lineEdit->setGeometry(QRect(50, 160, 391, 32));
         lineEdit->setStyleSheet(QLatin1String("QLineEdit{\n"
@@ -47,7 +47,7 @@ public:
 "QLineEdit:focus { background-color:rgb(202, 255, 227);}"));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(140, 100, 191, 31));
+        label->setGeometry(QRect(170, 110, 141, 31));
         QFont font;
         font.setFamily(QStringLiteral("Source Serif Pro Semibold"));
         font.setPointSize(16);
@@ -62,7 +62,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
-        label->setText(QApplication::translate("MainWindow", "Introduce tu EAN13", Q_NULLPTR));
+        label->setText(QApplication::translate("MainWindow", "Escribe tu PIN", Q_NULLPTR));
     } // retranslateUi
 
 };

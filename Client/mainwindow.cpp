@@ -26,3 +26,8 @@ void MainWindow::textMessageArrived(QString message)
 {
 
 }
+
+void MainWindow::pinReaded()
+{
+    qDebug() << jsonManager.toString(ui->lineEdit->text());
+}
