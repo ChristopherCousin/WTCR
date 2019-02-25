@@ -12,6 +12,7 @@ Dbmanager::Dbmanager()
     bool ok = db.open();
     if (!ok)
     {
+
     }
 }
 

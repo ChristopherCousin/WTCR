@@ -29,6 +29,7 @@ private:
 private slots:
     void textMessageArrived(QString message);
     void go();
+    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

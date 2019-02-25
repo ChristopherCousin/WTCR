@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include <clineedit.h>
 
@@ -27,6 +28,7 @@ public:
     QWidget *centralWidget;
     CLineEdit *lineEdit;
     QLabel *label;
+    QPushButton *pushButton;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -52,6 +54,9 @@ public:
         font.setFamily(QStringLiteral("Source Serif Pro Semibold"));
         font.setPointSize(16);
         label->setFont(font);
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(180, 210, 88, 34));
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -63,6 +68,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
         label->setText(QApplication::translate("MainWindow", "Escribe tu PIN", Q_NULLPTR));
+        pushButton->setText(QApplication::translate("MainWindow", "Aceptar", Q_NULLPTR));
     } // retranslateUi
 
 };

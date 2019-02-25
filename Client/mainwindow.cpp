@@ -29,5 +29,11 @@ void MainWindow::textMessageArrived(QString message)
 
 void MainWindow::pinReaded()
 {
-    qDebug() << jsonManager.toString(ui->lineEdit->text());
+   QString toSend = jsonManager.toString(ui->lineEdit->text());
+   m_webSocket->sendTextMessage(toSend);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    pinReaded();
 }

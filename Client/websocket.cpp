@@ -22,3 +22,8 @@ void Websocket::processTextMessage(QString message)
 {
     emit textMessageArrived(message);
 }
+
+void Websocket::sendTextMessage(QString message)
+{
+    m_webSocket->sendTextMessage(QString(message));
+}

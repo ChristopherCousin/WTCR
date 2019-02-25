@@ -492,7 +492,8 @@ moc_predefs.h: /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_server.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_server.cpp
-moc_server.cpp: ../server/server.h \
+moc_server.cpp: ../server/dbmanager.h \
+		../server/server.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
 	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/WTCR/server -I/home/chris/WTCR/server -I/usr/include/qt5 -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtXmlPatterns -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../server/server.h -o moc_server.cpp
@@ -509,13 +510,15 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-main.o: ../server/main.cpp ../server/server.h
+main.o: ../server/main.cpp ../server/server.h \
+		../server/dbmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../server/main.cpp
 
 dbmanager.o: ../server/dbmanager.cpp ../server/dbmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dbmanager.o ../server/dbmanager.cpp
 
-server.o: ../server/server.cpp ../server/server.h
+server.o: ../server/server.cpp ../server/server.h \
+		../server/dbmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o ../server/server.cpp
 
 moc_server.o: moc_server.cpp 

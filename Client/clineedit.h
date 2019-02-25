@@ -11,7 +11,7 @@ public:
     CLineEdit(QWidget *parent = nullptr);
 
 public slots:
-        void algo(const QString &arg1);
+     void algo(const QString &arg1);
 
 };
 
