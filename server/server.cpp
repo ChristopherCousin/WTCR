@@ -1,6 +1,8 @@
 #include "server.h"
 #include "json.h"
 #include <QJsonDocument>
+#include <string>
+#include <iostream>
 using json = nlohmann::json;
 
 TestServer::TestServer(quint16 port)
@@ -43,6 +45,9 @@ void TestServer::processTextMessage(QString message)
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
     try {
         auto j3 = json::parse(message.toStdString());
+        json j = message.toStdString();
+        std::string s = j.dump();
+        qDebug() << j.dump(0);
     } catch(int e) {
         qDebug() << "dasd";
     }
