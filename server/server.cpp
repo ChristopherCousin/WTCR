@@ -1,5 +1,7 @@
 #include "server.h"
-
+#include "json.h"
+#include <QJsonDocument>
+using json = nlohmann::json;
 
 TestServer::TestServer(quint16 port)
     : m_pWebSocketServer(new QWebSocketServer(
@@ -39,6 +41,11 @@ void TestServer::processTextMessage(QString message)
     QString respuesta;
     pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
+    try {
+        auto j3 = json::parse(message.toStdString());
+    } catch(int e) {
+        qDebug() << "dasd";
+    }
 
 }
 

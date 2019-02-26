@@ -28,7 +28,8 @@ QT += sql
 HEADERS += \
     dbmanager.h \
     server.h \
-    jsonmanager.h
+    jsonmanager.h \
+    json.h
 SOURCES += main.cpp \
     dbmanager.cpp \
     server.cpp \

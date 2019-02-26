@@ -13,6 +13,7 @@
 #include "dbmanager.h"
 
 
+
 class QWebSocketServer;
 class QWebSocket;
 
@@ -38,7 +39,6 @@ private slots:
 private:
     QWebSocketServer *m_pWebSocketServer;
     QList<QWebSocket *> m_clients;
-
     Dbmanager dbManager;
 };
 
