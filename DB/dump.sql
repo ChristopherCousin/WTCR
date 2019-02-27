@@ -40,17 +40,44 @@ SET default_with_oids = false;
 CREATE TABLE public.employees (
     name_employees character varying,
     surname_employees character varying,
-    ean13_employees character varying
+    ean13_employees character varying,
+    isworking_employees boolean DEFAULT false
 );
 
 
 ALTER TABLE public.employees OWNER TO usuario;
 
 --
+-- Name: logs; Type: TABLE; Schema: public; Owner: usuario
+--
+
+CREATE TABLE public.logs (
+    ean13_logs character varying,
+    checkindate_logs timestamp without time zone,
+    checkoutdate_logs timestamp without time zone
+);
+
+
+ALTER TABLE public.logs OWNER TO usuario;
+
+--
 -- Data for Name: employees; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-COPY public.employees (name_employees, surname_employees, ean13_employees) FROM stdin;
+COPY public.employees (name_employees, surname_employees, ean13_employees, isworking_employees) FROM stdin;
+admin	admin	1234567890123	f
+\.
+
+
+--
+-- Data for Name: logs; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.logs (ean13_logs, checkindate_logs, checkoutdate_logs) FROM stdin;
+asd	2019-02-27 00:00:00	\N
+asd	2019-02-27 00:00:00	\N
+asd	2019-02-27 00:00:00	\N
+asd	2019-02-27 14:03:38.616922	\N
 \.
 
 

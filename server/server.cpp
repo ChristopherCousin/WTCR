@@ -40,16 +40,28 @@ void TestServer::onNewConnection()
 
 void TestServer::processTextMessage(QString message)
 {
-    QString respuesta;
+    std::string action{""};
+    std::string ean13{""};
     pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
     try {
-        auto j3 = json::parse(message.toStdString());
-        json j = message.toStdString();
-        std::string s = j.dump();
-        qDebug() << j.dump(0);
+        auto j = json::parse(message.toStdString());
+        j.at("Action").get_to(action);
+        j.at("EAN13").get_to(ean13);
+
     } catch(int e) {
-        qDebug() << "dasd";
+        qDebug() << "JSON NO VALID";
+    }
+
+    if(action == "checkEAN13")
+    {
+        bool isworking = dbManager.checkEAN13(ean13);
+        if(isworking)
+        {
+            dbManager.changeIsWorkingState(ean13,false);
+        } else {
+            dbManager.changeIsWorkingState(ean13,true);
+        }
     }
 
 }

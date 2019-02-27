@@ -13,7 +13,8 @@ class Dbmanager
 {
 public:
     Dbmanager();
-    void newOrder(QString phone, QString repair, QString idorder);
+    bool checkEAN13(std::string ean13);
+    void changeIsWorkingState(std::string ean13,bool isworking);
 
 private:
     QSqlDatabase db;
