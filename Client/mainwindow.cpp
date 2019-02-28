@@ -1,5 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "json.h"
+#include <string>
+#include <iostream>
+
+using json = nlohmann::json;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,7 +29,37 @@ void MainWindow::go()
 
 void MainWindow::textMessageArrived(QString message)
 {
-    qDebug() << message;
+    std::string action{""};
+    std::string stateOfEmployee{""};
+
+    try {
+        auto j = json::parse(message.toStdString());
+        j.at("Action").get_to(action);
+        j.at("message").get_to(stateOfEmployee);
+
+    } catch(int e) {
+        qDebug() << "JSON NO VALID";
+    }
+
+    if(action == "EAN13checked")
+    {
+        if(stateOfEmployee == "working")
+        {
+
+        }
+        else if(stateOfEmployee == "notworking")
+        {
+
+        }
+        else if(stateOfEmployee == "inbreaktime")
+        {
+
+        }
+        else if(stateOfEmployee == "finishbreaktime")
+        {
+
+        }
+    }
 }
 
 void MainWindow::pinReaded()
