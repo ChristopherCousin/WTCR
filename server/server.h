@@ -26,6 +26,7 @@ public:
     explicit TestServer(quint16 port);
     ~TestServer();
     QWebSocket* pClient;
+    QString createEAN13checkedJson(QString message);
 
 
 signals:

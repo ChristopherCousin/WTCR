@@ -11,9 +11,5 @@ CLineEdit::CLineEdit(QWidget *parent) : QLineEdit{parent}
 
 void CLineEdit::algo(const QString &arg1)
 {
-    QKeyEvent * event;
-    if(event->key() == Qt::Key_U)
-    {
-        qDebug() << "asd";
-    }
+
 }

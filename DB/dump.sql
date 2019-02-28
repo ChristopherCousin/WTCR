@@ -38,10 +38,11 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE public.employees (
-    name_employees character varying,
-    surname_employees character varying,
-    ean13_employees character varying,
-    isworking_employees boolean DEFAULT false
+    ean13_employees character varying(255),
+    name_employees character varying(255),
+    surname_employees character varying(255),
+    dni_employees character varying(255) NOT NULL,
+    isworking_employees boolean
 );
 
 
@@ -53,8 +54,9 @@ ALTER TABLE public.employees OWNER TO usuario;
 
 CREATE TABLE public.logs (
     ean13_logs character varying,
-    checkindate_logs timestamp without time zone,
-    checkoutdate_logs timestamp without time zone
+    date_logs date,
+    hour_logs time without time zone,
+    action_logs character varying
 );
 
 
@@ -64,8 +66,8 @@ ALTER TABLE public.logs OWNER TO usuario;
 -- Data for Name: employees; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-COPY public.employees (name_employees, surname_employees, ean13_employees, isworking_employees) FROM stdin;
-admin	admin	1234567890123	f
+COPY public.employees (ean13_employees, name_employees, surname_employees, dni_employees, isworking_employees) FROM stdin;
+1234567890123	root	root	X1921490R	t
 \.
 
 
@@ -73,12 +75,16 @@ admin	admin	1234567890123	f
 -- Data for Name: logs; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-COPY public.logs (ean13_logs, checkindate_logs, checkoutdate_logs) FROM stdin;
-asd	2019-02-27 00:00:00	\N
-asd	2019-02-27 00:00:00	\N
-asd	2019-02-27 00:00:00	\N
-asd	2019-02-27 14:03:38.616922	\N
+COPY public.logs (ean13_logs, date_logs, hour_logs, action_logs) FROM stdin;
 \.
+
+
+--
+-- Name: employees employees_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.employees
+    ADD CONSTRAINT employees_pkey PRIMARY KEY (dni_employees);
 
 
 --

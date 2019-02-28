@@ -55,12 +55,19 @@ void TestServer::processTextMessage(QString message)
 
     if(action == "checkEAN13")
     {
-        bool isworking = dbManager.checkEAN13(ean13);
-        if(isworking)
+        QString isworking = dbManager.checkEAN13(ean13);
+        if(isworking == "true" || isworking == "TRUE")
         {
-            dbManager.changeIsWorkingState(ean13,false);
+            QString jsonToSend = createEAN13checkedJson("working");
+            pClient->sendTextMessage(jsonToSend);
+        }
+        else if(isworking == "false" || isworking == "FALSE")
+        {
+            QString jsonToSend = createEAN13checkedJson("notworking");
+            pClient->sendTextMessage(jsonToSend);
         } else {
-            dbManager.changeIsWorkingState(ean13,true);
+            QString jsonToSend = createEAN13checkedJson("doesnotexist");
+            pClient->sendTextMessage(jsonToSend);
         }
     }
 
@@ -77,4 +84,14 @@ void TestServer::socketDisconnected()
         m_clients.removeAll(pClient);
         pClient->deleteLater();
     } // end if
+}
+
+QString TestServer::createEAN13checkedJson(QString message)
+{
+    json j2 = {
+      {"action", "EAN13checked"},
+      {"message", message.toStdString()}
+    };
+    std::string json = j2.dump();
+    return QString::fromStdString(json);
 }

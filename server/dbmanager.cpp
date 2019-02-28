@@ -18,29 +18,33 @@ Dbmanager::Dbmanager()
 }
 
 
-bool Dbmanager::checkEAN13(std::string ean13)
+QString Dbmanager::checkEAN13(std::string ean13)
 {
-    bool isworking = false;
+    QString isworking{""};
     QSqlQuery query;
     query.prepare("SELECT isworking_employees from employees where ean13_employees = ?;");
 
-    query.bindValue(0, ean13);
+    query.bindValue(0, QString::fromStdString(ean13));
     query.exec();
-
-    if (!query.lastError().isValid())
+    query.next();
+    if(query.isValid())
     {
-        qDebug() << "Error en consulta: " << query.lastError();
+        isworking = query.value(0).toString();
+    } else {
+        isworking = "doesnotexist";
     }
+
     return isworking;
 }
 
 
-void Dbmanager::checkIn(std::string ean13)
+void Dbmanager::addLog(std::string ean13, std::string action)
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO logs(ean13_logs,checkindate_logs) values (?,current_timestamp);");
+    query.prepare("INSERT INTO logs(ean13_logs,date_logs,hour_logs,action_logs) values (?,current_timestamp,current_timestamp,?);");
 
-    query.bindValue(0, ean13);
+    query.bindValue(0, QString::fromStdString(ean13));
+    query.bindValue(1, QString::fromStdString(action));
     query.exec();
 
     if (!query.lastError().isValid())
@@ -54,7 +58,7 @@ void Dbmanager::changeIsWorkingState(std::string ean13,bool isworking)
     QSqlQuery query;
     query.prepare("UPDATE employees set isworking_employees = ? where ean13_employees = ?;");
 
-    query.bindValue(0, ean13);
+    query.bindValue(0, QString::fromStdString(ean13));
     query.bindValue(1, isworking);
     query.exec();
 
@@ -63,3 +67,5 @@ void Dbmanager::changeIsWorkingState(std::string ean13,bool isworking)
         qDebug() << "Error en consulta: " << query.lastError();
     }
 }
+
+

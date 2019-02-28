@@ -24,7 +24,7 @@ void MainWindow::go()
 
 void MainWindow::textMessageArrived(QString message)
 {
-
+    qDebug() << message;
 }
 
 void MainWindow::pinReaded()

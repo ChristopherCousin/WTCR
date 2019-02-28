@@ -13,8 +13,9 @@ class Dbmanager
 {
 public:
     Dbmanager();
-    bool checkEAN13(std::string ean13);
+    QString checkEAN13(std::string ean13);
     void changeIsWorkingState(std::string ean13,bool isworking);
+    void addLog(std::string ean13, std::string action);
 
 private:
     QSqlDatabase db;
