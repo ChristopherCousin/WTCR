@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     QTimer::singleShot(0, this, SLOT(go()));
+    ui->tabWidget->tabBar()->hide();
+    ui->tabWidget->tabBar()->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow()
@@ -45,19 +47,19 @@ void MainWindow::textMessageArrived(QString message)
     {
         if(stateOfEmployee == "working")
         {
-
+            ui->tabWidget->tabBar()->setCurrentIndex(1);
         }
         else if(stateOfEmployee == "notworking")
         {
-
+            ui->tabWidget->tabBar()->setCurrentIndex(2);
         }
         else if(stateOfEmployee == "inbreaktime")
         {
-
+            ui->tabWidget->tabBar()->setCurrentIndex(1);
         }
         else if(stateOfEmployee == "finishbreaktime")
         {
-
+            ui->tabWidget->tabBar()->setCurrentIndex(1);
         }
     }
 }
@@ -71,4 +73,19 @@ void MainWindow::pinReaded()
 void MainWindow::on_pushButton_clicked()
 {
     pinReaded();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+
+}
+
+QString MainWindow::writeJson(QString message)
+{
+    json j2 = {
+      {"action", "EAN13checked"},
+      {"message", message.toStdString()}
+    };
+    std::string json = j2.dump();
+    return QString::fromStdString(json);
 }
