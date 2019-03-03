@@ -18,13 +18,13 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="widget">
        <attribute name="title">
         <string>Tab 1</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButton_Aceptar">
         <property name="geometry">
          <rect>
           <x>170</x>
@@ -80,30 +80,30 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
        <attribute name="title">
         <string>Tab 2</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pushButton_SalirTrabajo">
         <property name="geometry">
          <rect>
-          <x>170</x>
-          <y>170</y>
-          <width>88</width>
-          <height>34</height>
+          <x>130</x>
+          <y>160</y>
+          <width>191</width>
+          <height>61</height>
          </rect>
         </property>
         <property name="text">
-         <string>Out</string>
+         <string>Salir del trabajo</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="pushButton_TiempoDescanso">
         <property name="geometry">
          <rect>
-          <x>170</x>
-          <y>110</y>
-          <width>88</width>
-          <height>34</height>
+          <x>130</x>
+          <y>70</y>
+          <width>191</width>
+          <height>61</height>
          </rect>
         </property>
         <property name="text">
-         <string>Break time</string>
+         <string>Tiempo de descanso</string>
         </property>
        </widget>
       </widget>

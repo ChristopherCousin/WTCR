@@ -3,6 +3,7 @@
 #include "json.h"
 #include <string>
 #include <iostream>
+#include <QTime>
 
 using json = nlohmann::json;
 
@@ -33,6 +34,7 @@ void MainWindow::textMessageArrived(QString message)
 {
     std::string action{""};
     std::string stateOfEmployee{""};
+    qDebug() << message;
 
     try {
         auto j = json::parse(message.toStdString());
@@ -43,19 +45,22 @@ void MainWindow::textMessageArrived(QString message)
         qDebug() << "JSON NO VALID";
     }
 
-    if(action == "EAN13checked")
+    if(action == "SerialChecked")
     {
         if(stateOfEmployee == "working")
         {
+            ui->pushButton_TiempoDescanso->setText("Tiempo de descanso");
             ui->tabWidget->tabBar()->setCurrentIndex(1);
         }
         else if(stateOfEmployee == "notworking")
         {
-            ui->tabWidget->tabBar()->setCurrentIndex(2);
+            welcome();
+
         }
         else if(stateOfEmployee == "inbreaktime")
         {
             ui->tabWidget->tabBar()->setCurrentIndex(1);
+            ui->pushButton_TiempoDescanso->setText("Empezar a trabajar");
         }
         else if(stateOfEmployee == "finishbreaktime")
         {
@@ -70,22 +75,45 @@ void MainWindow::pinReaded()
    m_webSocket->sendTextMessage(toSend);
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::welcome()
 {
-    pinReaded();
-}
-
-void MainWindow::on_pushButton_3_clicked()
-{
-
+    QTime dieTime= QTime::currentTime().addSecs(3);
+    while (QTime::currentTime() < dieTime)
+    {
+        ui->label->setText("Bienvenido ");
+    }
+    ui->label->setText("Introduce tu PIN");
 }
 
 QString MainWindow::writeJson(QString message)
 {
-    json j2 = {
-      {"action", "EAN13checked"},
-      {"message", message.toStdString()}
-    };
-    std::string json = j2.dump();
-    return QString::fromStdString(json);
+    try
+    {
+        json j2 = {
+          {"Action", "serialChecked"},
+          {"message", message.toStdString()}
+        };
+        std::string json = j2.dump();
+        return QString::fromStdString(json);
+    } catch(int e) {
+
+    }
+
+
+}
+
+
+void MainWindow::on_pushButton_Aceptar_clicked()
+{
+    pinReaded();
+}
+
+void MainWindow::on_pushButton_TiempoDescanso_clicked()
+{
+    m_webSocket->sendTextMessage(writeJson("startBreakTime"));
+}
+
+void MainWindow::on_pushButton_SalirTrabajo_clicked()
+{
+     m_webSocket->sendTextMessage(writeJson("finishWork"));
 }

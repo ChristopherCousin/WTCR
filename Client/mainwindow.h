@@ -20,6 +20,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void pinReaded();
+    QString writeJson(QString message);
+    void welcome;
 
 private:
     Ui::MainWindow *ui;
@@ -29,8 +31,9 @@ private:
 private slots:
     void textMessageArrived(QString message);
     void go();
-    void on_pushButton_clicked();
-    void on_pushButton_3_clicked();
+    void on_pushButton_Aceptar_clicked();
+    void on_pushButton_TiempoDescanso_clicked();
+    void on_pushButton_SalirTrabajo_clicked();
 };
 
 #endif // MAINWINDOW_H

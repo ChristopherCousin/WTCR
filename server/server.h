@@ -26,7 +26,7 @@ public:
     explicit TestServer(quint16 port);
     ~TestServer();
     QWebSocket* pClient;
-    QString createEAN13checkedJson(QString message);
+    QString createSerialCheckedJson(QString message, QString employeeName);
 
 
 signals:
@@ -41,6 +41,8 @@ private:
     QWebSocketServer *m_pWebSocketServer;
     QList<QWebSocket *> m_clients;
     Dbmanager dbManager;
+    std::string serial{""};
+
 };
 
 #endif

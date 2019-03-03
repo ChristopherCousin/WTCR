@@ -41,35 +41,53 @@ void TestServer::onNewConnection()
 void TestServer::processTextMessage(QString message)
 {
     std::string action{""};
-    std::string ean13{""};
+    std::string jsonMessage{""};
     pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
     try {
         auto j = json::parse(message.toStdString());
         j.at("Action").get_to(action);
-        j.at("EAN13").get_to(ean13);
+        if(action == "checkSerial")
+        {
+            j.at("Serial").get_to(serial);
+        }
+        else if(action == "serialChecked")
+        {
+            j.at("message").get_to(jsonMessage);
+        }
 
     } catch(int e) {
         qDebug() << "JSON NO VALID";
     }
 
-    if(action == "checkEAN13")
+    if(action == "checkSerial")
     {
-        QString isworking = dbManager.checkEAN13(ean13);
-        if(isworking == "true" || isworking == "TRUE")
+        auto employeInfo = dbManager.checkSerial(serial);
+        QString isWorking = std::get<8>(employeInfo);
+        QString name = std::get<1>(employeInfo);
+        qDebug() << isWorking;
+        if(isWorking == "true" || isWorking == "TRUE")
         {
-            QString jsonToSend = createEAN13checkedJson("working");
+            QString jsonToSend = createSerialCheckedJson("working");
             pClient->sendTextMessage(jsonToSend);
         }
-        else if(isworking == "false" || isworking == "FALSE")
+        else if(isWorking == "false" || isWorking == "FALSE")
         {
-            QString jsonToSend = createEAN13checkedJson("notworking");
+            QString jsonToSend = createSerialCheckedJson("notworking");
             pClient->sendTextMessage(jsonToSend);
         } else {
-            QString jsonToSend = createEAN13checkedJson("doesnotexist");
+            QString jsonToSend = createSerialCheckedJson("doesnotexist");
             pClient->sendTextMessage(jsonToSend);
         }
     }
+    else if(action == "serialChecked")
+    {
+        if(jsonMessage == "finishWork")
+        {
+            dbManager.changeIsWorkingState(serial, false);
+        }
+    }
+
 
 }
 
@@ -86,12 +104,18 @@ void TestServer::socketDisconnected()
     } // end if
 }
 
-QString TestServer::createEAN13checkedJson(QString message)
+QString TestServer::createSerialCheckedJson(QString message, QString employeeName)
 {
-    json j2 = {
-      {"action", "EAN13checked"},
-      {"message", message.toStdString()}
+    try
+    {
+        json j2 = {
+      {"Action", "SerialChecked"},
+      {"message", message.toStdString()},
+      {"name", employeeName.toStdString()}
     };
     std::string json = j2.dump();
     return QString::fromStdString(json);
+    } catch(int e){
+
+    }
 }

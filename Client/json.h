@@ -11000,6 +11000,7 @@ class serializer
     @param[in] indent_step     the indent level
     @param[in] current_indent  the current indent level (only used internally)
     */
+
     void dump(const BasicJsonType& val, const bool pretty_print,
               const bool ensure_ascii,
               const unsigned int indent_step,
@@ -11191,6 +11192,7 @@ class serializer
             }
         }
     }
+
 
   private:
     /*!

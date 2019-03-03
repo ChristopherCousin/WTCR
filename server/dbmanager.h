@@ -13,8 +13,8 @@ class Dbmanager
 {
 public:
     Dbmanager();
-    QString checkEAN13(std::string ean13);
-    void changeIsWorkingState(std::string ean13,bool isworking);
+    std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString> checkSerial(std::string serial);
+    void changeIsWorkingState(std::string serial,bool isworking);
     void addLog(std::string ean13, std::string action);
 
 private:

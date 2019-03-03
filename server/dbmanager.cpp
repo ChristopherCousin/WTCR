@@ -1,4 +1,7 @@
 #include <string>
+#include <QString>
+#include <iostream>
+#include <tuple>
 #include "dbmanager.h"
 
 
@@ -18,23 +21,52 @@ Dbmanager::Dbmanager()
 }
 
 
-QString Dbmanager::checkEAN13(std::string ean13)
+std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString> Dbmanager::checkSerial(std::string serial)
 {
-    QString isworking{""};
-    QSqlQuery query;
-    query.prepare("SELECT isworking_employees from employees where ean13_employees = ?;");
+    QString serialID{""};
+    bool active{false};
+    bool expired{false};
+    int _TypeID;
 
-    query.bindValue(0, QString::fromStdString(ean13));
+    QString name{""};
+    QString surname1{""};
+    QString surname2{""};
+    QString birthdate{""};
+    QString isWorking{false};
+
+    QSqlQuery query;
+    query.prepare("SELECT * from serialstorage where serial = ?;");
+
+    query.bindValue(0, QString::fromStdString(serial));
     query.exec();
     query.next();
     if(query.isValid())
     {
-        isworking = query.value(0).toString();
+        serialID = query.value(0).toString();
+        active = query.value(3).toBool();
+        expired = query.value(4).toBool();
+        _TypeID = query.value(1).toInt();
     } else {
-        isworking = "doesnotexist";
+
     }
 
-    return isworking;
+    query.prepare("SELECT * from employee where serialid = ?;");
+
+    query.bindValue(0, serialID);
+    query.exec();
+    query.next();
+    if(query.isValid())
+    {
+        name = query.value(1).toString();
+        surname1 = query.value(2).toString();
+        surname2 = query.value(3).toString();
+        birthdate = query.value(4).toString();
+        isWorking = query.value(9).toString();
+    } else {
+
+    }
+    return std::make_tuple(serialID, active, expired, _TypeID, name, surname1, surname2, birthdate, isWorking);
+
 }
 
 
@@ -53,18 +85,31 @@ void Dbmanager::addLog(std::string ean13, std::string action)
     }
 }
 
-void Dbmanager::changeIsWorkingState(std::string ean13,bool isworking)
+void Dbmanager::changeIsWorkingState(std::string serial,bool isworking)
 {
+    QString serialID{""};
     QSqlQuery query;
-    query.prepare("UPDATE employees set isworking_employees = ? where ean13_employees = ?;");
+    query.prepare("SELECT * from serialstorage where serial = ?;");
 
-    query.bindValue(0, QString::fromStdString(ean13));
-    query.bindValue(1, isworking);
+    query.bindValue(0, QString::fromStdString(serial));
     query.exec();
-
-    if (!query.lastError().isValid())
+    query.next();
+    if(query.isValid())
     {
-        qDebug() << "Error en consulta: " << query.lastError();
+        serialID = query.value(0).toString();
+
+        query.prepare("UPDATE employee set isWorking = ? where serialid = ?;");
+        query.bindValue(0, isworking);
+        query.bindValue(1, serialID);
+        query.exec();
+
+        if (!query.lastError().isValid())
+        {
+            qDebug() << "Error en consulta: " << query.lastError();
+        }
+
+    } else {
+
     }
 }
 
