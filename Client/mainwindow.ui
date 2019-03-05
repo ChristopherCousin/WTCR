@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="widget">
        <attribute name="title">
@@ -106,11 +106,22 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
          <string>Tiempo de descanso</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QWidget" name="notworking">
-       <attribute name="title">
-        <string>Page</string>
-       </attribute>
+       <widget class="QPushButton" name="pushButton_FinDescanso">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>70</y>
+          <width>191</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Fin de descanso</string>
+        </property>
+       </widget>
+       <zorder>pushButton_FinDescanso</zorder>
+       <zorder>pushButton_SalirTrabajo</zorder>
+       <zorder>pushButton_TiempoDescanso</zorder>
       </widget>
      </widget>
     </item>

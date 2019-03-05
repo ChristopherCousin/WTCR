@@ -188,7 +188,8 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../Client/Client.pro ../Client/mainwindow.h \
 		../Client/websocket.h \
 		../Client/jsonmanager.h \
-		../Client/clineedit.h ../Client/main.cpp \
+		../Client/clineedit.h \
+		../Client/json.h ../Client/main.cpp \
 		../Client/mainwindow.cpp \
 		../Client/websocket.cpp \
 		../Client/jsonmanager.cpp \
@@ -472,7 +473,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Client/mainwindow.h ../Client/websocket.h ../Client/jsonmanager.h ../Client/clineedit.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Client/mainwindow.h ../Client/websocket.h ../Client/jsonmanager.h ../Client/clineedit.h ../Client/json.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../Client/main.cpp ../Client/mainwindow.cpp ../Client/websocket.cpp ../Client/jsonmanager.cpp ../Client/clineedit.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Client/mainwindow.ui $(DISTDIR)/
 
@@ -557,7 +558,8 @@ mainwindow.o: ../Client/mainwindow.cpp ../Client/mainwindow.h \
 		../Client/websocket.h \
 		../Client/jsonmanager.h \
 		../Client/clineedit.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../Client/json.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Client/mainwindow.cpp
 
 websocket.o: ../Client/websocket.cpp ../Client/websocket.h

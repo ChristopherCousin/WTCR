@@ -34,6 +34,7 @@ private slots:
     void on_pushButton_Aceptar_clicked();
     void on_pushButton_TiempoDescanso_clicked();
     void on_pushButton_SalirTrabajo_clicked();
+    void on_pushButton_FinDescanso_clicked();
 };
 
 #endif // MAINWINDOW_H

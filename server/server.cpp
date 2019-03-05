@@ -92,6 +92,19 @@ void TestServer::processTextMessage(QString message)
             dbManager.addLog(serial,1);
             dbManager.changeIsWorkingState(serial, true);
         }
+        else if(jsonMessage == "startBreakTime")
+        {
+            dbManager.addLog(serial,3);
+        }
+        else if(jsonMessage == "startwork")
+        {
+            dbManager.addLog(serial,1);
+            dbManager.changeIsWorkingState(serial, true);
+        }
+        else if(jsonMessage == "finishBreakTime")
+        {
+            dbManager.addLog(serial,4);
+        }
     }
 
 

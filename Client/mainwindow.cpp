@@ -107,7 +107,6 @@ QString MainWindow::writeJson(QString message)
 
     }
 
-
 }
 
 
@@ -119,6 +118,9 @@ void MainWindow::on_pushButton_Aceptar_clicked()
 void MainWindow::on_pushButton_TiempoDescanso_clicked()
 {
     m_webSocket->sendTextMessage(writeJson("startBreakTime"));
+    ui->lineEdit->clear();
+    ui->pushButton_TiempoDescanso->setVisible(false);
+    ui->tabWidget->tabBar()->setCurrentIndex(0);
 }
 
 void MainWindow::on_pushButton_SalirTrabajo_clicked()
@@ -126,4 +128,12 @@ void MainWindow::on_pushButton_SalirTrabajo_clicked()
      m_webSocket->sendTextMessage(writeJson("finishWork"));
      ui->tabWidget->tabBar()->setCurrentIndex(0);
      ui->lineEdit->clear();
+}
+
+void MainWindow::on_pushButton_FinDescanso_clicked()
+{
+    m_webSocket->sendTextMessage(writeJson("finishBreakTime"));
+    ui->pushButton_TiempoDescanso->setVisible(true);
+    ui->tabWidget->tabBar()->setCurrentIndex(0);
+    ui->lineEdit->clear();
 }
