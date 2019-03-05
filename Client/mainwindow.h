@@ -5,7 +5,6 @@
 #include <iostream>
 #include <QTimer>
 #include "websocket.h"
-#include "jsonmanager.h"
 #include "clineedit.h"
 
 namespace Ui {
@@ -21,12 +20,12 @@ public:
     ~MainWindow();
     void pinReaded();
     QString writeJson(QString message);
-    void welcome();
+    void successfullyEnterOrExit(QString action);
+    QString calculateMessageByHour(QString action);
 
 private:
     Ui::MainWindow *ui;
     Websocket *m_webSocket{};
-    JsonManager jsonManager;
 
 private slots:
     void textMessageArrived(QString message);

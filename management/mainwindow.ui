@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>737</width>
-    <height>517</height>
+    <width>799</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="styleSheet">
@@ -106,6 +106,30 @@ QLineEdit:focus { background-color:rgb(192, 192, 255);}</string>
        <attribute name="title">
         <string>Tab 2</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidget_2">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_3">
+           <attribute name="title">
+            <string>Employees</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QTableWidget" name="tableWidget"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_4">
+           <attribute name="title">
+            <string>Logs</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -116,7 +140,7 @@ QLineEdit:focus { background-color:rgb(192, 192, 255);}</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>737</width>
+     <width>799</width>
      <height>30</height>
     </rect>
    </property>

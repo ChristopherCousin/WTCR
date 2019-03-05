@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="widget">
        <attribute name="title">
@@ -59,10 +59,10 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
        <widget class="QLabel" name="label">
         <property name="geometry">
          <rect>
-          <x>140</x>
-          <y>50</y>
-          <width>141</width>
-          <height>31</height>
+          <x>20</x>
+          <y>30</y>
+          <width>402</width>
+          <height>111</height>
          </rect>
         </property>
         <property name="font">
@@ -71,10 +71,19 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
           <pointsize>16</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="text">
          <string>Escribe tu PIN</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
+       <zorder>label</zorder>
+       <zorder>pushButton_Aceptar</zorder>
+       <zorder>lineEdit</zorder>
       </widget>
       <widget class="QWidget" name="working">
        <attribute name="title">

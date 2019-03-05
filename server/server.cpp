@@ -3,6 +3,8 @@
 #include <QJsonDocument>
 #include <string>
 #include <iostream>
+#include <QVector>
+
 using json = nlohmann::json;
 
 TestServer::TestServer(quint16 port)
@@ -42,10 +44,12 @@ void TestServer::processTextMessage(QString message)
 {
     std::string action{""};
     std::string jsonMessage{""};
+    json json;
     pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
     try {
         auto j = json::parse(message.toStdString());
+        json = j;
         j.at("Action").get_to(action);
         if(action == "checkSerial")
         {
@@ -106,6 +110,16 @@ void TestServer::processTextMessage(QString message)
             dbManager.addLog(serial,4);
         }
     }
+    else if(action == "Login")
+    {
+        std::string user = {""};
+        std::string password = {""};
+        json.at("user").get_to(user);
+        json.at("password").get_to(password);
+        qDebug() << dbManager.login(QString::fromStdString(user),QString::fromStdString(password));
+        allEmployeeDetailsJson();
+
+    }
 
 
 }
@@ -125,6 +139,7 @@ void TestServer::socketDisconnected()
 
 QString TestServer::createSerialCheckedJson(QString message, QString employeeName)
 {
+    QString toReturn{""};
     try
     {
         json j2 = {
@@ -133,8 +148,67 @@ QString TestServer::createSerialCheckedJson(QString message, QString employeeNam
       {"name", employeeName.toStdString()}
     };
     std::string json = j2.dump();
-    return QString::fromStdString(json);
+    toReturn = QString::fromStdString(json);
     } catch(int e){
 
     }
+    return toReturn;
+}
+QString TestServer::employeeDetailsJson(QString serial)
+{
+    QString toReturn{""};
+    auto employeeDetails = dbManager.employeeDetails(serial.toStdString());
+    try
+    {
+        json j2 = {
+      {"Action", "employeeDetails"},
+      {"name", "asd"}
+    };
+    std::string json = j2.dump();
+    toReturn = QString::fromStdString(json);
+    } catch(int e){
+
+    }
+    return toReturn;
+}
+
+void TestServer::allEmployeeDetailsJson()
+{
+    auto employeeDetails = dbManager.allEmployeeDetails();
+    QVector<QString> id = std::get<0>(employeeDetails);
+    QVector<QString> name = std::get<1>(employeeDetails);
+    QVector<QString> surname1 = std::get<2>(employeeDetails);
+    QVector<QString> surname2 = std::get<3>(employeeDetails);
+    QVector<QString> birthdate = std::get<4>(employeeDetails);
+    QVector<QString> identitytype = std::get<5>(employeeDetails);
+    QVector<QString> identitynum = std::get<6>(employeeDetails);
+    QVector<QString> serialtypeid = std::get<7>(employeeDetails);
+    QVector<QString> serialid = std::get<8>(employeeDetails);
+    QVector<QString> isworking = std::get<9>(employeeDetails);
+    for(int x = 0; x <= id.count() -1; x++)
+    {
+        try
+        {
+            json j2 = {
+
+          {"Action", "employeeDetails"},
+          {"id", id.at(x).toStdString()},
+          {"name", name.at(x).toStdString()},
+          {"surname1", surname1.at(x).toStdString()},
+          {"surname2", surname2.at(x).toStdString()},
+          {"birthdate", birthdate.at(x).toStdString()},
+          {"identitytype", identitytype.at(x).toStdString()},
+          {"identitynum", identitynum.at(x).toStdString()},
+          {"serialtypeid", serialtypeid.at(x).toStdString()},
+          {"serialid", serialid.at(x).toStdString()},
+          {"isworking", isworking.at(x).toStdString()}
+
+        };
+        std::string json = j2.dump();
+        pClient->sendTextMessage(QString::fromStdString(json));
+        } catch(int e){
+
+        }
+    }
+
 }

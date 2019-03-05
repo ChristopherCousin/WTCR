@@ -29,13 +29,11 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     websocket.cpp \
-    jsonmanager.cpp \
     clineedit.cpp
 
 HEADERS += \
         mainwindow.h \
     websocket.h \
-    jsonmanager.h \
     clineedit.h \
     json.h
 
