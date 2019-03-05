@@ -11,6 +11,8 @@ Dbmanager::Dbmanager()
     db.setHostName("127.0.0.1");
     db.setPort(5432);
     db.setDatabaseName("wtcr");
+    //Ponerlo en dll y encriptado
+    // crear usuario que solo pueda utilizar funciones
     db.setUserName("usuario");
     db.setPassword("usuario");
     bool ok = db.open();
@@ -21,7 +23,7 @@ Dbmanager::Dbmanager()
 }
 
 
-std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString> Dbmanager::checkSerial(std::string serial)
+std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString> Dbmanager::employeeDetails(std::string serial)
 {
     QString serialID{""};
     bool active{false};
@@ -69,44 +71,52 @@ std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString
 
 }
 
-
-void Dbmanager::addLog(std::string ean13, std::string action)
+std::tuple<QString, QString> Dbmanager::getEmployeeStatus(std::string serial)
 {
+    QString name{""};
+    QString isWorking{""};
+
     QSqlQuery query;
-    query.prepare("INSERT INTO logs(ean13_logs,date_logs,hour_logs,action_logs) values (?,current_timestamp,current_timestamp,?);");
-
-    query.bindValue(0, QString::fromStdString(ean13));
-    query.bindValue(1, QString::fromStdString(action));
-    query.exec();
-
-    if (!query.lastError().isValid())
-    {
-        qDebug() << "Error en consulta: " << query.lastError();
-    }
-}
-
-void Dbmanager::changeIsWorkingState(std::string serial,bool isworking)
-{
-    QString serialID{""};
-    QSqlQuery query;
-    query.prepare("SELECT * from serialstorage where serial = ?;");
+    query.prepare("select * from getEmployeeStatus(?);");
 
     query.bindValue(0, QString::fromStdString(serial));
     query.exec();
     query.next();
     if(query.isValid())
     {
-        serialID = query.value(0).toString();
+        name = query.value(0).toString();
+        isWorking = query.value(1).toString();
+    } else {
 
-        query.prepare("UPDATE employee set isWorking = ? where serialid = ?;");
-        query.bindValue(0, isworking);
-        query.bindValue(1, serialID);
-        query.exec();
+    }
 
-        if (!query.lastError().isValid())
-        {
-            qDebug() << "Error en consulta: " << query.lastError();
-        }
+    return std::make_tuple(name, isWorking);
+
+}
+
+void Dbmanager::addLog(std::string ean13, int action)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * from addLog(?,?);");
+
+    query.bindValue(0, QString::fromStdString(ean13));
+    query.bindValue(1, action);
+    query.exec();
+
+}
+
+void Dbmanager::changeIsWorkingState(std::string serial,bool isworking)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * from setisworkingstate(?,?);");
+
+    query.bindValue(0, QString::fromStdString(serial));
+    query.bindValue(1, isworking);
+    query.exec();
+    query.next();
+    if(query.isValid())
+    {
+
 
     } else {
 

@@ -62,21 +62,21 @@ void TestServer::processTextMessage(QString message)
 
     if(action == "checkSerial")
     {
-        auto employeInfo = dbManager.checkSerial(serial);
-        QString isWorking = std::get<8>(employeInfo);
-        QString name = std::get<1>(employeInfo);
+        auto employeInfo = dbManager.getEmployeeStatus(serial);
+        QString isWorking = std::get<1>(employeInfo);
+        QString name = std::get<0>(employeInfo);
         qDebug() << isWorking;
         if(isWorking == "true" || isWorking == "TRUE")
         {
-            QString jsonToSend = createSerialCheckedJson("working");
+            QString jsonToSend = createSerialCheckedJson("working", name);
             pClient->sendTextMessage(jsonToSend);
         }
         else if(isWorking == "false" || isWorking == "FALSE")
         {
-            QString jsonToSend = createSerialCheckedJson("notworking");
+            QString jsonToSend = createSerialCheckedJson("notworking", name);
             pClient->sendTextMessage(jsonToSend);
         } else {
-            QString jsonToSend = createSerialCheckedJson("doesnotexist");
+            QString jsonToSend = createSerialCheckedJson("doesnotexist", name);
             pClient->sendTextMessage(jsonToSend);
         }
     }
@@ -84,7 +84,13 @@ void TestServer::processTextMessage(QString message)
     {
         if(jsonMessage == "finishWork")
         {
+            dbManager.addLog(serial,2);
             dbManager.changeIsWorkingState(serial, false);
+        }
+        else if(jsonMessage == "startwork")
+        {
+            dbManager.addLog(serial,1);
+            dbManager.changeIsWorkingState(serial, true);
         }
     }
 

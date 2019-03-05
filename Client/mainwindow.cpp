@@ -55,6 +55,7 @@ void MainWindow::textMessageArrived(QString message)
         else if(stateOfEmployee == "notworking")
         {
             welcome();
+            m_webSocket->sendTextMessage(writeJson("startwork"));
 
         }
         else if(stateOfEmployee == "inbreaktime")
@@ -81,8 +82,15 @@ void MainWindow::welcome()
     while (QTime::currentTime() < dieTime)
     {
         ui->label->setText("Bienvenido ");
+        ui->label->repaint();
+        ui->lineEdit->clear();
+        ui->lineEdit->setVisible(false);
+        ui->pushButton_Aceptar->setVisible(false);
     }
     ui->label->setText("Introduce tu PIN");
+    ui->label->repaint();
+    ui->lineEdit->setVisible(true);
+    ui->pushButton_Aceptar->setVisible(true);
 }
 
 QString MainWindow::writeJson(QString message)
@@ -116,4 +124,6 @@ void MainWindow::on_pushButton_TiempoDescanso_clicked()
 void MainWindow::on_pushButton_SalirTrabajo_clicked()
 {
      m_webSocket->sendTextMessage(writeJson("finishWork"));
+     ui->tabWidget->tabBar()->setCurrentIndex(0);
+     ui->lineEdit->clear();
 }

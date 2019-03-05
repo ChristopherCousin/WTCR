@@ -29,6 +29,72 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: addlog(integer, integer); Type: FUNCTION; Schema: public; Owner: usuario
+--
+
+CREATE FUNCTION public.addlog(serial integer, actionid integer) RETURNS void
+    LANGUAGE plpgsql
+    AS $_$
+
+DECLARE
+ cserialid bigint;
+
+BEGIN
+  SELECT id into cserialid from serialstorage t WHERE ( t.serial = $1 );
+ IF cserialid != 0 THEN
+  INSERT INTO history(serialid,date,hour,actionid) values (cserialid,current_timestamp,current_timestamp,$2);
+ END IF;
+END;
+$_$;
+
+
+ALTER FUNCTION public.addlog(serial integer, actionid integer) OWNER TO usuario;
+
+--
+-- Name: getemployeestatus(integer); Type: FUNCTION; Schema: public; Owner: usuario
+--
+
+CREATE FUNCTION public.getemployeestatus(serialnumber integer) RETURNS TABLE(name character varying, isworking boolean)
+    LANGUAGE plpgsql
+    AS $_$
+
+
+begin
+  RETURN query
+select t.name, t.isworking
+    from employee t
+   INNER JOIN serialstorage ON serialstorage.ID = t.serialid
+WHERE serialstorage.serial = $1;
+
+
+
+end;
+$_$;
+
+
+ALTER FUNCTION public.getemployeestatus(serialnumber integer) OWNER TO usuario;
+
+--
+-- Name: setisworkingstate(integer, boolean); Type: FUNCTION; Schema: public; Owner: usuario
+--
+
+CREATE FUNCTION public.setisworkingstate(serial integer, isworking boolean) RETURNS void
+    LANGUAGE plpgsql
+    AS $_$DECLARE
+ cserialid bigint = 0;
+
+BEGIN
+  SELECT id into cserialid from serialstorage t WHERE ( t.serial = $1 );
+ IF cserialid != 0 THEN
+  UPDATE employee SET isworking = $2 WHERE employee.serialid = cserialid;
+ END IF;
+END;
+$_$;
+
+
+ALTER FUNCTION public.setisworkingstate(serial integer, isworking boolean) OWNER TO usuario;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -80,7 +146,8 @@ CREATE TABLE public.employee (
     identitytype integer,
     identitynum character varying(255),
     serialtypeid integer,
-    serialid integer
+    serialid integer,
+    isworking boolean DEFAULT false
 );
 
 
@@ -186,7 +253,7 @@ ALTER SEQUENCE public.identitytype_id_seq OWNED BY public.identitytype.id;
 CREATE TABLE public.serialstorage (
     id integer NOT NULL,
     typeid integer NOT NULL,
-    "serialID" integer NOT NULL,
+    serial integer NOT NULL,
     active boolean DEFAULT false,
     expired boolean DEFAULT true
 );
@@ -298,6 +365,9 @@ ALTER TABLE ONLY public.serialtype ALTER COLUMN id SET DEFAULT nextval('public.s
 
 COPY public.actions (id, name) FROM stdin;
 1	Start Working
+2	End of Work
+3	Break Time
+4	End of Break Time
 \.
 
 
@@ -305,8 +375,8 @@ COPY public.actions (id, name) FROM stdin;
 -- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-COPY public.employee (id, name, surname1, surname2, birthdate, identitytype, identitynum, serialtypeid, serialid) FROM stdin;
-1	Pepito	Perez	Mola	2000-01-01	1	12312231P	1	1
+COPY public.employee (id, name, surname1, surname2, birthdate, identitytype, identitynum, serialtypeid, serialid, isworking) FROM stdin;
+1	Pepito	Perez	Mola	2000-01-01	1	12312231P	1	1	f
 \.
 
 
@@ -315,6 +385,11 @@ COPY public.employee (id, name, surname1, surname2, birthdate, identitytype, ide
 --
 
 COPY public.history (id, serialid, date, hour, actionid) FROM stdin;
+1	1	2019-03-05	01:44:43.416629	1
+2	1	2019-03-05	01:48:23.398816	1
+3	1	2019-03-05	01:48:26.771499	2
+4	1	2019-03-05	01:49:58.077248	1
+5	1	2019-03-05	01:50:44.683556	2
 \.
 
 
@@ -331,8 +406,8 @@ COPY public.identitytype (id, name) FROM stdin;
 -- Data for Name: serialstorage; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-COPY public.serialstorage (id, typeid, "serialID", active, expired) FROM stdin;
-1	1	1	f	t
+COPY public.serialstorage (id, typeid, serial, active, expired) FROM stdin;
+1	1	123456	t	f
 \.
 
 
@@ -349,7 +424,7 @@ COPY public.serialtype (id, name) FROM stdin;
 -- Name: actions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.actions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.actions_id_seq', 4, true);
 
 
 --
@@ -363,7 +438,7 @@ SELECT pg_catalog.setval('public.employee_id_seq', 2, true);
 -- Name: history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.history_id_seq', 1, false);
+SELECT pg_catalog.setval('public.history_id_seq', 5, true);
 
 
 --

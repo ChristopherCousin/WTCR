@@ -21,7 +21,7 @@ public:
     ~MainWindow();
     void pinReaded();
     QString writeJson(QString message);
-    void welcome;
+    void welcome();
 
 private:
     Ui::MainWindow *ui;
