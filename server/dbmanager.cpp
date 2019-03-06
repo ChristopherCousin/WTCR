@@ -4,7 +4,7 @@
 #include <tuple>
 #include <QVector>
 #include "dbmanager.h"
-
+#include "employee.h"
 
 Dbmanager::Dbmanager()
 {
@@ -72,20 +72,9 @@ std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString
 
 }
 
-std::tuple<QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>> Dbmanager::allEmployeeDetails()
+QVector<Employee> Dbmanager::allEmployeeDetails()
 {
-
-    QVector<QString> id{""};
-    QVector<QString> name{""};
-    QVector<QString> surname1{""};
-    QVector<QString> surname2{""};
-    QVector<QString> birthdate{""};
-    QVector<QString> identitytype{""};
-    QVector<QString> identitynum{""};
-    QVector<QString> serialtypeid{""};
-    QVector<QString> serialID{""};
-    QVector<QString> isworking{""};
-
+    QVector<Employee> employee{};
     QSqlQuery query;
     query.prepare("SELECT * from employee;");
     query.exec();
@@ -94,31 +83,18 @@ std::tuple<QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString
     {
         if(query.isValid())
         {
-            id.append(query.value(0).toString());
-            name.append(query.value(1).toString());
-            surname1.append(query.value(2).toString());
-            surname2.append(query.value(3).toString());
-            birthdate.append(query.value(4).toString());
-            identitytype.append(query.value(5).toString());
-            identitynum.append(query.value(6).toString());
-            serialtypeid.append(query.value(7).toString());
-            serialID.append(query.value(8).toString());
-            isworking.append(query.value(9).toString());
+
+            Employee e{query.value(0).toString(), query.value(1).toString(), query.value(2).toString(),
+                      query.value(3).toString(), query.value(4).toString(), query.value(5).toString(),
+                      query.value(6).toString(), query.value(7).toString(), query.value(8).toString(),
+                      query.value(9).toString()};
+            employee.push_back(e);
+
         } else {
 
         }
     }
-    id.removeFirst();
-    name.removeFirst();
-    surname1.removeFirst();
-    surname2.removeFirst();
-    birthdate.removeFirst();
-    identitytype.removeFirst();
-    identitynum.removeFirst();
-    serialtypeid.removeFirst();
-    serialID.removeFirst();
-    isworking.removeFirst();
-    return std::make_tuple(id, name, surname1, surname2, birthdate, identitytype, identitynum, serialtypeid, serialID, isworking);
+    return employee;
 
 }
 

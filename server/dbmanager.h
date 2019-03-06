@@ -7,14 +7,15 @@
 #include <QSqlQuery>
 #include <QString>
 #include <QDebug>
-
+#include <QVector>
+#include "employee.h"
 
 class Dbmanager
 {
 public:
     Dbmanager();
     std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString> employeeDetails(std::string serial);
-    std::tuple<QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>, QVector<QString>> allEmployeeDetails();
+    QVector<Employee> allEmployeeDetails();
     void changeIsWorkingState(std::string serial,bool isworking);
     void addLog(std::string ean13, int action);
     std::tuple<QString, QString> getEmployeeStatus(std::string serial);

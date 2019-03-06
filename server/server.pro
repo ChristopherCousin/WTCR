@@ -29,7 +29,8 @@ HEADERS += \
     dbmanager.h \
     server.h \
     jsonmanager.h \
-    json.h
+    json.h \
+    employee.h
 SOURCES += main.cpp \
     dbmanager.cpp \
     server.cpp \
