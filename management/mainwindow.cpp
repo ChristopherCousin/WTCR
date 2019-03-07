@@ -79,46 +79,11 @@ QString MainWindow::loginJson(QString user, QString password)
 
 void MainWindow::updateAllEmployees(json jso)
 {
-    QVector<std::string> employeeDetails;
+    json employeesTxt = jso["employees"];
 
-    std::string id{""};
-    std::string name{""};
-    std::string surname1{""};
-    std::string surname2{""};
-    std::string birthdate{""};
-    std::string identitytype{""};
-    std::string identitynum{""};
-    std::string serialtypeid{""};
-    std::string serialid{""};
-    std::string isworking{""};
-
-    jso.at("id").get_to(id);
-    jso.at("name").get_to(name);
-    jso.at("surname1").get_to(surname1);
-    jso.at("surname2").get_to(surname2);
-    jso.at("birthdate").get_to(birthdate);
-    jso.at("identitytype").get_to(identitytype);
-    jso.at("identitynum").get_to(identitynum);
-    jso.at("serialtypeid").get_to(serialtypeid);
-    jso.at("serialid").get_to(serialid);
-    jso.at("isworking").get_to(isworking);
-
-    employeeDetails.append(id);
-    employeeDetails.append(name);
-    employeeDetails.append(surname1);
-    employeeDetails.append(surname2);
-    employeeDetails.append(birthdate);
-    employeeDetails.append(identitytype);
-    employeeDetails.append(identitynum);
-    employeeDetails.append(serialtypeid);
-    employeeDetails.append(serialid);
-    employeeDetails.append(isworking);
-
-    for(int x = 0; x <= 9; x++)
+    for(int i{0}; i < employeeTxt.size(); i++)
     {
-        QTableWidgetItem *newItem = new QTableWidgetItem(QString::fromStdString(employeeDetails.at(x)));
-         ui->tableWidget->setItem(0,x, newItem);
+        json employeeTxt = employeesTxt.at(i);
+        ui->tableWidget->setItem();
     }
-
-
 }

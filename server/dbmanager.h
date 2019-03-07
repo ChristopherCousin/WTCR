@@ -14,7 +14,7 @@ class Dbmanager
 {
 public:
     Dbmanager();
-    std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString> employeeDetails(std::string serial);
+    Employee employeeDetails(std::string serial);
     QVector<Employee> allEmployeeDetails();
     void changeIsWorkingState(std::string serial,bool isworking);
     void addLog(std::string ean13, int action);

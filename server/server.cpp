@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <QVector>
+#include "employee.h"
 
 using json = nlohmann::json;
 
@@ -108,8 +109,8 @@ void TestServer::processTextMessage(QString message)
         else if(jsonMessage == "finishBreakTime")
         {
             dbManager.addLog(serial,4);
-        }
-    }
+        } //end if
+    }// end if
     else if(action == "Login")
     {
         std::string user = {""};
@@ -174,43 +175,21 @@ QString TestServer::employeeDetailsJson(QString serial)
 
 void TestServer::allEmployeeDetailsJson()
 {
-    auto employeeDetails = dbManager.allEmployeeDetails();
-    QVector<QString> id = std::get<0>(employeeDetails);
-    QVector<QString> name = std::get<1>(employeeDetails);
-    QVector<QString> surname1 = std::get<2>(employeeDetails);
-    QVector<QString> surname2 = std::get<3>(employeeDetails);
-    QVector<QString> birthdate = std::get<4>(employeeDetails);
-    QVector<QString> identitytype = std::get<5>(employeeDetails);
-    QVector<QString> identitynum = std::get<6>(employeeDetails);
-    QVector<QString> serialtypeid = std::get<7>(employeeDetails);
-    QVector<QString> serialid = std::get<8>(employeeDetails);
-    QVector<QString> isworking = std::get<9>(employeeDetails);
+    QVector<Employee> employeeDetails = dbManager.allEmployeeDetails();
 
-
-    for(int x = 0; x <= id.count() -1; x++)
+    json document;
+    json employeesJSON;
+    for (int i{ 0 }; i < employeeDetails.count(); i++)
     {
-        try
-        {
-            json j2 = {
+        Employee employee{ employeeDetails.at(i) };
+        json employeeJSON;
+        employeeJSON["id"] = employee.id.toStdString();
+        employeeJSON["name"] = employee.name.toStdString();
+        employeesJSON.push_back(employeeJSON);
+    } // end for
 
-          {"Action", "employeeDetails"},
-          {"id", id.at(x).toStdString()},
-          {"name", name.at(x).toStdString()},
-          {"surname1", surname1.at(x).toStdString()},
-          {"surname2", surname2.at(x).toStdString()},
-          {"birthdate", birthdate.at(x).toStdString()},
-          {"identitytype", identitytype.at(x).toStdString()},
-          {"identitynum", identitynum.at(x).toStdString()},
-          {"serialtypeid", serialtypeid.at(x).toStdString()},
-          {"serialid", serialid.at(x).toStdString()},
-          {"isworking", isworking.at(x).toStdString()}
+    document["employees"] = employeesJSON;
 
-        };
-        std::string json = j2.dump();
-        pClient->sendTextMessage(QString::fromStdString(json));
-        } catch(int e){
-
-        }
-    }
-
+    std::string message = document.dump();
+    pClient->sendTextMessage(message);
 }

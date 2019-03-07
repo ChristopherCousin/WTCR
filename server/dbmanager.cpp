@@ -24,51 +24,35 @@ Dbmanager::Dbmanager()
 }
 
 
-std::tuple<QString, bool, bool, int, QString, QString, QString, QString, QString> Dbmanager::employeeDetails(std::string serial)
+Employee Dbmanager::employeeDetails(std::string serial)
 {
-    QString serialID{""};
-    bool active{false};
-    bool expired{false};
-    int _TypeID;
-
-    QString name{""};
-    QString surname1{""};
-    QString surname2{""};
-    QString birthdate{""};
-    QString isWorking{false};
-
+    Employee employee;
     QSqlQuery query;
-    query.prepare("SELECT * from serialstorage where serial = ?;");
+    query.prepare("select * from employee t "
+                  "INNER JOIN serialstorage ON serialstorage.ID = t.serialid"
+                  "WHERE serialstorage.serial = ?;");
 
     query.bindValue(0, QString::fromStdString(serial));
     query.exec();
     query.next();
     if(query.isValid())
     {
-        serialID = query.value(0).toString();
-        active = query.value(3).toBool();
-        expired = query.value(4).toBool();
-        _TypeID = query.value(1).toInt();
+        Employee e;
+        e.id = query.value(0).toString();
+        e.name = query.value(1).toString();
+        e.surname1 = query.value(2).toString();
+        e.surname2 = query.value(3).toString();
+        e.birthdate = query.value(4).toString();
+        e.identitytype = query.value(5).toString();
+        e.identitynum = query.value(6).toString();
+        e.serialtypeid = query.value(7).toString();
+        e.serialid = query.value(8).toString();
+        e.isworking = query.value(9).toString();
+        employee = e;
     } else {
 
     }
-
-    query.prepare("SELECT * from employee where serialid = ?;");
-
-    query.bindValue(0, serialID);
-    query.exec();
-    query.next();
-    if(query.isValid())
-    {
-        name = query.value(1).toString();
-        surname1 = query.value(2).toString();
-        surname2 = query.value(3).toString();
-        birthdate = query.value(4).toString();
-        isWorking = query.value(9).toString();
-    } else {
-
-    }
-    return std::make_tuple(serialID, active, expired, _TypeID, name, surname1, surname2, birthdate, isWorking);
+    return employee;
 
 }
 
@@ -79,23 +63,30 @@ QVector<Employee> Dbmanager::allEmployeeDetails()
     query.prepare("SELECT * from employee;");
     query.exec();
 
-    while(query.next())
+    while (query.next())
     {
-        if(query.isValid())
+        if (query.isValid())
         {
 
-            Employee e{query.value(0).toString(), query.value(1).toString(), query.value(2).toString(),
-                      query.value(3).toString(), query.value(4).toString(), query.value(5).toString(),
-                      query.value(6).toString(), query.value(7).toString(), query.value(8).toString(),
-                      query.value(9).toString()};
+            Employee e;
+            e.id = query.value(0).toString();
+            e.name = query.value(1).toString();
+            e.surname1 = query.value(2).toString();
+            e.surname2 = query.value(3).toString();
+            e.birthdate = query.value(4).toString();
+            e.identitytype = query.value(5).toString();
+            e.identitynum = query.value(6).toString();
+            e.serialtypeid = query.value(7).toString();
+            e.serialid = query.value(8).toString();
+            e.isworking = query.value(9).toString();
+
             employee.push_back(e);
-
-        } else {
-
+        }
+        else
+        {
         }
     }
     return employee;
-
 }
 
 std::tuple<QString, QString> Dbmanager::getEmployeeStatus(std::string serial)
