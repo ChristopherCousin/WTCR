@@ -1,7 +1,7 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 #include <iostream>
-#include <QVector>
+#include <QString>
 
 struct Employee {
     QString id{""};

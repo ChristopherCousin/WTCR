@@ -29,6 +29,7 @@ public:
     QString createSerialCheckedJson(QString message, QString employeeName);
     QString employeeDetailsJson(QString serial);
     void allEmployeeDetailsJson();
+    void allLogsJson();
 
 
 signals:

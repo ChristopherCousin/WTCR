@@ -30,7 +30,8 @@ HEADERS += \
     server.h \
     jsonmanager.h \
     json.h \
-    employee.h
+    employee.h \
+    log.h
 SOURCES += main.cpp \
     dbmanager.cpp \
     server.cpp \

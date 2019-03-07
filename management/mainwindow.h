@@ -20,6 +20,8 @@ public:
     ~MainWindow();
     QString loginJson(QString user, QString password);
     void updateAllEmployees(json jso);
+    void updateAllLogs(json jso);
+    void configQTableWidgets();
 
 private slots:
     void on_pushButton_clicked();

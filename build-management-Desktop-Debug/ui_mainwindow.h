@@ -44,6 +44,8 @@ public:
     QGridLayout *gridLayout_3;
     QTableWidget *tableWidget;
     QWidget *tab_4;
+    QGridLayout *gridLayout_4;
+    QTableWidget *tableWidget_logs;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QStatusBar *statusBar;
@@ -119,6 +121,15 @@ public:
         tabWidget_2->addTab(tab_3, QString());
         tab_4 = new QWidget();
         tab_4->setObjectName(QStringLiteral("tab_4"));
+        gridLayout_4 = new QGridLayout(tab_4);
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setContentsMargins(11, 11, 11, 11);
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        tableWidget_logs = new QTableWidget(tab_4);
+        tableWidget_logs->setObjectName(QStringLiteral("tableWidget_logs"));
+
+        gridLayout_4->addWidget(tableWidget_logs, 0, 0, 1, 1);
+
         tabWidget_2->addTab(tab_4, QString());
 
         gridLayout_2->addWidget(tabWidget_2, 0, 0, 1, 1);
@@ -143,7 +154,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(1);
-        tabWidget_2->setCurrentIndex(0);
+        tabWidget_2->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -152,8 +163,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
+        lineEdit->setText(QApplication::translate("MainWindow", "root", Q_NULLPTR));
         lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "Usuario", Q_NULLPTR));
         pushButton->setText(QApplication::translate("MainWindow", "Conectar", Q_NULLPTR));
+        lineEdit_2->setText(QApplication::translate("MainWindow", "root", Q_NULLPTR));
         lineEdit_2->setPlaceholderText(QApplication::translate("MainWindow", "Contrase\303\261a", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Tab 1", Q_NULLPTR));
         tabWidget_2->setTabText(tabWidget_2->indexOf(tab_3), QApplication::translate("MainWindow", "Employees", Q_NULLPTR));

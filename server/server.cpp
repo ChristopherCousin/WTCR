@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QVector>
 #include "employee.h"
+#include "log.h"
 
 using json = nlohmann::json;
 
@@ -119,6 +120,7 @@ void TestServer::processTextMessage(QString message)
         json.at("password").get_to(password);
         qDebug() << dbManager.login(QString::fromStdString(user),QString::fromStdString(password));
         allEmployeeDetailsJson();
+        allLogsJson();
 
     }
 
@@ -176,20 +178,50 @@ QString TestServer::employeeDetailsJson(QString serial)
 void TestServer::allEmployeeDetailsJson()
 {
     QVector<Employee> employeeDetails = dbManager.allEmployeeDetails();
-
     json document;
     json employeesJSON;
     for (int i{ 0 }; i < employeeDetails.count(); i++)
     {
         Employee employee{ employeeDetails.at(i) };
         json employeeJSON;
+        employeeJSON["Action"] = "employeeDetails";
         employeeJSON["id"] = employee.id.toStdString();
         employeeJSON["name"] = employee.name.toStdString();
+        employeeJSON["surname1"] = employee.surname1.toStdString();
+        employeeJSON["surname2"] = employee.surname2.toStdString();
+        employeeJSON["birthdate"] = employee.birthdate.toStdString();
+        employeeJSON["identitynum"] = employee.identitynum.toStdString();
+        employeeJSON["identitytype"] = employee.identitytype.toStdString();
+        employeeJSON["serialtypeid"] = employee.serialtypeid.toStdString();
+        employeeJSON["serialid"] = employee.serialid.toStdString();
+        employeeJSON["isworking"] = employee.isworking.toStdString();
         employeesJSON.push_back(employeeJSON);
     } // end for
 
     document["employees"] = employeesJSON;
-
     std::string message = document.dump();
-    pClient->sendTextMessage(message);
+    pClient->sendTextMessage(QString::fromStdString(message));
+}
+
+void TestServer::allLogsJson()
+{
+    QVector<Log> logsDetails = dbManager.allLogs();
+    json document;
+    json logsJSON;
+    for (int i{ 0 }; i < logsDetails.count(); i++)
+    {
+        Log log{ logsDetails.at(i) };
+        json employeeJSON;
+        employeeJSON["Action"] = "logsDetails";
+        employeeJSON["id"] = log.id.toStdString();
+        employeeJSON["serialid"] = log.serialid.toStdString();
+        employeeJSON["date"] = log.date.toStdString();
+        employeeJSON["hour"] = log.hour.toStdString();
+        employeeJSON["actionid"] = log.actionid.toStdString();
+        logsJSON.push_back(employeeJSON);
+    } // end for
+
+    document["logs"] = logsJSON;
+    std::string message = document.dump();
+    pClient->sendTextMessage(QString::fromStdString(message));
 }

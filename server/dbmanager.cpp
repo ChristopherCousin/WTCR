@@ -5,6 +5,7 @@
 #include <QVector>
 #include "dbmanager.h"
 #include "employee.h"
+#include "log.h"
 
 Dbmanager::Dbmanager()
 {
@@ -87,6 +88,34 @@ QVector<Employee> Dbmanager::allEmployeeDetails()
         }
     }
     return employee;
+}
+
+QVector<Log> Dbmanager::allLogs()
+{
+    QVector<Log> log{};
+    QSqlQuery query;
+    query.prepare("SELECT * from history;");
+    query.exec();
+
+    while (query.next())
+    {
+        if (query.isValid())
+        {
+
+            Log e;
+            e.id = query.value(0).toString();
+            e.serialid = query.value(1).toString();
+            e.date = query.value(2).toString();
+            e.hour = query.value(3).toString();
+            e.actionid = query.value(4).toString();
+
+            log.push_back(e);
+        }
+        else
+        {
+        }
+    }
+    return log;
 }
 
 std::tuple<QString, QString> Dbmanager::getEmployeeStatus(std::string serial)
