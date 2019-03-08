@@ -44,17 +44,22 @@ public:
     QTabWidget *tabWidget_users;
     QWidget *tab_3;
     QTableWidget *tableWidget;
-    QLineEdit *lineEdit_3;
+    QLineEdit *lineEdit_searchEmployee;
     QLabel *label_9;
     QLabel *label_10;
     QLabel *label_11;
     QComboBox *comboBox_2;
-    QPushButton *pushButton_3;
+    QPushButton *pushButton_searchEmployee;
     QWidget *tab_4;
-    QGridLayout *gridLayout_4;
     QTableWidget *tableWidget_logs;
+    QLabel *label_12;
+    QLabel *label_13;
+    QPushButton *pushButton_searchLogs;
+    QLineEdit *lineEdit_searchLogs;
+    QComboBox *comboBox_3;
+    QLabel *label_14;
     QWidget *tab_5;
-    QTableWidget *tableWidget_2;
+    QTableWidget *tableWidget_users;
     QLineEdit *lineEdit_adduser_username;
     QPushButton *pushButton_2;
     QLabel *label;
@@ -71,6 +76,21 @@ public:
     QLineEdit *lineEdit_adduser_username_2;
     QPushButton *pushButton_searchUser;
     QWidget *tab_6;
+    QLabel *label_15;
+    QPushButton *pushButton_addUser_2;
+    QLabel *label_16;
+    QLineEdit *lineEdit_adduser_password_2;
+    QLabel *label_17;
+    QLabel *label_18;
+    QLineEdit *lineEdit_adduser_username_3;
+    QLineEdit *lineEdit_adduser_password_3;
+    QLabel *label_19;
+    QLabel *label_20;
+    QLineEdit *lineEdit_adduser_password_4;
+    QLabel *label_21;
+    QLineEdit *lineEdit_adduser_password_5;
+    QLabel *label_22;
+    QLineEdit *lineEdit_adduser_password_6;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QStatusBar *statusBar;
@@ -79,7 +99,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(799, 580);
+        MainWindow->resize(624, 592);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -137,9 +157,9 @@ public:
         tableWidget = new QTableWidget(tab_3);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
         tableWidget->setGeometry(QRect(2, 6, 751, 311));
-        lineEdit_3 = new QLineEdit(tab_3);
-        lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
-        lineEdit_3->setGeometry(QRect(250, 344, 451, 32));
+        lineEdit_searchEmployee = new QLineEdit(tab_3);
+        lineEdit_searchEmployee->setObjectName(QStringLiteral("lineEdit_searchEmployee"));
+        lineEdit_searchEmployee->setGeometry(QRect(250, 344, 451, 32));
         label_9 = new QLabel(tab_3);
         label_9->setObjectName(QStringLiteral("label_9"));
         label_9->setGeometry(QRect(20, 350, 81, 18));
@@ -163,34 +183,55 @@ public:
         comboBox_2 = new QComboBox(tab_3);
         comboBox_2->setObjectName(QStringLiteral("comboBox_2"));
         comboBox_2->setGeometry(QRect(110, 344, 121, 32));
-        pushButton_3 = new QPushButton(tab_3);
-        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
-        pushButton_3->setGeometry(QRect(367, 390, 161, 34));
+        pushButton_searchEmployee = new QPushButton(tab_3);
+        pushButton_searchEmployee->setObjectName(QStringLiteral("pushButton_searchEmployee"));
+        pushButton_searchEmployee->setGeometry(QRect(367, 390, 161, 34));
         tabWidget_users->addTab(tab_3, QString());
         label_10->raise();
         tableWidget->raise();
-        lineEdit_3->raise();
+        lineEdit_searchEmployee->raise();
         label_9->raise();
         label_11->raise();
         comboBox_2->raise();
-        pushButton_3->raise();
+        pushButton_searchEmployee->raise();
         tab_4 = new QWidget();
         tab_4->setObjectName(QStringLiteral("tab_4"));
-        gridLayout_4 = new QGridLayout(tab_4);
-        gridLayout_4->setSpacing(6);
-        gridLayout_4->setContentsMargins(11, 11, 11, 11);
-        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         tableWidget_logs = new QTableWidget(tab_4);
         tableWidget_logs->setObjectName(QStringLiteral("tableWidget_logs"));
-
-        gridLayout_4->addWidget(tableWidget_logs, 0, 0, 1, 1);
-
+        tableWidget_logs->setGeometry(QRect(4, 6, 751, 301));
+        label_12 = new QLabel(tab_4);
+        label_12->setObjectName(QStringLiteral("label_12"));
+        label_12->setGeometry(QRect(20, 320, 711, 101));
+        label_12->setStyleSheet(QLatin1String("QLabel {\n"
+"border: 1px solid #CBC8C8;\n"
+"border-radius: 15px;\n"
+"}"));
+        label_13 = new QLabel(tab_4);
+        label_13->setObjectName(QStringLiteral("label_13"));
+        label_13->setGeometry(QRect(40, 310, 61, 18));
+        label_13->setStyleSheet(QLatin1String("QLabel{\n"
+"background: solid black;\n"
+"color: white;\n"
+"}"));
+        pushButton_searchLogs = new QPushButton(tab_4);
+        pushButton_searchLogs->setObjectName(QStringLiteral("pushButton_searchLogs"));
+        pushButton_searchLogs->setGeometry(QRect(387, 380, 161, 34));
+        lineEdit_searchLogs = new QLineEdit(tab_4);
+        lineEdit_searchLogs->setObjectName(QStringLiteral("lineEdit_searchLogs"));
+        lineEdit_searchLogs->setGeometry(QRect(270, 334, 451, 32));
+        comboBox_3 = new QComboBox(tab_4);
+        comboBox_3->setObjectName(QStringLiteral("comboBox_3"));
+        comboBox_3->setGeometry(QRect(130, 334, 121, 32));
+        label_14 = new QLabel(tab_4);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setGeometry(QRect(40, 340, 81, 18));
+        label_14->setFont(font1);
         tabWidget_users->addTab(tab_4, QString());
         tab_5 = new QWidget();
         tab_5->setObjectName(QStringLiteral("tab_5"));
-        tableWidget_2 = new QTableWidget(tab_5);
-        tableWidget_2->setObjectName(QStringLiteral("tableWidget_2"));
-        tableWidget_2->setGeometry(QRect(10, 60, 381, 361));
+        tableWidget_users = new QTableWidget(tab_5);
+        tableWidget_users->setObjectName(QStringLiteral("tableWidget_users"));
+        tableWidget_users->setGeometry(QRect(10, 60, 381, 361));
         lineEdit_adduser_username = new QLineEdit(tab_5);
         lineEdit_adduser_username->setObjectName(QStringLiteral("lineEdit_adduser_username"));
         lineEdit_adduser_username->setGeometry(QRect(510, 90, 211, 32));
@@ -266,7 +307,7 @@ public:
         pushButton_searchUser->setFont(font2);
         tabWidget_users->addTab(tab_5, QString());
         label->raise();
-        tableWidget_2->raise();
+        tableWidget_users->raise();
         lineEdit_adduser_username->raise();
         pushButton_2->raise();
         label_2->raise();
@@ -283,7 +324,82 @@ public:
         pushButton_searchUser->raise();
         tab_6 = new QWidget();
         tab_6->setObjectName(QStringLiteral("tab_6"));
+        label_15 = new QLabel(tab_6);
+        label_15->setObjectName(QStringLiteral("label_15"));
+        label_15->setGeometry(QRect(20, 106, 81, 20));
+        label_15->setFont(font3);
+        pushButton_addUser_2 = new QPushButton(tab_6);
+        pushButton_addUser_2->setObjectName(QStringLiteral("pushButton_addUser_2"));
+        pushButton_addUser_2->setGeometry(QRect(380, 340, 141, 51));
+        pushButton_addUser_2->setFont(font2);
+        label_16 = new QLabel(tab_6);
+        label_16->setObjectName(QStringLiteral("label_16"));
+        label_16->setGeometry(QRect(20, 65, 61, 20));
+        label_16->setFont(font3);
+        lineEdit_adduser_password_2 = new QLineEdit(tab_6);
+        lineEdit_adduser_password_2->setObjectName(QStringLiteral("lineEdit_adduser_password_2"));
+        lineEdit_adduser_password_2->setGeometry(QRect(130, 100, 391, 32));
+        label_17 = new QLabel(tab_6);
+        label_17->setObjectName(QStringLiteral("label_17"));
+        label_17->setGeometry(QRect(10, 30, 541, 391));
+        label_17->setStyleSheet(QLatin1String("QLabel {\n"
+"border: 1px solid #CBC8C8;\n"
+"border-radius: 15px;\n"
+"}"));
+        label_18 = new QLabel(tab_6);
+        label_18->setObjectName(QStringLiteral("label_18"));
+        label_18->setGeometry(QRect(30, 20, 61, 18));
+        label_18->setStyleSheet(QLatin1String("QLabel{\n"
+"background: solid black;\n"
+"color: white;\n"
+"}"));
+        lineEdit_adduser_username_3 = new QLineEdit(tab_6);
+        lineEdit_adduser_username_3->setObjectName(QStringLiteral("lineEdit_adduser_username_3"));
+        lineEdit_adduser_username_3->setGeometry(QRect(130, 60, 391, 32));
+        lineEdit_adduser_password_3 = new QLineEdit(tab_6);
+        lineEdit_adduser_password_3->setObjectName(QStringLiteral("lineEdit_adduser_password_3"));
+        lineEdit_adduser_password_3->setGeometry(QRect(130, 144, 391, 32));
+        label_19 = new QLabel(tab_6);
+        label_19->setObjectName(QStringLiteral("label_19"));
+        label_19->setGeometry(QRect(20, 149, 81, 20));
+        label_19->setFont(font3);
+        label_20 = new QLabel(tab_6);
+        label_20->setObjectName(QStringLiteral("label_20"));
+        label_20->setGeometry(QRect(20, 190, 81, 20));
+        label_20->setFont(font3);
+        lineEdit_adduser_password_4 = new QLineEdit(tab_6);
+        lineEdit_adduser_password_4->setObjectName(QStringLiteral("lineEdit_adduser_password_4"));
+        lineEdit_adduser_password_4->setGeometry(QRect(130, 185, 391, 32));
+        label_21 = new QLabel(tab_6);
+        label_21->setObjectName(QStringLiteral("label_21"));
+        label_21->setGeometry(QRect(20, 235, 101, 20));
+        label_21->setFont(font3);
+        lineEdit_adduser_password_5 = new QLineEdit(tab_6);
+        lineEdit_adduser_password_5->setObjectName(QStringLiteral("lineEdit_adduser_password_5"));
+        lineEdit_adduser_password_5->setGeometry(QRect(130, 230, 391, 32));
+        label_22 = new QLabel(tab_6);
+        label_22->setObjectName(QStringLiteral("label_22"));
+        label_22->setGeometry(QRect(20, 282, 101, 20));
+        label_22->setFont(font3);
+        lineEdit_adduser_password_6 = new QLineEdit(tab_6);
+        lineEdit_adduser_password_6->setObjectName(QStringLiteral("lineEdit_adduser_password_6"));
+        lineEdit_adduser_password_6->setGeometry(QRect(130, 277, 391, 32));
         tabWidget_users->addTab(tab_6, QString());
+        label_17->raise();
+        label_15->raise();
+        pushButton_addUser_2->raise();
+        label_16->raise();
+        lineEdit_adduser_password_2->raise();
+        label_18->raise();
+        lineEdit_adduser_username_3->raise();
+        lineEdit_adduser_password_3->raise();
+        label_19->raise();
+        label_20->raise();
+        lineEdit_adduser_password_4->raise();
+        label_21->raise();
+        lineEdit_adduser_password_5->raise();
+        label_22->raise();
+        lineEdit_adduser_password_6->raise();
 
         gridLayout_2->addWidget(tabWidget_users, 0, 0, 1, 1);
 
@@ -294,7 +410,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 799, 30));
+        menuBar->setGeometry(QRect(0, 0, 624, 30));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindow->setMenuBar(menuBar);
@@ -332,8 +448,18 @@ public:
          << QApplication::translate("MainWindow", "Name", Q_NULLPTR)
          << QApplication::translate("MainWindow", "Surname1", Q_NULLPTR)
         );
-        pushButton_3->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
+        pushButton_searchEmployee->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_3), QApplication::translate("MainWindow", "Employees", Q_NULLPTR));
+        label_12->setText(QString());
+        label_13->setText(QApplication::translate("MainWindow", "Add User", Q_NULLPTR));
+        pushButton_searchLogs->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
+        comboBox_3->clear();
+        comboBox_3->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "ID", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Serial ID", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Date", Q_NULLPTR)
+        );
+        label_14->setText(QApplication::translate("MainWindow", "Search by:", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_4), QApplication::translate("MainWindow", "Logs", Q_NULLPTR));
         lineEdit_adduser_username->setPlaceholderText(QApplication::translate("MainWindow", "Username", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("MainWindow", "Refresh", Q_NULLPTR));
@@ -356,6 +482,21 @@ public:
         lineEdit_adduser_username_2->setPlaceholderText(QApplication::translate("MainWindow", "Username", Q_NULLPTR));
         pushButton_searchUser->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_5), QApplication::translate("MainWindow", "Users", Q_NULLPTR));
+        label_15->setText(QApplication::translate("MainWindow", "Surname1:", Q_NULLPTR));
+        pushButton_addUser_2->setText(QApplication::translate("MainWindow", "Add", Q_NULLPTR));
+        label_16->setText(QApplication::translate("MainWindow", "Name:", Q_NULLPTR));
+        lineEdit_adduser_password_2->setPlaceholderText(QApplication::translate("MainWindow", "Surname 1", Q_NULLPTR));
+        label_17->setText(QString());
+        label_18->setText(QApplication::translate("MainWindow", "Add User", Q_NULLPTR));
+        lineEdit_adduser_username_3->setPlaceholderText(QApplication::translate("MainWindow", "Username", Q_NULLPTR));
+        lineEdit_adduser_password_3->setPlaceholderText(QApplication::translate("MainWindow", "Surname 2", Q_NULLPTR));
+        label_19->setText(QApplication::translate("MainWindow", "Surname2:", Q_NULLPTR));
+        label_20->setText(QApplication::translate("MainWindow", "Birth Date:", Q_NULLPTR));
+        lineEdit_adduser_password_4->setPlaceholderText(QApplication::translate("MainWindow", "Birth Date", Q_NULLPTR));
+        label_21->setText(QApplication::translate("MainWindow", "Identity Type:", Q_NULLPTR));
+        lineEdit_adduser_password_5->setPlaceholderText(QApplication::translate("MainWindow", "Identity Type", Q_NULLPTR));
+        label_22->setText(QApplication::translate("MainWindow", "Identity Num", Q_NULLPTR));
+        lineEdit_adduser_password_6->setPlaceholderText(QApplication::translate("MainWindow", "Identity Num", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_6), QApplication::translate("MainWindow", "Add Employee", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindow", "Fi&le", Q_NULLPTR));

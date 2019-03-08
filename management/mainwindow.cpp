@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     QTimer::singleShot(0, this, SLOT(go()));
+    startConfig(true);
     configQTableWidgets();
 }
 
@@ -59,6 +60,15 @@ void MainWindow::textMessageArrived(QString message)
                 log.at("Action").get_to(action);
             }
         }
+        else if (j.find("users") != j.end())
+        {
+            if(j.at("users").is_array())
+            {
+                json log;
+                log = j.at("users").at(0);
+                log.at("Action").get_to(action);
+            }
+        }
 
 
 
@@ -68,11 +78,16 @@ void MainWindow::textMessageArrived(QString message)
 
     if(action == "employeeDetails")
     {
+        startConfig(false);
         updateAllEmployees(jso);
     }
     if(action == "logsDetails")
     {
         updateAllLogs(jso);
+    }
+    if(action == "usersDetails")
+    {
+        updateAllUsers(jso);
     }
 }
 
@@ -81,13 +96,30 @@ void MainWindow::on_pushButton_clicked()
     m_webSocket->sendTextMessage(loginJson(ui->lineEdit->text(), ui->lineEdit_2->text()));
 }
 
+
+void MainWindow::startConfig(bool startConfig)
+{
+    if(startConfig)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->tabWidget_users->setCurrentIndex(0);
+        ui->tabWidget->tabBar()->hide();
+    this->setGeometry(this->x(),this->y(),600,400);
+    } else {
+        ui->tabWidget->setCurrentIndex(1);
+        this->setGeometry(this->x(),this->y(),800,600);
+    }
+}
+
 void MainWindow::configQTableWidgets()
 {
     int columnCountEmployees{10};
     int columnCountLogs{5};
+    int columnCountUsers{4};
 
     ui->tableWidget->setColumnCount(columnCountEmployees);
     ui->tableWidget_logs->setColumnCount(columnCountLogs);
+    ui->tableWidget_users->setColumnCount(columnCountUsers);
 
     ui->tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
     ui->tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("name"));
@@ -105,6 +137,11 @@ void MainWindow::configQTableWidgets()
     ui->tableWidget_logs->setHorizontalHeaderItem(2, new QTableWidgetItem("Date"));
     ui->tableWidget_logs->setHorizontalHeaderItem(3, new QTableWidgetItem("Hour"));
     ui->tableWidget_logs->setHorizontalHeaderItem(4, new QTableWidgetItem("Action ID"));
+
+    ui->tableWidget_users->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
+    ui->tableWidget_users->setHorizontalHeaderItem(1, new QTableWidgetItem("Username"));
+    ui->tableWidget_users->setHorizontalHeaderItem(2, new QTableWidgetItem("Password"));
+    ui->tableWidget_users->setHorizontalHeaderItem(3, new QTableWidgetItem("Privilege"));
 
 }
 
@@ -178,4 +215,28 @@ void MainWindow::updateAllLogs(json jso)
         QTableWidgetItem *actionidItem = new QTableWidgetItem(QString::fromStdString(logTxt["actionid"]));
         ui->tableWidget_logs->setItem(i,4,actionidItem);
     }
+}
+
+void MainWindow::updateAllUsers(json jso)
+{
+    json usersTxt = jso["users"];
+    ui->tableWidget_users->setRowCount(usersTxt.size());
+
+
+    for(int i{0}; i < usersTxt.size(); i++)
+    {
+        json userTxt = usersTxt.at(i);
+        QTableWidgetItem *idItem = new QTableWidgetItem(QString::fromStdString(userTxt["id"]));
+        ui->tableWidget_users->setItem(i,0,idItem);
+        QTableWidgetItem *usernameItem = new QTableWidgetItem(QString::fromStdString(userTxt["username"]));
+        ui->tableWidget_users->setItem(i,1,usernameItem);
+        QTableWidgetItem *passwordItem = new QTableWidgetItem(QString::fromStdString(userTxt["password"]));
+        ui->tableWidget_users->setItem(i,2,passwordItem);
+        QTableWidgetItem *privilegeItem = new QTableWidgetItem(QString::fromStdString(userTxt["privilege"]));
+        ui->tableWidget_users->setItem(i,3,privilegeItem);
+    }
+}
+
+void MainWindow::on_tabWidget_users_currentChanged(int index)
+{
 }

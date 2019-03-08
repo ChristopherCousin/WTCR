@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>799</width>
-    <height>599</height>
+    <width>624</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -116,7 +116,7 @@ QLineEdit:focus { background-color:rgb(192, 192, 255);}</string>
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget_users">
           <property name="currentIndex">
-           <number>3</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
@@ -372,7 +372,7 @@ color: white;
            <attribute name="title">
             <string>Users</string>
            </attribute>
-           <widget class="QTableWidget" name="tableWidget_2">
+           <widget class="QTableWidget" name="tableWidget_users">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -648,7 +648,7 @@ color: white;
             </property>
            </widget>
            <zorder>label</zorder>
-           <zorder>tableWidget_2</zorder>
+           <zorder>tableWidget_users</zorder>
            <zorder>lineEdit_adduser_username</zorder>
            <zorder>pushButton_2</zorder>
            <zorder>label_2</zorder>
@@ -941,7 +941,7 @@ color: white;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>799</width>
+     <width>624</width>
      <height>30</height>
     </rect>
    </property>

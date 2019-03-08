@@ -30,6 +30,7 @@ public:
     QString employeeDetailsJson(QString serial);
     void allEmployeeDetailsJson();
     void allLogsJson();
+    void allUserJson();
 
 
 signals:

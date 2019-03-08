@@ -22,11 +22,15 @@ public:
     void updateAllEmployees(json jso);
     void updateAllLogs(json jso);
     void configQTableWidgets();
+    void updateAllUsers(json jso);
+    void startConfig(bool startConfig);
 
 private slots:
     void on_pushButton_clicked();
     void go();
     void textMessageArrived(QString message);
+
+    void on_tabWidget_users_currentChanged(int index);
 
 private:
     Ui::MainWindow *ui;

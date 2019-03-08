@@ -6,6 +6,7 @@
 #include <QVector>
 #include "employee.h"
 #include "log.h"
+#include "user.h"
 
 using json = nlohmann::json;
 
@@ -121,6 +122,7 @@ void TestServer::processTextMessage(QString message)
         qDebug() << dbManager.login(QString::fromStdString(user),QString::fromStdString(password));
         allEmployeeDetailsJson();
         allLogsJson();
+        allUserJson();
 
     }
 
@@ -222,6 +224,28 @@ void TestServer::allLogsJson()
     } // end for
 
     document["logs"] = logsJSON;
+    std::string message = document.dump();
+    pClient->sendTextMessage(QString::fromStdString(message));
+}
+
+void TestServer::allUserJson()
+{
+    QVector<User> usersDetails = dbManager.allUsers();
+    json document;
+    json usersJSON;
+    for (int i{ 0 }; i < usersDetails.count(); i++)
+    {
+        User user{ usersDetails.at(i) };
+        json userJSON;
+        userJSON["Action"] = "usersDetails";
+        userJSON["id"] = user.id.toStdString();
+        userJSON["username"] = user.username.toStdString();
+        userJSON["password"] = user.password.toStdString();
+        userJSON["privilege"] = user.privilege.toStdString();
+        usersJSON.push_back(userJSON);
+    } // end for
+
+    document["users"] = usersJSON;
     std::string message = document.dump();
     pClient->sendTextMessage(QString::fromStdString(message));
 }

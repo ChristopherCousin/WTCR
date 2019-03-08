@@ -6,6 +6,7 @@
 #include "dbmanager.h"
 #include "employee.h"
 #include "log.h"
+#include "user.h"
 
 Dbmanager::Dbmanager()
 {
@@ -116,6 +117,33 @@ QVector<Log> Dbmanager::allLogs()
         }
     }
     return log;
+}
+
+QVector<User> Dbmanager::allUsers()
+{
+    QVector<User> user{};
+    QSqlQuery query;
+    query.prepare("SELECT * from users;");
+    query.exec();
+
+    while (query.next())
+    {
+        if (query.isValid())
+        {
+
+            User e;
+            e.id = query.value(0).toString();
+            e.username = query.value(1).toString();
+            e.password = query.value(2).toString();
+            e.privilege = query.value(3).toString();
+
+            user.push_back(e);
+        }
+        else
+        {
+        }
+    }
+    return user;
 }
 
 std::tuple<QString, QString> Dbmanager::getEmployeeStatus(std::string serial)
