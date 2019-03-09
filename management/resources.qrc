@@ -1,2 +1,12 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>Resources/login.jpg</file>
+        <file>Resources/ico_Search.png</file>
+        <file>Resources/User.png</file>
+        <file>Resources/employee.png</file>
+        <file>Resources/addUser.png</file>
+        <file>Resources/Logs.png</file>
+        <file>Resources/addEmployee.png</file>
+        <file>Resources/refresh.png</file>
+    </qresource>
+</RCC>

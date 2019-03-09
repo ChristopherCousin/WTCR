@@ -25,7 +25,8 @@ public:
     void updateAllUsers(json jso);
     void startConfig(bool startConfig);
     QString searchEmployeeJson(QString searchBy, QString toSearch);
-    void setEmployeeFounded(json jso);
+    void setEmployeesFounded(json jso);
+    void moveWindowToTheCenter();
     QString searchAllEmployesJson();
 
 private slots:
@@ -38,6 +39,8 @@ private slots:
     void on_pushButton_searchEmployee_clicked();
 
     void on_pushButton_searchAllEmployees_clicked();
+
+    void on_comboBox_searchByEmployee_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

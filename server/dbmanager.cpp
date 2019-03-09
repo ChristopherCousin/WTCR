@@ -26,58 +26,78 @@ Dbmanager::Dbmanager()
 }
 
 
-Employee Dbmanager::employeeDetails(std::string searchBy, std::string toSearch)
+QVector<Employee> Dbmanager::employeeDetails(std::string searchBy, std::string toSearch)
 {
-    Employee employee;
+    QVector<Employee> employee;
     QSqlQuery query;
+
     if(searchBy == "Serial Code")
     {
-        query.prepare("select * from employee t "
-                      "INNER JOIN serialstorage ON serialstorage.ID = t.serialid"
+        query.prepare("select t.id,name,surname1,surname2,birthdate,identitytype,"
+                      "identitynum,serialtypeid,serialid,isworking from employee t "
+                      "INNER JOIN serialstorage ON serialstorage.ID = t.serialid "
                       "WHERE serialstorage.serial = ?;");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
-        query.next();
     }
     else if(searchBy == "name")
     {
         query.prepare("select * from employee WHERE name = ?");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
-        query.next();
     }
     else if(searchBy == "surname1")
     {
         query.prepare("select * from employee WHERE surname1 = ?");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
-        query.next();
     }
-    else if(searchBy == "identitynum")
+    else if(searchBy == "Identity Number (DNI/NIE)")
     {
         query.prepare("select * from employee WHERE identitynum = ?");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
-        query.next();
     }
-
-    if(query.isValid())
+    else if(searchBy == "surname2")
     {
-        Employee e;
-        e.id = query.value(0).toString();
-        e.name = query.value(1).toString();
-        e.surname1 = query.value(2).toString();
-        e.surname2 = query.value(3).toString();
-        e.birthdate = query.value(4).toString();
-        e.identitytype = query.value(5).toString();
-        e.identitynum = query.value(6).toString();
-        e.serialtypeid = query.value(7).toString();
-        e.serialid = query.value(8).toString();
-        e.isworking = query.value(9).toString();
-        employee = e;
-    } else {
-
+        query.prepare("select * from employee WHERE surname2 = ?");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
     }
+    else if(searchBy == "Identity Type")
+    {
+        query.prepare("select * from employee WHERE identitytype = ?");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "is Working?")
+    {
+        query.prepare("select * from employee WHERE isworking = true");
+        query.exec();
+    }
+    while (query.next())
+    {
+        if (query.isValid())
+        {
+            Employee e;
+            e.id = query.value(0).toString();
+            e.name = query.value(1).toString();
+            e.surname1 = query.value(2).toString();
+            e.surname2 = query.value(3).toString();
+            e.birthdate = query.value(4).toString();
+            e.identitytype = query.value(5).toString();
+            e.identitynum = query.value(6).toString();
+            e.serialtypeid = query.value(7).toString();
+            e.serialid = query.value(8).toString();
+            e.isworking = query.value(9).toString();
+
+            employee.push_back(e);
+        }
+        else
+        {
+        }
+    }
+
     return employee;
 
 }

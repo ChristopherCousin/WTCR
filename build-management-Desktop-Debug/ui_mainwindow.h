@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -51,6 +52,7 @@ public:
     QComboBox *comboBox_searchByEmployee;
     QPushButton *pushButton_searchEmployee;
     QPushButton *pushButton_searchAllEmployees;
+    QFrame *line_2;
     QWidget *tab_4;
     QTableWidget *tableWidget_logs;
     QLabel *label_12;
@@ -59,6 +61,8 @@ public:
     QLineEdit *lineEdit_searchLogs;
     QComboBox *comboBox_searchByLog;
     QLabel *label_14;
+    QFrame *line;
+    QPushButton *pushButton_searchLogs_2;
     QWidget *tab_5;
     QTableWidget *tableWidget_users;
     QLineEdit *lineEdit_adduser_username;
@@ -76,6 +80,7 @@ public:
     QLabel *label_8;
     QLineEdit *lineEdit_adduser_username_2;
     QPushButton *pushButton_searchUser;
+    QPushButton *pushButton_searchUser_2;
     QWidget *tab_6;
     QLabel *label_15;
     QPushButton *pushButton_addUser_2;
@@ -100,7 +105,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(803, 592);
+        MainWindow->resize(803, 623);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -153,6 +158,7 @@ public:
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         tabWidget_users = new QTabWidget(tab_2);
         tabWidget_users->setObjectName(QStringLiteral("tabWidget_users"));
+        tabWidget_users->setIconSize(QSize(32, 32));
         tab_3 = new QWidget();
         tab_3->setObjectName(QStringLiteral("tab_3"));
         tableWidget = new QTableWidget(tab_3);
@@ -160,16 +166,16 @@ public:
         tableWidget->setGeometry(QRect(2, 6, 751, 311));
         lineEdit_searchEmployee = new QLineEdit(tab_3);
         lineEdit_searchEmployee->setObjectName(QStringLiteral("lineEdit_searchEmployee"));
-        lineEdit_searchEmployee->setGeometry(QRect(250, 344, 451, 32));
+        lineEdit_searchEmployee->setGeometry(QRect(300, 344, 351, 32));
         label_9 = new QLabel(tab_3);
         label_9->setObjectName(QStringLiteral("label_9"));
-        label_9->setGeometry(QRect(20, 350, 81, 18));
+        label_9->setGeometry(QRect(20, 350, 81, 21));
         QFont font1;
         font1.setPointSize(12);
         label_9->setFont(font1);
         label_10 = new QLabel(tab_3);
         label_10->setObjectName(QStringLiteral("label_10"));
-        label_10->setGeometry(QRect(0, 330, 711, 101));
+        label_10->setGeometry(QRect(0, 330, 751, 131));
         label_10->setStyleSheet(QLatin1String("QLabel {\n"
 "border: 1px solid #CBC8C8;\n"
 "border-radius: 15px;\n"
@@ -183,14 +189,27 @@ public:
 "}"));
         comboBox_searchByEmployee = new QComboBox(tab_3);
         comboBox_searchByEmployee->setObjectName(QStringLiteral("comboBox_searchByEmployee"));
-        comboBox_searchByEmployee->setGeometry(QRect(110, 344, 121, 32));
+        comboBox_searchByEmployee->setGeometry(QRect(110, 344, 171, 32));
         pushButton_searchEmployee = new QPushButton(tab_3);
         pushButton_searchEmployee->setObjectName(QStringLiteral("pushButton_searchEmployee"));
-        pushButton_searchEmployee->setGeometry(QRect(540, 387, 161, 34));
+        pushButton_searchEmployee->setGeometry(QRect(660, 344, 81, 33));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/new/prefix1/Resources/ico_Search.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_searchEmployee->setIcon(icon);
+        pushButton_searchEmployee->setIconSize(QSize(24, 24));
         pushButton_searchAllEmployees = new QPushButton(tab_3);
         pushButton_searchAllEmployees->setObjectName(QStringLiteral("pushButton_searchAllEmployees"));
-        pushButton_searchAllEmployees->setGeometry(QRect(250, 387, 161, 34));
-        tabWidget_users->addTab(tab_3, QString());
+        pushButton_searchAllEmployees->setGeometry(QRect(570, 395, 171, 51));
+        pushButton_searchAllEmployees->setIcon(icon);
+        pushButton_searchAllEmployees->setIconSize(QSize(24, 24));
+        line_2 = new QFrame(tab_3);
+        line_2->setObjectName(QStringLiteral("line_2"));
+        line_2->setGeometry(QRect(0, 374, 751, 20));
+        line_2->setFrameShape(QFrame::HLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/new/prefix1/Resources/employee.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget_users->addTab(tab_3, icon1, QString());
         label_10->raise();
         tableWidget->raise();
         lineEdit_searchEmployee->raise();
@@ -199,6 +218,7 @@ public:
         comboBox_searchByEmployee->raise();
         pushButton_searchEmployee->raise();
         pushButton_searchAllEmployees->raise();
+        line_2->raise();
         tab_4 = new QWidget();
         tab_4->setObjectName(QStringLiteral("tab_4"));
         tableWidget_logs = new QTableWidget(tab_4);
@@ -206,7 +226,7 @@ public:
         tableWidget_logs->setGeometry(QRect(4, 6, 751, 301));
         label_12 = new QLabel(tab_4);
         label_12->setObjectName(QStringLiteral("label_12"));
-        label_12->setGeometry(QRect(20, 320, 711, 101));
+        label_12->setGeometry(QRect(20, 320, 731, 131));
         label_12->setStyleSheet(QLatin1String("QLabel {\n"
 "border: 1px solid #CBC8C8;\n"
 "border-radius: 15px;\n"
@@ -220,18 +240,32 @@ public:
 "}"));
         pushButton_searchLogs = new QPushButton(tab_4);
         pushButton_searchLogs->setObjectName(QStringLiteral("pushButton_searchLogs"));
-        pushButton_searchLogs->setGeometry(QRect(387, 380, 161, 34));
+        pushButton_searchLogs->setGeometry(QRect(640, 332, 91, 34));
+        pushButton_searchLogs->setIcon(icon);
+        pushButton_searchLogs->setIconSize(QSize(24, 24));
         lineEdit_searchLogs = new QLineEdit(tab_4);
         lineEdit_searchLogs->setObjectName(QStringLiteral("lineEdit_searchLogs"));
-        lineEdit_searchLogs->setGeometry(QRect(270, 334, 451, 32));
+        lineEdit_searchLogs->setGeometry(QRect(270, 334, 361, 32));
         comboBox_searchByLog = new QComboBox(tab_4);
         comboBox_searchByLog->setObjectName(QStringLiteral("comboBox_searchByLog"));
         comboBox_searchByLog->setGeometry(QRect(130, 334, 121, 32));
         label_14 = new QLabel(tab_4);
         label_14->setObjectName(QStringLiteral("label_14"));
-        label_14->setGeometry(QRect(40, 340, 81, 18));
+        label_14->setGeometry(QRect(40, 340, 81, 21));
         label_14->setFont(font1);
-        tabWidget_users->addTab(tab_4, QString());
+        line = new QFrame(tab_4);
+        line->setObjectName(QStringLiteral("line"));
+        line->setGeometry(QRect(20, 370, 731, 16));
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
+        pushButton_searchLogs_2 = new QPushButton(tab_4);
+        pushButton_searchLogs_2->setObjectName(QStringLiteral("pushButton_searchLogs_2"));
+        pushButton_searchLogs_2->setGeometry(QRect(600, 392, 141, 41));
+        pushButton_searchLogs_2->setIcon(icon);
+        pushButton_searchLogs_2->setIconSize(QSize(24, 24));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/new/prefix1/Resources/Logs.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget_users->addTab(tab_4, icon2, QString());
         tab_5 = new QWidget();
         tab_5->setObjectName(QStringLiteral("tab_5"));
         tableWidget_users = new QTableWidget(tab_5);
@@ -262,12 +296,16 @@ public:
         lineEdit_adduser_password->setGeometry(QRect(510, 130, 211, 32));
         pushButton_addUser = new QPushButton(tab_5);
         pushButton_addUser->setObjectName(QStringLiteral("pushButton_addUser"));
-        pushButton_addUser->setGeometry(QRect(560, 210, 101, 34));
+        pushButton_addUser->setGeometry(QRect(580, 210, 91, 41));
         QFont font2;
         font2.setPointSize(12);
         font2.setBold(true);
         font2.setWeight(75);
         pushButton_addUser->setFont(font2);
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/new/prefix1/Resources/addUser.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_addUser->setIcon(icon3);
+        pushButton_addUser->setIconSize(QSize(24, 24));
         label_3 = new QLabel(tab_5);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setGeometry(QRect(430, 96, 81, 20));
@@ -308,9 +346,19 @@ public:
         lineEdit_adduser_username_2->setGeometry(QRect(510, 310, 211, 32));
         pushButton_searchUser = new QPushButton(tab_5);
         pushButton_searchUser->setObjectName(QStringLiteral("pushButton_searchUser"));
-        pushButton_searchUser->setGeometry(QRect(560, 360, 101, 34));
+        pushButton_searchUser->setGeometry(QRect(620, 350, 101, 34));
         pushButton_searchUser->setFont(font2);
-        tabWidget_users->addTab(tab_5, QString());
+        pushButton_searchUser->setIcon(icon);
+        pushButton_searchUser->setIconSize(QSize(24, 24));
+        pushButton_searchUser_2 = new QPushButton(tab_5);
+        pushButton_searchUser_2->setObjectName(QStringLiteral("pushButton_searchUser_2"));
+        pushButton_searchUser_2->setGeometry(QRect(430, 350, 111, 31));
+        pushButton_searchUser_2->setFont(font2);
+        pushButton_searchUser_2->setIcon(icon);
+        pushButton_searchUser_2->setIconSize(QSize(24, 24));
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/new/prefix1/Resources/User.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget_users->addTab(tab_5, icon4, QString());
         label->raise();
         tableWidget_users->raise();
         lineEdit_adduser_username->raise();
@@ -327,6 +375,7 @@ public:
         label_8->raise();
         lineEdit_adduser_username_2->raise();
         pushButton_searchUser->raise();
+        pushButton_searchUser_2->raise();
         tab_6 = new QWidget();
         tab_6->setObjectName(QStringLiteral("tab_6"));
         label_15 = new QLabel(tab_6);
@@ -389,7 +438,9 @@ public:
         lineEdit_adduser_password_6 = new QLineEdit(tab_6);
         lineEdit_adduser_password_6->setObjectName(QStringLiteral("lineEdit_adduser_password_6"));
         lineEdit_adduser_password_6->setGeometry(QRect(130, 277, 391, 32));
-        tabWidget_users->addTab(tab_6, QString());
+        QIcon icon5;
+        icon5.addFile(QStringLiteral(":/new/prefix1/Resources/addEmployee.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget_users->addTab(tab_6, icon5, QString());
         label_17->raise();
         label_15->raise();
         pushButton_addUser_2->raise();
@@ -428,7 +479,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(1);
-        tabWidget_users->setCurrentIndex(0);
+        tabWidget_users->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -449,9 +500,12 @@ public:
         comboBox_searchByEmployee->clear();
         comboBox_searchByEmployee->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "Serial Code", Q_NULLPTR)
-         << QApplication::translate("MainWindow", "DNI/NIE", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Identity Number (DNI/NIE)", Q_NULLPTR)
          << QApplication::translate("MainWindow", "name", Q_NULLPTR)
          << QApplication::translate("MainWindow", "surname1", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "surname2", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Identity Type", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "is Working?", Q_NULLPTR)
         );
         pushButton_searchEmployee->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
         pushButton_searchAllEmployees->setText(QApplication::translate("MainWindow", "Search all employees", Q_NULLPTR));
@@ -466,6 +520,7 @@ public:
          << QApplication::translate("MainWindow", "Date", Q_NULLPTR)
         );
         label_14->setText(QApplication::translate("MainWindow", "Search by:", Q_NULLPTR));
+        pushButton_searchLogs_2->setText(QApplication::translate("MainWindow", "Search all logs", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_4), QApplication::translate("MainWindow", "Logs", Q_NULLPTR));
         lineEdit_adduser_username->setPlaceholderText(QApplication::translate("MainWindow", "Username", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("MainWindow", "Refresh", Q_NULLPTR));
@@ -487,6 +542,7 @@ public:
         label_8->setText(QApplication::translate("MainWindow", "Username:", Q_NULLPTR));
         lineEdit_adduser_username_2->setPlaceholderText(QApplication::translate("MainWindow", "Username", Q_NULLPTR));
         pushButton_searchUser->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
+        pushButton_searchUser_2->setText(QApplication::translate("MainWindow", "Search all", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_5), QApplication::translate("MainWindow", "Users", Q_NULLPTR));
         label_15->setText(QApplication::translate("MainWindow", "Surname1:", Q_NULLPTR));
         pushButton_addUser_2->setText(QApplication::translate("MainWindow", "Add", Q_NULLPTR));

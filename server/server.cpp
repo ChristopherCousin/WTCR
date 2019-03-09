@@ -130,6 +130,8 @@ void TestServer::processTextMessage(QString message)
         QString login = dbManager.login(QString::fromStdString(user),QString::fromStdString(password));
         if(login == "Valid")
         {
+            QString toSend = loginSuccesJson();
+            pClient->sendTextMessage(toSend);
             allEmployeeDetailsJson();
             allLogsJson();
             allUserJson();
@@ -151,7 +153,7 @@ void TestServer::processTextMessage(QString message)
         if (json.find("toSearch") != json.end())
         {
             json.at("toSearch").get_to(toSearch);
-            employeeFoundedJson(searchBy, toSearch);
+            employeesFoundedJson(searchBy, toSearch);
         }
     }
     else if(action == "searchAllEmployees")
@@ -200,6 +202,22 @@ QString TestServer::loginFailedJson()
     {
         json j2 = {
       {"Action", "loginFailed"}
+    };
+    std::string json = j2.dump();
+    toReturn = QString::fromStdString(json);
+    } catch(int e){
+
+    }
+    return toReturn;
+}
+
+QString TestServer::loginSuccesJson()
+{
+    QString toReturn{""};
+    try
+    {
+        json j2 = {
+      {"Action", "loginSucces"}
     };
     std::string json = j2.dump();
     toReturn = QString::fromStdString(json);
@@ -282,23 +300,30 @@ void TestServer::allUserJson()
     pClient->sendTextMessage(QString::fromStdString(message));
 }
 
-void TestServer::employeeFoundedJson(std::string searchBy, std::string toSearch)
+void TestServer::employeesFoundedJson(std::string searchBy, std::string toSearch)
 {
-    Employee employee = dbManager.employeeDetails(searchBy, toSearch);
+    QVector<Employee> employeesDetails = dbManager.employeeDetails(searchBy, toSearch);
     json document;
+    json employeesJSON;
+    for (int i{ 0 }; i < employeesDetails.count(); i++)
+    {
+        Employee employee{ employeesDetails.at(i) };
+        json employeeJSON;
+        employeeJSON["Action"] = "foundedEmployeesDetails";
+        employeeJSON["id"] = employee.id.toStdString();
+        employeeJSON["name"] = employee.name.toStdString();
+        employeeJSON["surname1"] = employee.surname1.toStdString();
+        employeeJSON["surname2"] = employee.surname2.toStdString();
+        employeeJSON["birthdate"] = employee.birthdate.toStdString();
+        employeeJSON["identitynum"] = employee.identitynum.toStdString();
+        employeeJSON["identitytype"] = employee.identitytype.toStdString();
+        employeeJSON["serialtypeid"] = employee.serialtypeid.toStdString();
+        employeeJSON["serialid"] = employee.serialid.toStdString();
+        employeeJSON["isworking"] = employee.isworking.toStdString();
+        employeesJSON.push_back(employeeJSON);
+    } // end for
 
-    document["Action"] = "employeeDetails";
-    document["id"] = employee.id.toStdString();
-    document["name"] = employee.name.toStdString();
-    document["surname1"] = employee.surname1.toStdString();
-    document["surname2"] = employee.surname2.toStdString();
-    document["birthdate"] = employee.birthdate.toStdString();
-    document["identitynum"] = employee.identitynum.toStdString();
-    document["identitytype"] = employee.identitytype.toStdString();
-    document["serialtypeid"] = employee.serialtypeid.toStdString();
-    document["serialid"] = employee.serialid.toStdString();
-    document["isworking"] = employee.isworking.toStdString();
-
+    document["employees"] = employeesJSON;
     std::string message = document.dump();
     pClient->sendTextMessage(QString::fromStdString(message));
 }

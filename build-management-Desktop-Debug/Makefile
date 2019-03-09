@@ -498,7 +498,15 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../management/resources.qrc \
-		/usr/lib64/qt5/bin/rcc
+		/usr/lib64/qt5/bin/rcc \
+		../management/Resources/ico_Search.png \
+		../management/Resources/addEmployee.png \
+		../management/Resources/Logs.png \
+		../management/Resources/User.png \
+		../management/Resources/addUser.png \
+		../management/Resources/employee.png \
+		../management/Resources/login.jpg \
+		../management/Resources/refresh.png
 	/usr/lib64/qt5/bin/rcc -name resources ../management/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -510,7 +518,9 @@ moc_predefs.h: /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_websocket.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_websocket.cpp
-moc_mainwindow.cpp: ../management/mainwindow.h \
+moc_mainwindow.cpp: ../management/websocket.h \
+		../management/json.h \
+		../management/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
 	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/wtcr_c/WTCR/management -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../management/mainwindow.h -o moc_mainwindow.cpp
@@ -539,12 +549,15 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-main.o: ../management/main.cpp ../management/mainwindow.h
+main.o: ../management/main.cpp ../management/mainwindow.h \
+		../management/websocket.h \
+		../management/json.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../management/main.cpp
 
 mainwindow.o: ../management/mainwindow.cpp ../management/mainwindow.h \
-		ui_mainwindow.h \
-		../management/json.h
+		../management/websocket.h \
+		../management/json.h \
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../management/mainwindow.cpp
 
 websocket.o: ../management/websocket.cpp ../management/websocket.h

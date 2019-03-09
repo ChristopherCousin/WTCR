@@ -10,6 +10,10 @@
 #include <QVector>
 #include <QTableWidgetItem>
 #include <QMessageBox>
+#include <QStyle>
+#include <QDesktopWidget>
+#include <QWidget>
+#include <QRect>
 
 using json = nlohmann::json;
 
@@ -51,6 +55,12 @@ void MainWindow::textMessageArrived(QString message)
                 employee = j.at("employees").at(0);
                 employee.at("Action").get_to(action);
             }
+            if(j.at("employees").is_null())
+            {
+                QMessageBox msgBox;
+                msgBox.setText("Oh! Unfortunately, no results were found");
+                msgBox.exec();
+            }
         }
         else if (j.find("logs") != j.end())
         {
@@ -77,13 +87,13 @@ void MainWindow::textMessageArrived(QString message)
 
 
 
+
     } catch(int e) {
         qDebug() << "JSON NO VALID";
     }
 
     if(action == "employeesDetails")
     {
-        startConfig(false);
         updateAllEmployees(jso);
     }
     if(action == "logsDetails")
@@ -94,15 +104,19 @@ void MainWindow::textMessageArrived(QString message)
     {
         updateAllUsers(jso);
     }
-    if(action == "employeeDetails")
+    if(action == "foundedEmployeesDetails")
     {
-        setEmployeeFounded(jso);
+        setEmployeesFounded(jso);
     }
     if(action == "loginFailed")
     {
         QMessageBox msgBox;
         msgBox.setText("The username or password are incorrect!");
         msgBox.exec();
+    }
+    if(action == "loginSucces")
+    {
+        startConfig(false);
     }
 }
 
@@ -119,11 +133,22 @@ void MainWindow::startConfig(bool startConfig)
         ui->tabWidget->setCurrentIndex(0);
         ui->tabWidget_users->setCurrentIndex(0);
         ui->tabWidget->tabBar()->hide();
-    this->setGeometry(this->x(),this->y(),600,400);
+        moveWindowToTheCenter();
+        QSize size(600,400);
+        this->setMinimumSize(size);
+        this->setMaximumSize(size);
     } else {
         ui->tabWidget->setCurrentIndex(1);
-        this->setGeometry(this->x(),this->y(),800,600);
+        QSize size(800,630);
+        this->setMinimumSize(size);
+        this->setMaximumSize(size);
     }
+}
+
+void MainWindow::moveWindowToTheCenter()
+{
+    const QRect screen = QApplication::desktop()->screenGeometry();
+    this->move( screen.center() - this->rect().center() );
 }
 
 void MainWindow::configQTableWidgets()
@@ -131,6 +156,10 @@ void MainWindow::configQTableWidgets()
     int columnCountEmployees{10};
     int columnCountLogs{5};
     int columnCountUsers{4};
+
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_logs->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_users->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->tableWidget->setColumnCount(columnCountEmployees);
     ui->tableWidget_logs->setColumnCount(columnCountLogs);
@@ -300,34 +329,49 @@ void MainWindow::on_pushButton_searchEmployee_clicked()
     m_webSocket->sendTextMessage(toSend);
 }
 
-void MainWindow::setEmployeeFounded(json jso)
+void MainWindow::setEmployeesFounded(json jso)
 {
-    ui->tableWidget->setRowCount(1);
-    ui->tableWidget->clear();
-        QTableWidgetItem *idItem = new QTableWidgetItem(QString::fromStdString(jso["id"]));
-        ui->tableWidget->setItem(0,0,idItem);
-        QTableWidgetItem *nameItem = new QTableWidgetItem(QString::fromStdString(jso["name"]));
-        ui->tableWidget->setItem(0,1,nameItem);
-        QTableWidgetItem *surname1Item = new QTableWidgetItem(QString::fromStdString(jso["surname1"]));
-        ui->tableWidget->setItem(0,2,surname1Item);
-        QTableWidgetItem *surname2Item = new QTableWidgetItem(QString::fromStdString(jso["surname2"]));
-        ui->tableWidget->setItem(0,3,surname2Item);
-        QTableWidgetItem *birthdateItem = new QTableWidgetItem(QString::fromStdString(jso["birthdate"]));
-        ui->tableWidget->setItem(0,4,birthdateItem);
-        QTableWidgetItem *identitytypeItem = new QTableWidgetItem(QString::fromStdString(jso["identitytype"]));
-        ui->tableWidget->setItem(0,5,identitytypeItem);
-        QTableWidgetItem *identitynumItem = new QTableWidgetItem(QString::fromStdString(jso["identitynum"]));
-        ui->tableWidget->setItem(0,6,identitynumItem);
-        QTableWidgetItem *serialtypeidItem = new QTableWidgetItem(QString::fromStdString(jso["serialtypeid"]));
-        ui->tableWidget->setItem(0,7,serialtypeidItem);
-        QTableWidgetItem *serialidItem = new QTableWidgetItem(QString::fromStdString(jso["serialid"]));
-        ui->tableWidget->setItem(0,8,serialidItem);
-        QTableWidgetItem *isworkingItem = new QTableWidgetItem(QString::fromStdString(jso["isworking"]));
-        ui->tableWidget->setItem(0,9,isworkingItem);
+    json employeesTxt = jso["employees"];
+    ui->tableWidget->setRowCount(employeesTxt.size());
+
+    for(int i{0}; i < employeesTxt.size(); i++)
+    {
+        json employeeTxt = employeesTxt.at(i);
+        QTableWidgetItem *idItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["id"]));
+        ui->tableWidget->setItem(i,0,idItem);
+        QTableWidgetItem *nameItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["name"]));
+        ui->tableWidget->setItem(i,1,nameItem);
+        QTableWidgetItem *surname1Item = new QTableWidgetItem(QString::fromStdString(employeeTxt["surname1"]));
+        ui->tableWidget->setItem(i,2,surname1Item);
+        QTableWidgetItem *surname2Item = new QTableWidgetItem(QString::fromStdString(employeeTxt["surname2"]));
+        ui->tableWidget->setItem(i,3,surname2Item);
+        QTableWidgetItem *birthdateItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["birthdate"]));
+        ui->tableWidget->setItem(i,4,birthdateItem);
+        QTableWidgetItem *identitytypeItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["identitytype"]));
+        ui->tableWidget->setItem(i,5,identitytypeItem);
+        QTableWidgetItem *identitynumItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["identitynum"]));
+        ui->tableWidget->setItem(i,6,identitynumItem);
+        QTableWidgetItem *serialtypeidItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["serialtypeid"]));
+        ui->tableWidget->setItem(i,7,serialtypeidItem);
+        QTableWidgetItem *serialidItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["serialid"]));
+        ui->tableWidget->setItem(i,8,serialidItem);
+        QTableWidgetItem *isworkingItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["isworking"]));
+        ui->tableWidget->setItem(i,9,isworkingItem);
+    }
 }
 
 void MainWindow::on_pushButton_searchAllEmployees_clicked()
 {
     QString toSend = searchAllEmployesJson();
     m_webSocket->sendTextMessage(toSend);
+}
+
+void MainWindow::on_comboBox_searchByEmployee_currentIndexChanged(int index)
+{
+    if(index == 6)
+    {
+        ui->lineEdit_searchEmployee->setDisabled(true);
+    } else {
+        ui->lineEdit_searchEmployee->setDisabled(false);
+    }
 }
