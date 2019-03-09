@@ -48,15 +48,16 @@ public:
     QLabel *label_9;
     QLabel *label_10;
     QLabel *label_11;
-    QComboBox *comboBox_2;
+    QComboBox *comboBox_searchByEmployee;
     QPushButton *pushButton_searchEmployee;
+    QPushButton *pushButton_searchAllEmployees;
     QWidget *tab_4;
     QTableWidget *tableWidget_logs;
     QLabel *label_12;
     QLabel *label_13;
     QPushButton *pushButton_searchLogs;
     QLineEdit *lineEdit_searchLogs;
-    QComboBox *comboBox_3;
+    QComboBox *comboBox_searchByLog;
     QLabel *label_14;
     QWidget *tab_5;
     QTableWidget *tableWidget_users;
@@ -99,7 +100,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(624, 592);
+        MainWindow->resize(803, 592);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -180,20 +181,24 @@ public:
 "background: solid black;\n"
 "color: white;\n"
 "}"));
-        comboBox_2 = new QComboBox(tab_3);
-        comboBox_2->setObjectName(QStringLiteral("comboBox_2"));
-        comboBox_2->setGeometry(QRect(110, 344, 121, 32));
+        comboBox_searchByEmployee = new QComboBox(tab_3);
+        comboBox_searchByEmployee->setObjectName(QStringLiteral("comboBox_searchByEmployee"));
+        comboBox_searchByEmployee->setGeometry(QRect(110, 344, 121, 32));
         pushButton_searchEmployee = new QPushButton(tab_3);
         pushButton_searchEmployee->setObjectName(QStringLiteral("pushButton_searchEmployee"));
-        pushButton_searchEmployee->setGeometry(QRect(367, 390, 161, 34));
+        pushButton_searchEmployee->setGeometry(QRect(540, 387, 161, 34));
+        pushButton_searchAllEmployees = new QPushButton(tab_3);
+        pushButton_searchAllEmployees->setObjectName(QStringLiteral("pushButton_searchAllEmployees"));
+        pushButton_searchAllEmployees->setGeometry(QRect(250, 387, 161, 34));
         tabWidget_users->addTab(tab_3, QString());
         label_10->raise();
         tableWidget->raise();
         lineEdit_searchEmployee->raise();
         label_9->raise();
         label_11->raise();
-        comboBox_2->raise();
+        comboBox_searchByEmployee->raise();
         pushButton_searchEmployee->raise();
+        pushButton_searchAllEmployees->raise();
         tab_4 = new QWidget();
         tab_4->setObjectName(QStringLiteral("tab_4"));
         tableWidget_logs = new QTableWidget(tab_4);
@@ -219,9 +224,9 @@ public:
         lineEdit_searchLogs = new QLineEdit(tab_4);
         lineEdit_searchLogs->setObjectName(QStringLiteral("lineEdit_searchLogs"));
         lineEdit_searchLogs->setGeometry(QRect(270, 334, 451, 32));
-        comboBox_3 = new QComboBox(tab_4);
-        comboBox_3->setObjectName(QStringLiteral("comboBox_3"));
-        comboBox_3->setGeometry(QRect(130, 334, 121, 32));
+        comboBox_searchByLog = new QComboBox(tab_4);
+        comboBox_searchByLog->setObjectName(QStringLiteral("comboBox_searchByLog"));
+        comboBox_searchByLog->setGeometry(QRect(130, 334, 121, 32));
         label_14 = new QLabel(tab_4);
         label_14->setObjectName(QStringLiteral("label_14"));
         label_14->setGeometry(QRect(40, 340, 81, 18));
@@ -410,7 +415,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 624, 30));
+        menuBar->setGeometry(QRect(0, 0, 803, 30));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindow->setMenuBar(menuBar);
@@ -441,20 +446,21 @@ public:
         label_9->setText(QApplication::translate("MainWindow", "Search by:", Q_NULLPTR));
         label_10->setText(QString());
         label_11->setText(QApplication::translate("MainWindow", "Add User", Q_NULLPTR));
-        comboBox_2->clear();
-        comboBox_2->insertItems(0, QStringList()
-         << QApplication::translate("MainWindow", "DNI", Q_NULLPTR)
-         << QApplication::translate("MainWindow", "NIE", Q_NULLPTR)
-         << QApplication::translate("MainWindow", "Name", Q_NULLPTR)
-         << QApplication::translate("MainWindow", "Surname1", Q_NULLPTR)
+        comboBox_searchByEmployee->clear();
+        comboBox_searchByEmployee->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "Serial Code", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "DNI/NIE", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "name", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "surname1", Q_NULLPTR)
         );
         pushButton_searchEmployee->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
+        pushButton_searchAllEmployees->setText(QApplication::translate("MainWindow", "Search all employees", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_3), QApplication::translate("MainWindow", "Employees", Q_NULLPTR));
         label_12->setText(QString());
         label_13->setText(QApplication::translate("MainWindow", "Add User", Q_NULLPTR));
         pushButton_searchLogs->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
-        comboBox_3->clear();
-        comboBox_3->insertItems(0, QStringList()
+        comboBox_searchByLog->clear();
+        comboBox_searchByLog->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "ID", Q_NULLPTR)
          << QApplication::translate("MainWindow", "Serial ID", Q_NULLPTR)
          << QApplication::translate("MainWindow", "Date", Q_NULLPTR)

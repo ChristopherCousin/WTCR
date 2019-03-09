@@ -26,17 +26,41 @@ Dbmanager::Dbmanager()
 }
 
 
-Employee Dbmanager::employeeDetails(std::string serial)
+Employee Dbmanager::employeeDetails(std::string searchBy, std::string toSearch)
 {
     Employee employee;
     QSqlQuery query;
-    query.prepare("select * from employee t "
-                  "INNER JOIN serialstorage ON serialstorage.ID = t.serialid"
-                  "WHERE serialstorage.serial = ?;");
+    if(searchBy == "Serial Code")
+    {
+        query.prepare("select * from employee t "
+                      "INNER JOIN serialstorage ON serialstorage.ID = t.serialid"
+                      "WHERE serialstorage.serial = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+        query.next();
+    }
+    else if(searchBy == "name")
+    {
+        query.prepare("select * from employee WHERE name = ?");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+        query.next();
+    }
+    else if(searchBy == "surname1")
+    {
+        query.prepare("select * from employee WHERE surname1 = ?");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+        query.next();
+    }
+    else if(searchBy == "identitynum")
+    {
+        query.prepare("select * from employee WHERE identitynum = ?");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+        query.next();
+    }
 
-    query.bindValue(0, QString::fromStdString(serial));
-    query.exec();
-    query.next();
     if(query.isValid())
     {
         Employee e;

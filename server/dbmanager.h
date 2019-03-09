@@ -15,7 +15,7 @@ class Dbmanager
 {
 public:
     Dbmanager();
-    Employee employeeDetails(std::string serial);
+    Employee employeeDetails(std::string searchBy, std::string toSearch);
     QVector<Employee> allEmployeeDetails();
     QVector<Log> allLogs();
     QVector<User> allUsers();

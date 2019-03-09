@@ -53,7 +53,15 @@ void TestServer::processTextMessage(QString message)
     try {
         auto j = json::parse(message.toStdString());
         json = j;
-        j.at("Action").get_to(action);
+        if (j.find("Action") != j.end())
+        {
+            j.at("Action").get_to(action);
+            qDebug() << "El Action de:" << pClient << " Es: " << QString::fromStdString(action);
+        } else {
+            qDebug() << "No se ha podido encontrar el Action del JSON";
+        }
+
+
         if(action == "checkSerial")
         {
             j.at("Serial").get_to(serial);
@@ -119,11 +127,36 @@ void TestServer::processTextMessage(QString message)
         std::string password = {""};
         json.at("user").get_to(user);
         json.at("password").get_to(password);
-        qDebug() << dbManager.login(QString::fromStdString(user),QString::fromStdString(password));
-        allEmployeeDetailsJson();
-        allLogsJson();
-        allUserJson();
+        QString login = dbManager.login(QString::fromStdString(user),QString::fromStdString(password));
+        if(login == "Valid")
+        {
+            allEmployeeDetailsJson();
+            allLogsJson();
+            allUserJson();
+        } else {
+            QString toSend = loginFailedJson();
+            pClient->sendTextMessage(toSend);
+        }
 
+    }
+    else if(action == "searchEmployee")
+    {
+        std::string searchBy = {""};
+        std::string toSearch = {""};
+
+        if (json.find("searchBy") != json.end())
+        {
+            json.at("searchBy").get_to(searchBy);
+        }
+        if (json.find("toSearch") != json.end())
+        {
+            json.at("toSearch").get_to(toSearch);
+            employeeFoundedJson(searchBy, toSearch);
+        }
+    }
+    else if(action == "searchAllEmployees")
+    {
+        allEmployeeDetailsJson();
     }
 
 
@@ -159,15 +192,14 @@ QString TestServer::createSerialCheckedJson(QString message, QString employeeNam
     }
     return toReturn;
 }
-QString TestServer::employeeDetailsJson(QString serial)
+
+QString TestServer::loginFailedJson()
 {
     QString toReturn{""};
-    auto employeeDetails = dbManager.employeeDetails(serial.toStdString());
     try
     {
         json j2 = {
-      {"Action", "employeeDetails"},
-      {"name", "asd"}
+      {"Action", "loginFailed"}
     };
     std::string json = j2.dump();
     toReturn = QString::fromStdString(json);
@@ -186,7 +218,7 @@ void TestServer::allEmployeeDetailsJson()
     {
         Employee employee{ employeeDetails.at(i) };
         json employeeJSON;
-        employeeJSON["Action"] = "employeeDetails";
+        employeeJSON["Action"] = "employeesDetails";
         employeeJSON["id"] = employee.id.toStdString();
         employeeJSON["name"] = employee.name.toStdString();
         employeeJSON["surname1"] = employee.surname1.toStdString();
@@ -246,6 +278,27 @@ void TestServer::allUserJson()
     } // end for
 
     document["users"] = usersJSON;
+    std::string message = document.dump();
+    pClient->sendTextMessage(QString::fromStdString(message));
+}
+
+void TestServer::employeeFoundedJson(std::string searchBy, std::string toSearch)
+{
+    Employee employee = dbManager.employeeDetails(searchBy, toSearch);
+    json document;
+
+    document["Action"] = "employeeDetails";
+    document["id"] = employee.id.toStdString();
+    document["name"] = employee.name.toStdString();
+    document["surname1"] = employee.surname1.toStdString();
+    document["surname2"] = employee.surname2.toStdString();
+    document["birthdate"] = employee.birthdate.toStdString();
+    document["identitynum"] = employee.identitynum.toStdString();
+    document["identitytype"] = employee.identitytype.toStdString();
+    document["serialtypeid"] = employee.serialtypeid.toStdString();
+    document["serialid"] = employee.serialid.toStdString();
+    document["isworking"] = employee.isworking.toStdString();
+
     std::string message = document.dump();
     pClient->sendTextMessage(QString::fromStdString(message));
 }

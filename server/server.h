@@ -28,9 +28,11 @@ public:
     QWebSocket* pClient;
     QString createSerialCheckedJson(QString message, QString employeeName);
     QString employeeDetailsJson(QString serial);
+    QString loginFailedJson();
     void allEmployeeDetailsJson();
     void allLogsJson();
     void allUserJson();
+    void employeeFoundedJson(std::string searchBy, std::string toSearch);
 
 
 signals:

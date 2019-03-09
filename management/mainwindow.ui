@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
+    <width>803</width>
     <height>592</height>
    </rect>
   </property>
@@ -198,7 +198,7 @@ color: white;
              <string>Add User</string>
             </property>
            </widget>
-           <widget class="QComboBox" name="comboBox_2">
+           <widget class="QComboBox" name="comboBox_searchByEmployee">
             <property name="geometry">
              <rect>
               <x>110</x>
@@ -209,30 +209,30 @@ color: white;
             </property>
             <item>
              <property name="text">
-              <string>DNI</string>
+              <string>Serial Code</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>NIE</string>
+              <string>DNI/NIE</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Name</string>
+              <string>name</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Surname1</string>
+              <string>surname1</string>
              </property>
             </item>
            </widget>
            <widget class="QPushButton" name="pushButton_searchEmployee">
             <property name="geometry">
              <rect>
-              <x>367</x>
-              <y>390</y>
+              <x>540</x>
+              <y>387</y>
               <width>161</width>
               <height>34</height>
              </rect>
@@ -241,13 +241,27 @@ color: white;
              <string>Search</string>
             </property>
            </widget>
+           <widget class="QPushButton" name="pushButton_searchAllEmployees">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>387</y>
+              <width>161</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Search all employees</string>
+            </property>
+           </widget>
            <zorder>label_10</zorder>
            <zorder>tableWidget</zorder>
            <zorder>lineEdit_searchEmployee</zorder>
            <zorder>label_9</zorder>
            <zorder>label_11</zorder>
-           <zorder>comboBox_2</zorder>
+           <zorder>comboBox_searchByEmployee</zorder>
            <zorder>pushButton_searchEmployee</zorder>
+           <zorder>pushButton_searchAllEmployees</zorder>
           </widget>
           <widget class="QWidget" name="tab_4">
            <attribute name="title">
@@ -324,7 +338,7 @@ color: white;
              </rect>
             </property>
            </widget>
-           <widget class="QComboBox" name="comboBox_3">
+           <widget class="QComboBox" name="comboBox_searchByLog">
             <property name="geometry">
              <rect>
               <x>130</x>
@@ -941,7 +955,7 @@ color: white;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>624</width>
+     <width>803</width>
      <height>30</height>
     </rect>
    </property>

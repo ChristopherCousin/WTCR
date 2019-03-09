@@ -24,6 +24,9 @@ public:
     void configQTableWidgets();
     void updateAllUsers(json jso);
     void startConfig(bool startConfig);
+    QString searchEmployeeJson(QString searchBy, QString toSearch);
+    void setEmployeeFounded(json jso);
+    QString searchAllEmployesJson();
 
 private slots:
     void on_pushButton_clicked();
@@ -31,6 +34,10 @@ private slots:
     void textMessageArrived(QString message);
 
     void on_tabWidget_users_currentChanged(int index);
+
+    void on_pushButton_searchEmployee_clicked();
+
+    void on_pushButton_searchAllEmployees_clicked();
 
 private:
     Ui::MainWindow *ui;

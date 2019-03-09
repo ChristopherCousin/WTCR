@@ -9,6 +9,7 @@
 #include <QRegExpValidator>
 #include <QVector>
 #include <QTableWidgetItem>
+#include <QMessageBox>
 
 using json = nlohmann::json;
 
@@ -69,6 +70,10 @@ void MainWindow::textMessageArrived(QString message)
                 log.at("Action").get_to(action);
             }
         }
+        else if (j.find("Action") != j.end())
+        {
+            j.at("Action").get_to(action);
+        }
 
 
 
@@ -76,7 +81,7 @@ void MainWindow::textMessageArrived(QString message)
         qDebug() << "JSON NO VALID";
     }
 
-    if(action == "employeeDetails")
+    if(action == "employeesDetails")
     {
         startConfig(false);
         updateAllEmployees(jso);
@@ -88,6 +93,16 @@ void MainWindow::textMessageArrived(QString message)
     if(action == "usersDetails")
     {
         updateAllUsers(jso);
+    }
+    if(action == "employeeDetails")
+    {
+        setEmployeeFounded(jso);
+    }
+    if(action == "loginFailed")
+    {
+        QMessageBox msgBox;
+        msgBox.setText("The username or password are incorrect!");
+        msgBox.exec();
     }
 }
 
@@ -164,6 +179,43 @@ QString MainWindow::loginJson(QString user, QString password)
     return txtToReturn;
 }
 
+QString MainWindow::searchAllEmployesJson()
+{
+    QString txtToReturn{""};
+
+    try
+    {
+        json j2 = {
+          {"Action", "searchAllEmployees"}
+        };
+        std::string json = j2.dump();
+        txtToReturn =  QString::fromStdString(json);
+    } catch(int e) {
+
+    }
+    return txtToReturn;
+}
+
+QString MainWindow::searchEmployeeJson(QString searchBy, QString toSearch)
+{
+    QString txtToReturn{""};
+
+    try
+    {
+        json j2 = {
+          {"Action", "searchEmployee"},
+          {"searchBy", searchBy.toStdString()},
+          {"toSearch", toSearch.toStdString()}
+        };
+        std::string json = j2.dump();
+        txtToReturn =  QString::fromStdString(json);
+    } catch(int e) {
+
+    }
+    return txtToReturn;
+}
+
+
 void MainWindow::updateAllEmployees(json jso)
 {
     json employeesTxt = jso["employees"];
@@ -239,4 +291,43 @@ void MainWindow::updateAllUsers(json jso)
 
 void MainWindow::on_tabWidget_users_currentChanged(int index)
 {
+
+}
+
+void MainWindow::on_pushButton_searchEmployee_clicked()
+{
+    QString toSend = searchEmployeeJson(ui->comboBox_searchByEmployee->currentText(), ui->lineEdit_searchEmployee->text());
+    m_webSocket->sendTextMessage(toSend);
+}
+
+void MainWindow::setEmployeeFounded(json jso)
+{
+    ui->tableWidget->setRowCount(1);
+    ui->tableWidget->clear();
+        QTableWidgetItem *idItem = new QTableWidgetItem(QString::fromStdString(jso["id"]));
+        ui->tableWidget->setItem(0,0,idItem);
+        QTableWidgetItem *nameItem = new QTableWidgetItem(QString::fromStdString(jso["name"]));
+        ui->tableWidget->setItem(0,1,nameItem);
+        QTableWidgetItem *surname1Item = new QTableWidgetItem(QString::fromStdString(jso["surname1"]));
+        ui->tableWidget->setItem(0,2,surname1Item);
+        QTableWidgetItem *surname2Item = new QTableWidgetItem(QString::fromStdString(jso["surname2"]));
+        ui->tableWidget->setItem(0,3,surname2Item);
+        QTableWidgetItem *birthdateItem = new QTableWidgetItem(QString::fromStdString(jso["birthdate"]));
+        ui->tableWidget->setItem(0,4,birthdateItem);
+        QTableWidgetItem *identitytypeItem = new QTableWidgetItem(QString::fromStdString(jso["identitytype"]));
+        ui->tableWidget->setItem(0,5,identitytypeItem);
+        QTableWidgetItem *identitynumItem = new QTableWidgetItem(QString::fromStdString(jso["identitynum"]));
+        ui->tableWidget->setItem(0,6,identitynumItem);
+        QTableWidgetItem *serialtypeidItem = new QTableWidgetItem(QString::fromStdString(jso["serialtypeid"]));
+        ui->tableWidget->setItem(0,7,serialtypeidItem);
+        QTableWidgetItem *serialidItem = new QTableWidgetItem(QString::fromStdString(jso["serialid"]));
+        ui->tableWidget->setItem(0,8,serialidItem);
+        QTableWidgetItem *isworkingItem = new QTableWidgetItem(QString::fromStdString(jso["isworking"]));
+        ui->tableWidget->setItem(0,9,isworkingItem);
+}
+
+void MainWindow::on_pushButton_searchAllEmployees_clicked()
+{
+    QString toSend = searchAllEmployesJson();
+    m_webSocket->sendTextMessage(toSend);
 }
