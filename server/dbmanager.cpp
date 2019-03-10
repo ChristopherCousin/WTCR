@@ -135,12 +135,72 @@ QVector<Employee> Dbmanager::allEmployeeDetails()
     return employee;
 }
 
-QVector<Log> Dbmanager::allLogs()
+QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
 {
     QVector<Log> log{};
     QSqlQuery query;
-    query.prepare("SELECT * from history;");
-    query.exec();
+    if(searchBy == "all")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id;");
+        query.exec();
+    }
+    else if(searchBy == "ID")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id WHERE t.id = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "Identity Number")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id WHERE serialstorage.serial = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "Date")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id WHERE t.date = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "Hour")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id WHERE t.hour = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "Name")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id WHERE employee.name = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "First surname")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id WHERE employee.surname1 = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
 
     while (query.next())
     {
@@ -149,11 +209,12 @@ QVector<Log> Dbmanager::allLogs()
 
             Log e;
             e.id = query.value(0).toString();
-            e.serialid = query.value(1).toString();
-            e.date = query.value(2).toString();
-            e.hour = query.value(3).toString();
-            e.actionid = query.value(4).toString();
-
+            e.name = query.value(1).toString();
+            e.surname1 = query.value(2).toString();
+            e.identitynum = query.value(3).toString();
+            e.date = query.value(4).toString();
+            e.hour = query.value(5).toString();
+            e.actionName = query.value(6).toString();
             log.push_back(e);
         }
         else

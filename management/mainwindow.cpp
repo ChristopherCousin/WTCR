@@ -154,7 +154,7 @@ void MainWindow::moveWindowToTheCenter()
 void MainWindow::configQTableWidgets()
 {
     int columnCountEmployees{10};
-    int columnCountLogs{5};
+    int columnCountLogs{7};
     int columnCountUsers{4};
 
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -166,9 +166,9 @@ void MainWindow::configQTableWidgets()
     ui->tableWidget_users->setColumnCount(columnCountUsers);
 
     ui->tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
-    ui->tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("name"));
-    ui->tableWidget->setHorizontalHeaderItem(2, new QTableWidgetItem("Surname 1"));
-    ui->tableWidget->setHorizontalHeaderItem(3, new QTableWidgetItem("Surname 2"));
+    ui->tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Name"));
+    ui->tableWidget->setHorizontalHeaderItem(2, new QTableWidgetItem("First surname"));
+    ui->tableWidget->setHorizontalHeaderItem(3, new QTableWidgetItem("Second surname"));
     ui->tableWidget->setHorizontalHeaderItem(4, new QTableWidgetItem("Birth Date"));
     ui->tableWidget->setHorizontalHeaderItem(5, new QTableWidgetItem("Identity Type"));
     ui->tableWidget->setHorizontalHeaderItem(6, new QTableWidgetItem("Identity Num"));
@@ -177,10 +177,12 @@ void MainWindow::configQTableWidgets()
     ui->tableWidget->setHorizontalHeaderItem(9, new QTableWidgetItem("Is Working?"));
 
     ui->tableWidget_logs->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
-    ui->tableWidget_logs->setHorizontalHeaderItem(1, new QTableWidgetItem("Serial ID"));
-    ui->tableWidget_logs->setHorizontalHeaderItem(2, new QTableWidgetItem("Date"));
-    ui->tableWidget_logs->setHorizontalHeaderItem(3, new QTableWidgetItem("Hour"));
-    ui->tableWidget_logs->setHorizontalHeaderItem(4, new QTableWidgetItem("Action ID"));
+    ui->tableWidget_logs->setHorizontalHeaderItem(1, new QTableWidgetItem("Name"));
+    ui->tableWidget_logs->setHorizontalHeaderItem(2, new QTableWidgetItem("First surname"));
+    ui->tableWidget_logs->setHorizontalHeaderItem(3, new QTableWidgetItem("Identity Type"));
+    ui->tableWidget_logs->setHorizontalHeaderItem(4, new QTableWidgetItem("Date"));
+    ui->tableWidget_logs->setHorizontalHeaderItem(5, new QTableWidgetItem("Hour"));
+    ui->tableWidget_logs->setHorizontalHeaderItem(6, new QTableWidgetItem("Action Name"));
 
     ui->tableWidget_users->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
     ui->tableWidget_users->setHorizontalHeaderItem(1, new QTableWidgetItem("Username"));
@@ -225,7 +227,7 @@ QString MainWindow::searchAllEmployesJson()
     return txtToReturn;
 }
 
-QString MainWindow::searchEmployeeJson(QString searchBy, QString toSearch)
+QString MainWindow::searchEmployeesJson(QString searchBy, QString toSearch)
 {
     QString txtToReturn{""};
 
@@ -233,6 +235,25 @@ QString MainWindow::searchEmployeeJson(QString searchBy, QString toSearch)
     {
         json j2 = {
           {"Action", "searchEmployee"},
+          {"searchBy", searchBy.toStdString()},
+          {"toSearch", toSearch.toStdString()}
+        };
+        std::string json = j2.dump();
+        txtToReturn =  QString::fromStdString(json);
+    } catch(int e) {
+
+    }
+    return txtToReturn;
+}
+
+QString MainWindow::searchLogsJson(QString searchBy, QString toSearch)
+{
+    QString txtToReturn{""};
+
+    try
+    {
+        json j2 = {
+          {"Action", "searchLogs"},
           {"searchBy", searchBy.toStdString()},
           {"toSearch", toSearch.toStdString()}
         };
@@ -287,14 +308,18 @@ void MainWindow::updateAllLogs(json jso)
         json logTxt = logsTxt.at(i);
         QTableWidgetItem *idItem = new QTableWidgetItem(QString::fromStdString(logTxt["id"]));
         ui->tableWidget_logs->setItem(i,0,idItem);
-        QTableWidgetItem *serialidItem = new QTableWidgetItem(QString::fromStdString(logTxt["serialid"]));
-        ui->tableWidget_logs->setItem(i,1,serialidItem);
-        QTableWidgetItem *dateItem = new QTableWidgetItem(QString::fromStdString(logTxt["date"]));
-        ui->tableWidget_logs->setItem(i,2,dateItem);
-        QTableWidgetItem *hourItem = new QTableWidgetItem(QString::fromStdString(logTxt["hour"]));
-        ui->tableWidget_logs->setItem(i,3,hourItem);
-        QTableWidgetItem *actionidItem = new QTableWidgetItem(QString::fromStdString(logTxt["actionid"]));
-        ui->tableWidget_logs->setItem(i,4,actionidItem);
+        QTableWidgetItem *nameItem = new QTableWidgetItem(QString::fromStdString(logTxt["name"]));
+        ui->tableWidget_logs->setItem(i,1,nameItem);
+        QTableWidgetItem *surnameItem = new QTableWidgetItem(QString::fromStdString(logTxt["surName1"]));
+        ui->tableWidget_logs->setItem(i,2,surnameItem);
+        QTableWidgetItem *identitynumberItem = new QTableWidgetItem(QString::fromStdString(logTxt["identityNum"]));
+        ui->tableWidget_logs->setItem(i,3,identitynumberItem);
+        QTableWidgetItem *dateidItem = new QTableWidgetItem(QString::fromStdString(logTxt["date"]));
+        ui->tableWidget_logs->setItem(i,4,dateidItem);
+        QTableWidgetItem *houridItem = new QTableWidgetItem(QString::fromStdString(logTxt["hour"]));
+        ui->tableWidget_logs->setItem(i,5,houridItem);
+        QTableWidgetItem *actionidItem = new QTableWidgetItem(QString::fromStdString(logTxt["actionName"]));
+        ui->tableWidget_logs->setItem(i,6,actionidItem);
     }
 }
 
@@ -325,7 +350,7 @@ void MainWindow::on_tabWidget_users_currentChanged(int index)
 
 void MainWindow::on_pushButton_searchEmployee_clicked()
 {
-    QString toSend = searchEmployeeJson(ui->comboBox_searchByEmployee->currentText(), ui->lineEdit_searchEmployee->text());
+    QString toSend = searchEmployeesJson(ui->comboBox_searchByEmployee->currentText(), ui->lineEdit_searchEmployee->text());
     m_webSocket->sendTextMessage(toSend);
 }
 
@@ -374,4 +399,16 @@ void MainWindow::on_comboBox_searchByEmployee_currentIndexChanged(int index)
     } else {
         ui->lineEdit_searchEmployee->setDisabled(false);
     }
+}
+
+void MainWindow::on_pushButton_searchLogs_clicked()
+{
+    QString toSend = searchLogsJson(ui->comboBox_searchByLog->currentText(), ui->lineEdit_searchLogs->text());
+    m_webSocket->sendTextMessage(toSend);
+}
+
+void MainWindow::on_pushButton_searchLogs_2_clicked()
+{
+    QString toSend = searchLogsJson("all", "all");
+    m_webSocket->sendTextMessage(toSend);
 }

@@ -5,10 +5,12 @@
 
 struct Log {
     QString id{""};
-    QString serialid{""};
+    QString name{""};
+    QString surname1{""};
+    QString identitynum{""};
     QString date{""};
     QString hour{""};
-    QString actionid{""};
+    QString actionName{""};
 };
 
 #endif // LOG_H

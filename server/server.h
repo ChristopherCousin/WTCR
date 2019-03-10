@@ -34,6 +34,7 @@ public:
     void allLogsJson();
     void allUserJson();
     void employeesFoundedJson(std::string searchBy, std::string toSearch);
+    void allLogsJson(std::string searchBy, std::string toSearch);
 
 
 signals:

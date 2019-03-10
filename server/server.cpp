@@ -133,7 +133,7 @@ void TestServer::processTextMessage(QString message)
             QString toSend = loginSuccesJson();
             pClient->sendTextMessage(toSend);
             allEmployeeDetailsJson();
-            allLogsJson();
+            allLogsJson("all","");
             allUserJson();
         } else {
             QString toSend = loginFailedJson();
@@ -159,6 +159,21 @@ void TestServer::processTextMessage(QString message)
     else if(action == "searchAllEmployees")
     {
         allEmployeeDetailsJson();
+    }
+    else if(action == "searchLogs")
+    {
+        std::string searchBy = {""};
+        std::string toSearch = {""};
+
+        if (json.find("searchBy") != json.end())
+        {
+            json.at("searchBy").get_to(searchBy);
+        }
+        if (json.find("toSearch") != json.end())
+        {
+            json.at("toSearch").get_to(toSearch);
+            allLogsJson(searchBy, toSearch);
+        }
     }
 
 
@@ -255,22 +270,24 @@ void TestServer::allEmployeeDetailsJson()
     pClient->sendTextMessage(QString::fromStdString(message));
 }
 
-void TestServer::allLogsJson()
+void TestServer::allLogsJson(std::string searchBy, std::string toSearch)
 {
-    QVector<Log> logsDetails = dbManager.allLogs();
+    QVector<Log> logsDetails = dbManager.getLogs(searchBy, toSearch);
     json document;
     json logsJSON;
     for (int i{ 0 }; i < logsDetails.count(); i++)
     {
         Log log{ logsDetails.at(i) };
-        json employeeJSON;
-        employeeJSON["Action"] = "logsDetails";
-        employeeJSON["id"] = log.id.toStdString();
-        employeeJSON["serialid"] = log.serialid.toStdString();
-        employeeJSON["date"] = log.date.toStdString();
-        employeeJSON["hour"] = log.hour.toStdString();
-        employeeJSON["actionid"] = log.actionid.toStdString();
-        logsJSON.push_back(employeeJSON);
+        json logJSON;
+        logJSON["Action"] = "logsDetails";
+        logJSON["id"] = log.id.toStdString();
+        logJSON["name"] = log.name.toStdString();
+        logJSON["surName1"] = log.surname1.toStdString();
+        logJSON["identityNum"] = log.identitynum.toStdString();
+        logJSON["date"] = log.date.toStdString();
+        logJSON["hour"] = log.hour.toStdString();
+        logJSON["actionName"] = log.actionName.toStdString();
+        logsJSON.push_back(logJSON);
     } // end for
 
     document["logs"] = logsJSON;
@@ -327,3 +344,4 @@ void TestServer::employeesFoundedJson(std::string searchBy, std::string toSearch
     std::string message = document.dump();
     pClient->sendTextMessage(QString::fromStdString(message));
 }
+

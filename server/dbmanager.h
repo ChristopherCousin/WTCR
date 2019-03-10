@@ -17,7 +17,7 @@ public:
     Dbmanager();
     QVector<Employee> employeeDetails(std::string searchBy, std::string toSearch);
     QVector<Employee> allEmployeeDetails();
-    QVector<Log> allLogs();
+    QVector<Log> getLogs(std::string searchBy, std::string toSearch);
     QVector<User> allUsers();
     void changeIsWorkingState(std::string serial,bool isworking);
     void addLog(std::string ean13, int action);

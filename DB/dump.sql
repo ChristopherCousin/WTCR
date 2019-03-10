@@ -183,8 +183,8 @@ CREATE TABLE public.history (
     id integer NOT NULL,
     serialid integer,
     date date,
-    hour time without time zone,
-    actionid integer
+    actionid integer,
+    hour time without time zone
 );
 
 
@@ -318,6 +318,42 @@ ALTER SEQUENCE public.serialtype_id_seq OWNED BY public.serialtype.id;
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: usuario
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username character varying NOT NULL,
+    password character varying,
+    privilege integer
+);
+
+
+ALTER TABLE public.users OWNER TO usuario;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: usuario
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO usuario;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
 -- Name: actions id; Type: DEFAULT; Schema: public; Owner: usuario
 --
 
@@ -360,6 +396,13 @@ ALTER TABLE ONLY public.serialtype ALTER COLUMN id SET DEFAULT nextval('public.s
 
 
 --
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
 -- Data for Name: actions; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
@@ -376,6 +419,7 @@ COPY public.actions (id, name) FROM stdin;
 --
 
 COPY public.employee (id, name, surname1, surname2, birthdate, identitytype, identitynum, serialtypeid, serialid, isworking) FROM stdin;
+3	manuel	perez		2000-01-01	1	1	1	2	f
 1	Pepito	Perez	Mola	2000-01-01	1	12312231P	1	1	f
 \.
 
@@ -384,12 +428,8 @@ COPY public.employee (id, name, surname1, surname2, birthdate, identitytype, ide
 -- Data for Name: history; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-COPY public.history (id, serialid, date, hour, actionid) FROM stdin;
-1	1	2019-03-05	01:44:43.416629	1
-2	1	2019-03-05	01:48:23.398816	1
-3	1	2019-03-05	01:48:26.771499	2
-4	1	2019-03-05	01:49:58.077248	1
-5	1	2019-03-05	01:50:44.683556	2
+COPY public.history (id, serialid, date, actionid, hour) FROM stdin;
+39	1	2019-03-11	2	00:41:54.890888
 \.
 
 
@@ -408,6 +448,7 @@ COPY public.identitytype (id, name) FROM stdin;
 
 COPY public.serialstorage (id, typeid, serial, active, expired) FROM stdin;
 1	1	123456	t	f
+2	1	123456789	t	f
 \.
 
 
@@ -417,6 +458,15 @@ COPY public.serialstorage (id, typeid, serial, active, expired) FROM stdin;
 
 COPY public.serialtype (id, name) FROM stdin;
 1	ean13
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.users (id, username, password, privilege) FROM stdin;
+1	root	root	3
 \.
 
 
@@ -431,14 +481,14 @@ SELECT pg_catalog.setval('public.actions_id_seq', 4, true);
 -- Name: employee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.employee_id_seq', 2, true);
+SELECT pg_catalog.setval('public.employee_id_seq', 3, true);
 
 
 --
 -- Name: history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.history_id_seq', 5, true);
+SELECT pg_catalog.setval('public.history_id_seq', 39, true);
 
 
 --
@@ -452,7 +502,7 @@ SELECT pg_catalog.setval('public.identitytype_id_seq', 1, true);
 -- Name: serialstorage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
 --
 
-SELECT pg_catalog.setval('public.serialstorage_id_seq', 1, true);
+SELECT pg_catalog.setval('public.serialstorage_id_seq', 2, true);
 
 
 --
@@ -460,6 +510,13 @@ SELECT pg_catalog.setval('public.serialstorage_id_seq', 1, true);
 --
 
 SELECT pg_catalog.setval('public.serialtype_id_seq', 1, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 
 --
@@ -508,6 +565,14 @@ ALTER TABLE ONLY public.serialstorage
 
 ALTER TABLE ONLY public.serialtype
     ADD CONSTRAINT "PKserialType" PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id, username);
 
 
 --

@@ -105,7 +105,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(803, 623);
+        MainWindow->resize(793, 623);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -466,7 +466,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 803, 30));
+        menuBar->setGeometry(QRect(0, 0, 793, 30));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindow->setMenuBar(menuBar);
@@ -479,7 +479,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(1);
-        tabWidget_users->setCurrentIndex(1);
+        tabWidget_users->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -515,9 +515,12 @@ public:
         pushButton_searchLogs->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
         comboBox_searchByLog->clear();
         comboBox_searchByLog->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "Name", Q_NULLPTR)
          << QApplication::translate("MainWindow", "ID", Q_NULLPTR)
-         << QApplication::translate("MainWindow", "Serial ID", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Identity Number", Q_NULLPTR)
          << QApplication::translate("MainWindow", "Date", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Hour", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "First surname", Q_NULLPTR)
         );
         label_14->setText(QApplication::translate("MainWindow", "Search by:", Q_NULLPTR));
         pushButton_searchLogs_2->setText(QApplication::translate("MainWindow", "Search all logs", Q_NULLPTR));

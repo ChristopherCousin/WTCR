@@ -24,7 +24,8 @@ public:
     void configQTableWidgets();
     void updateAllUsers(json jso);
     void startConfig(bool startConfig);
-    QString searchEmployeeJson(QString searchBy, QString toSearch);
+    QString searchEmployeesJson(QString searchBy, QString toSearch);
+    QString searchLogsJson(QString searchBy, QString toSearch);
     void setEmployeesFounded(json jso);
     void moveWindowToTheCenter();
     QString searchAllEmployesJson();
@@ -41,6 +42,10 @@ private slots:
     void on_pushButton_searchAllEmployees_clicked();
 
     void on_comboBox_searchByEmployee_currentIndexChanged(int index);
+
+    void on_pushButton_searchLogs_clicked();
+
+    void on_pushButton_searchLogs_2_clicked();
 
 private:
     Ui::MainWindow *ui;

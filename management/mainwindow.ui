@@ -116,7 +116,7 @@ QLineEdit:focus { background-color:rgb(192, 192, 255);}</string>
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget_users">
           <property name="currentIndex">
-           <number>3</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -422,17 +422,32 @@ color: white;
             </property>
             <item>
              <property name="text">
+              <string>Name</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>ID</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Serial ID</string>
+              <string>Identity Number</string>
              </property>
             </item>
             <item>
              <property name="text">
               <string>Date</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Hour</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>First surname</string>
              </property>
             </item>
            </widget>
