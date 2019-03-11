@@ -32,9 +32,10 @@ public:
     QString loginSuccesJson();
     void allEmployeeDetailsJson();
     void allLogsJson();
-    void allUserJson();
+    void allUserJson(std::string searchBy, std::string toSearch);
     void employeesFoundedJson(std::string searchBy, std::string toSearch);
     void allLogsJson(std::string searchBy, std::string toSearch);
+    QString logAdded();
 
 
 signals:

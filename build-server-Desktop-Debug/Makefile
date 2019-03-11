@@ -181,7 +181,9 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../server/server.h \
 		../server/jsonmanager.h \
 		../server/json.h \
-		../server/employee.h ../server/main.cpp \
+		../server/employee.h \
+		../server/log.h \
+		../server/user.h ../server/main.cpp \
 		../server/dbmanager.cpp \
 		../server/server.cpp \
 		../server/jsonmanager.cpp
@@ -462,7 +464,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/dbmanager.h ../server/server.h ../server/jsonmanager.h ../server/json.h ../server/employee.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/dbmanager.h ../server/server.h ../server/jsonmanager.h ../server/json.h ../server/employee.h ../server/log.h ../server/user.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../server/main.cpp ../server/dbmanager.cpp ../server/server.cpp ../server/jsonmanager.cpp $(DISTDIR)/
 
 
@@ -500,6 +502,8 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_server.cpp
 moc_server.cpp: ../server/dbmanager.h \
 		../server/employee.h \
+		../server/log.h \
+		../server/user.h \
 		../server/server.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
@@ -519,16 +523,22 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 main.o: ../server/main.cpp ../server/server.h \
 		../server/dbmanager.h \
-		../server/employee.h
+		../server/employee.h \
+		../server/log.h \
+		../server/user.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../server/main.cpp
 
 dbmanager.o: ../server/dbmanager.cpp ../server/dbmanager.h \
-		../server/employee.h
+		../server/employee.h \
+		../server/log.h \
+		../server/user.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dbmanager.o ../server/dbmanager.cpp
 
 server.o: ../server/server.cpp ../server/server.h \
 		../server/dbmanager.h \
 		../server/employee.h \
+		../server/log.h \
+		../server/user.h \
 		../server/json.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o ../server/server.cpp
 

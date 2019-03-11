@@ -23,9 +23,11 @@ public:
     void successfullyEnterOrExit(QString action);
     QString calculateMessageByHour(QString action);
 
+
 private:
     Ui::MainWindow *ui;
     Websocket *m_webSocket{};
+    int timerId{};
 
 private slots:
     void textMessageArrived(QString message);
@@ -34,6 +36,9 @@ private slots:
     void on_pushButton_TiempoDescanso_clicked();
     void on_pushButton_SalirTrabajo_clicked();
     void on_pushButton_FinDescanso_clicked();
+    void on_lineEdit_returnPressed();
+protected:
+    void timerEvent(QTimerEvent *event);
 };
 
 #endif // MAINWINDOW_H

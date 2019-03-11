@@ -38,7 +38,6 @@ public:
     QPushButton *pushButton_SalirTrabajo;
     QPushButton *pushButton_TiempoDescanso;
     QPushButton *pushButton_FinDescanso;
-    QWidget *notworking;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -58,6 +57,7 @@ public:
         pushButton_Aceptar = new QPushButton(widget);
         pushButton_Aceptar->setObjectName(QStringLiteral("pushButton_Aceptar"));
         pushButton_Aceptar->setGeometry(QRect(170, 170, 88, 34));
+        pushButton_Aceptar->setAutoDefault(false);
         lineEdit = new CLineEdit(widget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
         lineEdit->setGeometry(QRect(20, 110, 391, 32));
@@ -70,12 +70,17 @@ public:
 "QLineEdit:focus { background-color:rgb(202, 255, 227);}"));
         label = new QLabel(widget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(140, 50, 141, 31));
+        label->setGeometry(QRect(20, 30, 402, 111));
         QFont font;
         font.setFamily(QStringLiteral("Source Serif Pro Semibold"));
         font.setPointSize(16);
         label->setFont(font);
+        label->setStyleSheet(QStringLiteral(""));
+        label->setAlignment(Qt::AlignCenter);
         tabWidget->addTab(widget, QString());
+        label->raise();
+        pushButton_Aceptar->raise();
+        lineEdit->raise();
         working = new QWidget();
         working->setObjectName(QStringLiteral("working"));
         pushButton_SalirTrabajo = new QPushButton(working);
@@ -91,9 +96,6 @@ public:
         pushButton_FinDescanso->raise();
         pushButton_SalirTrabajo->raise();
         pushButton_TiempoDescanso->raise();
-        notworking = new QWidget();
-        notworking->setObjectName(QStringLiteral("notworking"));
-        tabWidget->addTab(notworking, QString());
 
         gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
 
@@ -101,7 +103,11 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
+        pushButton_Aceptar->setDefault(false);
+        pushButton_SalirTrabajo->setDefault(true);
+        pushButton_TiempoDescanso->setDefault(true);
+        pushButton_FinDescanso->setDefault(true);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -117,7 +123,6 @@ public:
         pushButton_TiempoDescanso->setText(QApplication::translate("MainWindow", "Tiempo de descanso", Q_NULLPTR));
         pushButton_FinDescanso->setText(QApplication::translate("MainWindow", "Fin de descanso", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(working), QApplication::translate("MainWindow", "Tab 2", Q_NULLPTR));
-        tabWidget->setTabText(tabWidget->indexOf(notworking), QApplication::translate("MainWindow", "Page", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -118,6 +118,10 @@ void MainWindow::textMessageArrived(QString message)
     {
         startConfig(false);
     }
+    if(action == "logAdded")
+    {
+        on_pushButton_searchLogs_2_clicked();
+    }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -274,6 +278,7 @@ void MainWindow::updateAllEmployees(json jso)
     for(int i{0}; i < employeesTxt.size(); i++)
     {
         json employeeTxt = employeesTxt.at(i);
+        ui->tableWidget->horizontalHeader()->sortIndicatorOrder();
         QTableWidgetItem *idItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["id"]));
         ui->tableWidget->setItem(i,0,idItem);
         QTableWidgetItem *nameItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["name"]));
@@ -295,6 +300,8 @@ void MainWindow::updateAllEmployees(json jso)
         QTableWidgetItem *isworkingItem = new QTableWidgetItem(QString::fromStdString(employeeTxt["isworking"]));
         ui->tableWidget->setItem(i,9,isworkingItem);
     }
+    ui->tableWidget->setSortingEnabled(true);
+    ui->tableWidget->sortByColumn(0, Qt::AscendingOrder );
 }
 
 void MainWindow::updateAllLogs(json jso)

@@ -97,6 +97,12 @@ void TestServer::processTextMessage(QString message)
     }
     else if(action == "serialChecked")
     {
+        QString toSend = logAdded();
+        for(int x = 0;x < m_clients.count(); x++)
+        {
+           m_clients.at(x)->sendTextMessage(toSend);
+        }
+
         if(jsonMessage == "finishWork")
         {
             dbManager.addLog(serial,2);
@@ -134,7 +140,7 @@ void TestServer::processTextMessage(QString message)
             pClient->sendTextMessage(toSend);
             allEmployeeDetailsJson();
             allLogsJson("all","");
-            allUserJson();
+            allUserJson("all","");
         } else {
             QString toSend = loginFailedJson();
             pClient->sendTextMessage(toSend);
@@ -242,6 +248,22 @@ QString TestServer::loginSuccesJson()
     return toReturn;
 }
 
+QString TestServer::logAdded()
+{
+    QString toReturn{""};
+    try
+    {
+        json j2 = {
+      {"Action", "logAdded"}
+    };
+    std::string json = j2.dump();
+    toReturn = QString::fromStdString(json);
+    } catch(int e){
+
+    }
+    return toReturn;
+}
+
 void TestServer::allEmployeeDetailsJson()
 {
     QVector<Employee> employeeDetails = dbManager.allEmployeeDetails();
@@ -295,9 +317,9 @@ void TestServer::allLogsJson(std::string searchBy, std::string toSearch)
     pClient->sendTextMessage(QString::fromStdString(message));
 }
 
-void TestServer::allUserJson()
+void TestServer::allUserJson(std::string searchBy, std::string toSearch)
 {
-    QVector<User> usersDetails = dbManager.allUsers();
+    QVector<User> usersDetails = dbManager.getUsers(searchBy, toSearch);
     json document;
     json usersJSON;
     for (int i{ 0 }; i < usersDetails.count(); i++)

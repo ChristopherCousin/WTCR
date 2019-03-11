@@ -36,6 +36,12 @@
         <property name="text">
          <string>Aceptar</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
        </widget>
        <widget class="CLineEdit" name="lineEdit">
         <property name="geometry">
@@ -101,6 +107,9 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
         <property name="text">
          <string>Salir del trabajo</string>
         </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QPushButton" name="pushButton_TiempoDescanso">
         <property name="geometry">
@@ -114,6 +123,9 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
         <property name="text">
          <string>Tiempo de descanso</string>
         </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QPushButton" name="pushButton_FinDescanso">
         <property name="geometry">
@@ -126,6 +138,9 @@ QLineEdit:focus { background-color:rgb(202, 255, 227);}</string>
         </property>
         <property name="text">
          <string>Fin de descanso</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
         </property>
        </widget>
        <zorder>pushButton_FinDescanso</zorder>

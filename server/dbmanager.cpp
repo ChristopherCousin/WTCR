@@ -144,7 +144,7 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
                       " from history t INNER JOIN employee ON t.serialid = employee.serialid"
                       " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
-                      " JOIN actions ON t.actionid = actions.id;");
+                      " JOIN actions ON t.actionid = actions.id ORDER BY t.id DESC;");
         query.exec();
     }
     else if(searchBy == "ID")
@@ -152,7 +152,7 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
                       " from history t INNER JOIN employee ON t.serialid = employee.serialid"
                       " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
-                      " JOIN actions ON t.actionid = actions.id WHERE t.id = ?;");
+                      " JOIN actions ON t.actionid = actions.id WHERE t.id = ? ORDER BY t.id DESC;");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
     }
@@ -161,7 +161,7 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
                       " from history t INNER JOIN employee ON t.serialid = employee.serialid"
                       " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
-                      " JOIN actions ON t.actionid = actions.id WHERE serialstorage.serial = ?;");
+                      " JOIN actions ON t.actionid = actions.id WHERE serialstorage.serial = ? ORDER BY t.id DESC;");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
     }
@@ -170,7 +170,7 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
                       " from history t INNER JOIN employee ON t.serialid = employee.serialid"
                       " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
-                      " JOIN actions ON t.actionid = actions.id WHERE t.date = ?;");
+                      " JOIN actions ON t.actionid = actions.id WHERE t.date = ? ORDER BY t.id DESC;");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
     }
@@ -179,7 +179,7 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
                       " from history t INNER JOIN employee ON t.serialid = employee.serialid"
                       " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
-                      " JOIN actions ON t.actionid = actions.id WHERE t.hour = ?;");
+                      " JOIN actions ON t.actionid = actions.id WHERE t.hour = ? ORDER BY t.id DESC;");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
     }
@@ -188,7 +188,7 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
                       " from history t INNER JOIN employee ON t.serialid = employee.serialid"
                       " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
-                      " JOIN actions ON t.actionid = actions.id WHERE employee.name = ?;");
+                      " JOIN actions ON t.actionid = actions.id WHERE employee.name = ? ORDER BY t.id DESC;");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
     }
@@ -197,7 +197,7 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
                       " from history t INNER JOIN employee ON t.serialid = employee.serialid"
                       " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
-                      " JOIN actions ON t.actionid = actions.id WHERE employee.surname1 = ?;");
+                      " JOIN actions ON t.actionid = actions.id WHERE employee.surname1 = ? ORDER BY t.id DESC;");
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
     }
@@ -224,12 +224,33 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
     return log;
 }
 
-QVector<User> Dbmanager::allUsers()
+QVector<User> Dbmanager::getUsers(std::string searchBy, std::string toSearch)
 {
     QVector<User> user{};
     QSqlQuery query;
-    query.prepare("SELECT * from users;");
-    query.exec();
+    if(searchBy == "all")
+    {
+        query.prepare("SELECT * from users;");
+        query.exec();
+    }
+    else if(searchBy == "id")
+    {
+        query.prepare("SELECT * from users where id = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "username")
+    {
+        query.prepare("SELECT * from users where username = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
+    else if(searchBy == "privilege")
+    {
+        query.prepare("SELECT * from users where privilege = ?;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
 
     while (query.next())
     {
@@ -241,7 +262,6 @@ QVector<User> Dbmanager::allUsers()
             e.username = query.value(1).toString();
             e.password = query.value(2).toString();
             e.privilege = query.value(3).toString();
-
             user.push_back(e);
         }
         else

@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <QTime>
+#include <QDebug>
+#include <QTimer>
 
 using json = nlohmann::json;
 
@@ -15,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QTimer::singleShot(0, this, SLOT(go()));
     ui->tabWidget->tabBar()->hide();
     ui->tabWidget->tabBar()->setCurrentIndex(0);
+    ui->lineEdit->setFocus();
+    ui->pushButton_Aceptar->setDefault(true);
 }
 
 MainWindow::~MainWindow()
@@ -28,7 +32,16 @@ void MainWindow::go()
     m_webSocket = new Websocket(QUrl("ws://localhost:3344"));
     connect(m_webSocket, SIGNAL(textMessageArrived(QString)), this, SLOT(textMessageArrived(QString)));
 }
-
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+    ui->label->setGeometry(ui->label->x(), ui->label->y() -50, ui->label->width(), ui->label->height());
+    ui->label->setStyleSheet("");
+    ui->label->setText("Introduce tu PIN");
+    ui->label->repaint();
+    ui->lineEdit->setVisible(true);
+    ui->pushButton_Aceptar->setVisible(true);
+    killTimer(timerId);
+}
 
 void MainWindow::textMessageArrived(QString message)
 {
@@ -38,8 +51,14 @@ void MainWindow::textMessageArrived(QString message)
 
     try {
         auto j = json::parse(message.toStdString());
-        j.at("Action").get_to(action);
-        j.at("message").get_to(stateOfEmployee);
+        if (j.find("Action") != j.end())
+        {
+            j.at("Action").get_to(action);
+        }
+        if (j.find("message") != j.end())
+        {
+            j.at("message").get_to(stateOfEmployee);
+        }
 
     } catch(int e) {
         qDebug() << "JSON NO VALID";
@@ -87,13 +106,6 @@ void MainWindow::pinReaded()
 
 void MainWindow::successfullyEnterOrExit(QString action)
 {
-    QTime dieTime= QTime::currentTime().addSecs(3);
-    int forOneShot = {0};
-    while (QTime::currentTime() < dieTime)
-    {
-        forOneShot++;
-        if(forOneShot == 1)
-        {
             ui->label->setGeometry(ui->label->x(), ui->label->y() +50, ui->label->width(), ui->label->height());
             ui->label->setStyleSheet("QLabel{margin-left: 10px; border-radius: 25px; background: white; color: #4A0C46;}");
             ui->label->setText(calculateMessageByHour(action));
@@ -101,15 +113,7 @@ void MainWindow::successfullyEnterOrExit(QString action)
             ui->lineEdit->setVisible(false);
             ui->pushButton_Aceptar->setVisible(false);
             ui->label->repaint();
-        }
-    }
-    ui->label->setGeometry(ui->label->x(), ui->label->y() -50, ui->label->width(), ui->label->height());
-    ui->label->setStyleSheet("");
-    ui->label->setText("Introduce tu PIN");
-    ui->label->repaint();
-    ui->lineEdit->setVisible(true);
-    ui->pushButton_Aceptar->setVisible(true);
-    forOneShot = 0;
+            timerId = startTimer(3000);
 }
 
 QString MainWindow::writeJson(QString message)
@@ -132,40 +136,44 @@ QString MainWindow::writeJson(QString message)
 QString MainWindow::calculateMessageByHour(QString action)
 {
     QTime time;
+    int time24;
     QString message{""};
-    if(time.currentTime().hour() > 12 && time.currentTime().hour() < 5)
-    {
-        if(action == "enter")
+    time24 = time.currentTime().toString("h").toInt();
+
+        if(time24 >= 1 && time24 <= 14)
         {
-            message = "Buenos días \n Has registrado tu ENTRADA \n sin ningun problema";
+            if(action == "enter")
+            {
+                message = "Buenos días \n Has registrado tu ENTRADA";
+            }
+            else if (action == "exit")
+            {
+                message = "Buenos días \n Has registrado tu SALIDA";
+            }
         }
-        else if (action == "exit")
+        else if(time24 >= 14 && time24 <= 20)
         {
-            message = "Buenos días \n Has registrado tu SALIDA \n sin ningun problema";
+            if(action == "enter")
+            {
+                message = "Buenas tardes \n Has registrado tu ENTRADA";
+            }
+            else if (action == "exit")
+            {
+                message = "Buenas tardes \n Has registrado tu SALIDA";
+            }
         }
-    }
-    else if(time.currentTime().hour() > 14 && time.currentTime().hour() < 20)
-    {
-        if(action == "enter")
+        else if(time24 >= 20 && time24 <= 23)
         {
-            message = "Buenas tardes \n Has registrado tu ENTRADA \n sin ningun problema";
+            if(action == "enter")
+            {
+                message = "Buenas noches \n Has registrado tu ENTRADA";
+            }
+            else if (action == "exit")
+            {
+                message = "Buenas noches \n Has registrado tu SALIDA";
+            }
         }
-        else if (action == "exit")
-        {
-            message = "Buenas tardes \n Has registrado tu SALIDA \n sin ningun problema";
-        }
-    }
-    else if(time.currentTime().hour() > 20 && time.currentTime().hour() < 5)
-    {
-        if(action == "enter")
-        {
-            message = "Buenas noches \n Has registrado tu ENTRADA \n sin ningun problema";
-        }
-        else if (action == "exit")
-        {
-            message = "Buenas noches \n Has registrado tu SALIDA \n sin ningun problema";
-        }
-    }
+
     return message;
 
 }
@@ -197,4 +205,9 @@ void MainWindow::on_pushButton_FinDescanso_clicked()
     ui->pushButton_TiempoDescanso->setVisible(true);
     ui->tabWidget->tabBar()->setCurrentIndex(0);
     ui->lineEdit->clear();
+}
+
+void MainWindow::on_lineEdit_returnPressed()
+{
+    on_pushButton_Aceptar_clicked();
 }
