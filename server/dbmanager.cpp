@@ -156,6 +156,15 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
         query.bindValue(0, QString::fromStdString(toSearch));
         query.exec();
     }
+    else if(searchBy == "openLogs")
+    {
+        query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
+                      " from history t INNER JOIN employee ON t.serialid = employee.serialid"
+                      " INNER JOIN serialstorage ON employee.serialid = serialstorage.ID INNER"
+                      " JOIN actions ON t.actionid = actions.id WHERE t.id = ? ORDER BY t.id DESC;");
+        query.bindValue(0, QString::fromStdString(toSearch));
+        query.exec();
+    }
     else if(searchBy == "Identity Number")
     {
         query.prepare("select t.id, employee.name,surname1,identitynum,date,hour,actions.name"
@@ -294,33 +303,44 @@ std::tuple<QString, QString> Dbmanager::getEmployeeStatus(std::string serial)
 
 }
 
-void Dbmanager::addLog(std::string ean13, int action)
+bool Dbmanager::addLog(std::string ean13, int action)
 {
     QSqlQuery query;
     query.prepare("SELECT * from addLog(?,?);");
+    bool valid = {false};
 
     query.bindValue(0, QString::fromStdString(ean13));
     query.bindValue(1, action);
     query.exec();
 
+    if (query.lastError().type() == QSqlError::NoError)
+    {
+         qDebug() <<"ok2";
+        valid = true;
+    } else {
+        valid = false;
+    }
+    return valid;
 }
 
-void Dbmanager::changeIsWorkingState(std::string serial,bool isworking)
+bool Dbmanager::changeIsWorkingState(std::string serial,bool isworking)
 {
     QSqlQuery query;
+    bool valid = {false};
     query.prepare("SELECT * from setisworkingstate(?,?);");
 
     query.bindValue(0, QString::fromStdString(serial));
     query.bindValue(1, isworking);
     query.exec();
     query.next();
-    if(query.isValid())
+    if (query.lastError().type() == QSqlError::NoError)
     {
-
-
+        qDebug() <<"ok1";
+        valid = true;
     } else {
-
+        valid = false;
     }
+    return valid;
 }
 
 QString Dbmanager::login(QString user, QString password)

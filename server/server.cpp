@@ -50,6 +50,8 @@ void TestServer::processTextMessage(QString message)
     json json;
     pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
+
+
     try {
         auto j = json::parse(message.toStdString());
         json = j;
@@ -80,7 +82,8 @@ void TestServer::processTextMessage(QString message)
         auto employeInfo = dbManager.getEmployeeStatus(serial);
         QString isWorking = std::get<1>(employeInfo);
         QString name = std::get<0>(employeInfo);
-        qDebug() << isWorking;
+
+
         if(isWorking == "true" || isWorking == "TRUE")
         {
             QString jsonToSend = createSerialCheckedJson("working", name);
@@ -97,6 +100,10 @@ void TestServer::processTextMessage(QString message)
     }
     else if(action == "serialChecked")
     {
+        auto employeInfo = dbManager.getEmployeeStatus(serial);
+        QString name = std::get<0>(employeInfo);
+        int time24 = getCurrentTime();
+
         QString toSend = logAdded();
         for(int x = 0;x < m_clients.count(); x++)
         {
@@ -105,26 +112,52 @@ void TestServer::processTextMessage(QString message)
 
         if(jsonMessage == "finishWork")
         {
-            dbManager.addLog(serial,2);
-            dbManager.changeIsWorkingState(serial, false);
+            bool addLogCheck = dbManager.addLog(serial,2);
+            bool changeIsWorkingStateCheck = dbManager.changeIsWorkingState(serial, false);
+
+            if(addLogCheck && changeIsWorkingStateCheck)
+            {
+                QString toSend = employeeActionsJson("finishWorkValid",name, time24);
+                pClient->sendTextMessage(toSend);
+            } else {
+                QString toSend = employeeActionsJson("finishWorkNoValid",name, time24);
+                pClient->sendTextMessage(toSend);
+            }
         }
         else if(jsonMessage == "startwork")
         {
-            dbManager.addLog(serial,1);
-            dbManager.changeIsWorkingState(serial, true);
+            bool addLogCheck = dbManager.addLog(serial,1);
+            bool changeIsWorkingStateCheck = dbManager.changeIsWorkingState(serial, true);
+            if(addLogCheck && changeIsWorkingStateCheck)
+            {
+                QString toSend = employeeActionsJson("startWorkValid", name, time24);
+                pClient->sendTextMessage(toSend);
+            } else {
+                QString toSend = employeeActionsJson("startWorkNoValid", name, time24);
+                pClient->sendTextMessage(toSend);
+            } //end if
         }
         else if(jsonMessage == "startBreakTime")
         {
-            dbManager.addLog(serial,3);
-        }
-        else if(jsonMessage == "startwork")
-        {
-            dbManager.addLog(serial,1);
-            dbManager.changeIsWorkingState(serial, true);
+            bool addLogCheck = dbManager.addLog(serial,3);
+
+            if(addLogCheck)
+            {
+                pClient->sendTextMessage(employeeActionsJson("startBreakTimeValid", name, time24));
+            } else {
+                pClient->sendTextMessage(employeeActionsJson("startBreakTimeNoValid", name, time24));
+            } // end if
         }
         else if(jsonMessage == "finishBreakTime")
         {
-            dbManager.addLog(serial,4);
+            bool addLogCheck = dbManager.addLog(serial,4);
+
+            if(addLogCheck)
+            {
+                pClient->sendTextMessage(employeeActionsJson("finishBreakTimeValid", name, time24));
+            } else {
+                pClient->sendTextMessage(employeeActionsJson("finishBreakTimeNoValid", name, time24));
+            } // end if
         } //end if
     }// end if
     else if(action == "Login")
@@ -198,15 +231,27 @@ void TestServer::socketDisconnected()
     } // end if
 }
 
+int TestServer::getCurrentTime()
+{
+    QTime time;
+    int time24;
+    time24 = time.currentTime().toString("h").toInt();
+
+    return time24;
+}
+
 QString TestServer::createSerialCheckedJson(QString message, QString employeeName)
 {
+    int time24 = getCurrentTime();
+
     QString toReturn{""};
     try
     {
         json j2 = {
       {"Action", "SerialChecked"},
       {"message", message.toStdString()},
-      {"name", employeeName.toStdString()}
+      {"name", employeeName.toStdString()},
+      {"hour", time24}
     };
     std::string json = j2.dump();
     toReturn = QString::fromStdString(json);
@@ -239,6 +284,24 @@ QString TestServer::loginSuccesJson()
     {
         json j2 = {
       {"Action", "loginSucces"}
+    };
+    std::string json = j2.dump();
+    toReturn = QString::fromStdString(json);
+    } catch(int e){
+
+    }
+    return toReturn;
+}
+QString TestServer::employeeActionsJson(QString actionName, QString employeeName, int hour)
+{
+    QString toReturn{""};
+    try
+    {
+        json j2 = {
+      {"Action", "actionChecked"},
+      {"actionName", actionName.toStdString()},
+      {"employeeName", employeeName.toStdString()},
+      {"hour", hour}
     };
     std::string json = j2.dump();
     toReturn = QString::fromStdString(json);

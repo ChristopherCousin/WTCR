@@ -63,6 +63,7 @@ public:
     QLabel *label_14;
     QFrame *line;
     QPushButton *pushButton_searchLogs_2;
+    QPushButton *pushButton_searchLogs_3;
     QWidget *tab_5;
     QTableWidget *tableWidget_users;
     QLineEdit *lineEdit_adduser_username;
@@ -263,6 +264,13 @@ public:
         pushButton_searchLogs_2->setGeometry(QRect(600, 392, 141, 41));
         pushButton_searchLogs_2->setIcon(icon);
         pushButton_searchLogs_2->setIconSize(QSize(24, 24));
+        pushButton_searchLogs_3 = new QPushButton(tab_4);
+        pushButton_searchLogs_3->setObjectName(QStringLiteral("pushButton_searchLogs_3"));
+        pushButton_searchLogs_3->setGeometry(QRect(480, 390, 101, 41));
+        pushButton_searchLogs_3->setStyleSheet(QLatin1String("QPushButton {\n"
+"color: green;\n"
+"}"));
+        pushButton_searchLogs_3->setIconSize(QSize(24, 24));
         QIcon icon2;
         icon2.addFile(QStringLiteral(":/new/prefix1/Resources/Logs.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget_users->addTab(tab_4, icon2, QString());
@@ -479,7 +487,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(1);
-        tabWidget_users->setCurrentIndex(0);
+        tabWidget_users->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -524,6 +532,7 @@ public:
         );
         label_14->setText(QApplication::translate("MainWindow", "Search by:", Q_NULLPTR));
         pushButton_searchLogs_2->setText(QApplication::translate("MainWindow", "Search all logs", Q_NULLPTR));
+        pushButton_searchLogs_3->setText(QApplication::translate("MainWindow", "Open Logs", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_4), QApplication::translate("MainWindow", "Logs", Q_NULLPTR));
         lineEdit_adduser_username->setPlaceholderText(QApplication::translate("MainWindow", "Username", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("MainWindow", "Refresh", Q_NULLPTR));

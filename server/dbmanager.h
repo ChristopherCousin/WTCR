@@ -19,8 +19,8 @@ public:
     QVector<Employee> allEmployeeDetails();
     QVector<Log> getLogs(std::string searchBy, std::string toSearch);
     QVector<User> getUsers(std::string searchBy, std::string toSearch);
-    void changeIsWorkingState(std::string serial,bool isworking);
-    void addLog(std::string ean13, int action);
+    bool changeIsWorkingState(std::string serial,bool isworking);
+    bool addLog(std::string ean13, int action);
     std::tuple<QString, QString> getEmployeeStatus(std::string serial);
     QString login(QString user, QString password);
 

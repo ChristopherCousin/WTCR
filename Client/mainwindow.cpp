@@ -6,6 +6,7 @@
 #include <QTime>
 #include <QDebug>
 #include <QTimer>
+#include <QMessageBox>
 
 using json = nlohmann::json;
 
@@ -48,9 +49,11 @@ void MainWindow::textMessageArrived(QString message)
     std::string action{""};
     std::string stateOfEmployee{""};
     qDebug() << message;
+    json jso;
 
     try {
         auto j = json::parse(message.toStdString());
+        jso = j;
         if (j.find("Action") != j.end())
         {
             j.at("Action").get_to(action);
@@ -66,6 +69,16 @@ void MainWindow::textMessageArrived(QString message)
 
     if(action == "SerialChecked")
     {
+        std::string name{""};
+        int hour{};
+        if (jso.find("name") != jso.end())
+        {
+            jso.at("name").get_to(name);
+        }
+        if (jso.find("hour") != jso.end())
+        {
+            jso.at("hour").get_to(hour);
+        }
         if(stateOfEmployee == "working")
         {
             ui->pushButton_TiempoDescanso->setText("Tiempo de descanso");
@@ -73,7 +86,6 @@ void MainWindow::textMessageArrived(QString message)
         }
         else if(stateOfEmployee == "notworking")
         {
-            successfullyEnterOrExit("enter");
             m_webSocket->sendTextMessage(writeJson("startwork"));
 
         }
@@ -86,7 +98,77 @@ void MainWindow::textMessageArrived(QString message)
         {
             ui->tabWidget->tabBar()->setCurrentIndex(1);
         }
+        else if(stateOfEmployee == "doesnotexist")
+        {
+            QMessageBox msgBoxError;
+            msgBoxError.setText("No existe ningun empleado con este codigo");
+            msgBoxError.exec();
+        }
     }
+    else if(action == "actionChecked")
+    {
+        QMessageBox msgBoxError;
+        msgBoxError.setText("Ha habido un problema con el servidor, avisa al tecnico");
+
+
+        std::string actionName{""};
+        std::string employeeName{""};
+        int hour{};
+        if (jso.find("actionName") != jso.end())
+        {
+            jso.at("actionName").get_to(actionName);
+        }
+        if (jso.find("employeeName") != jso.end())
+        {
+            jso.at("employeeName").get_to(employeeName);
+        }
+        if (jso.find("hour") != jso.end())
+        {
+            jso.at("hour").get_to(hour);
+        }
+
+        if(actionName == "startWorkValid")
+        {
+            successfullyEnterOrExit("enter", QString::fromStdString(employeeName), hour);
+        }
+        else if(actionName == "finishWorkValid")
+        {
+            ui->tabWidget->tabBar()->setCurrentIndex(0);
+            ui->lineEdit->clear();
+            successfullyEnterOrExit("exit",QString::fromStdString(employeeName),hour);
+        }
+        else if(actionName == "startBreakTimeValid")
+        {
+            successfullyEnterOrExit("breakTime",QString::fromStdString(employeeName),hour);
+            ui->lineEdit->clear();
+            ui->pushButton_TiempoDescanso->setVisible(false);
+            ui->tabWidget->tabBar()->setCurrentIndex(0);
+        }
+        else if(actionName == "finishBreakTimeValid")
+        {
+            successfullyEnterOrExit("stopBreakTime",QString::fromStdString(employeeName),hour);
+            ui->pushButton_TiempoDescanso->setVisible(true);
+            ui->tabWidget->tabBar()->setCurrentIndex(0);
+            ui->lineEdit->clear();
+        }
+        else if(actionName == "startWorkNoValid")
+        {
+                    msgBoxError.exec();
+        }
+        else if(actionName == "finishWorkNoValid")
+        {
+                    msgBoxError.exec();
+        }
+        else if(actionName == "startBreakTimeNoValid")
+        {
+                    msgBoxError.exec();
+        }
+        else if(actionName == "finishBreakTimeNoValid")
+        {
+                    msgBoxError.exec();
+        }
+    }
+
 }
 
 void MainWindow::pinReaded()
@@ -104,16 +186,16 @@ void MainWindow::pinReaded()
    }
 }
 
-void MainWindow::successfullyEnterOrExit(QString action)
+void MainWindow::successfullyEnterOrExit(QString action, QString name, int hour)
 {
             ui->label->setGeometry(ui->label->x(), ui->label->y() +50, ui->label->width(), ui->label->height());
             ui->label->setStyleSheet("QLabel{margin-left: 10px; border-radius: 25px; background: white; color: #4A0C46;}");
-            ui->label->setText(calculateMessageByHour(action));
+            ui->label->setText(calculateMessageByHour(action, name, hour));
             ui->lineEdit->clear();
             ui->lineEdit->setVisible(false);
             ui->pushButton_Aceptar->setVisible(false);
             ui->label->repaint();
-            timerId = startTimer(3000);
+            timerId = startTimer(4000);
 }
 
 QString MainWindow::writeJson(QString message)
@@ -133,46 +215,70 @@ QString MainWindow::writeJson(QString message)
     return messageTxt;
 }
 
-QString MainWindow::calculateMessageByHour(QString action)
+QString MainWindow::calculateMessageByHour(QString action, QString name, int time24)
 {
-    QTime time;
-    int time24;
+    qDebug() << time24;
     QString message{""};
-    time24 = time.currentTime().toString("h").toInt();
 
-        if(time24 >= 1 && time24 <= 14)
+        if(time24 >= 6 && time24 <= 14)
         {
             if(action == "enter")
             {
-                message = "Buenos días \n Has registrado tu ENTRADA";
+                message = "Buenos días "+name+ "\n Has registrado tu ENTRADA";
             }
             else if (action == "exit")
             {
-                message = "Buenos días \n Has registrado tu SALIDA";
+                message = "Buenos días "+name+"\n Has registrado tu SALIDA";
+            }
+            else if (action == "breakTime")
+            {
+                message = "Has registrado tu DESCANSO";
+            }
+            else if (action == "stopBreakTime")
+            {
+                message = "Has registrado tu FIN DE DESCANSO";
             }
         }
         else if(time24 >= 14 && time24 <= 20)
         {
             if(action == "enter")
             {
-                message = "Buenas tardes \n Has registrado tu ENTRADA";
+                message = "Buenas tardes "+name+"\n Has registrado tu ENTRADA";
             }
             else if (action == "exit")
             {
-                message = "Buenas tardes \n Has registrado tu SALIDA";
+                message = "Buenas tardes "+name+"\n Has registrado tu SALIDA";
+            }
+            else if (action == "breakTime")
+            {
+                message = "Has registrado tu DESCANSO";
+            }
+            else if (action == "stopBreakTime")
+            {
+                message = "Has registrado tu FIN DE DESCANSO";
             }
         }
-        else if(time24 >= 20 && time24 <= 23)
+        else if(time24 >= 20 && time24 <= 23 || time24 >= 0 && time24 <= 5)
         {
             if(action == "enter")
             {
-                message = "Buenas noches \n Has registrado tu ENTRADA";
+                message = "Buenas noches "+name+"\n Has registrado tu ENTRADA";
             }
             else if (action == "exit")
             {
-                message = "Buenas noches \n Has registrado tu SALIDA";
+                message = "Buenas noches "+name+"\n Has registrado tu SALIDA";
             }
-        }
+            else if (action == "breakTime")
+            {
+                message = "Has registrado tu DESCANSO";
+            }
+            else if (action == "stopBreakTime")
+            {
+                message = "Has registrado tu FIN DE DESCANSO";
+            }
+        } else {
+                message = "Hola, Has registrado correctamente\nPero avisa al tecnico ha\N habido un Problema.";
+        } // fin IF
 
     return message;
 
@@ -186,25 +292,16 @@ void MainWindow::on_pushButton_Aceptar_clicked()
 void MainWindow::on_pushButton_TiempoDescanso_clicked()
 {
     m_webSocket->sendTextMessage(writeJson("startBreakTime"));
-    ui->lineEdit->clear();
-    ui->pushButton_TiempoDescanso->setVisible(false);
-    ui->tabWidget->tabBar()->setCurrentIndex(0);
 }
 
 void MainWindow::on_pushButton_SalirTrabajo_clicked()
 {
      m_webSocket->sendTextMessage(writeJson("finishWork"));
-     ui->tabWidget->tabBar()->setCurrentIndex(0);
-     ui->lineEdit->clear();
-     successfullyEnterOrExit("exit");
 }
 
 void MainWindow::on_pushButton_FinDescanso_clicked()
 {
     m_webSocket->sendTextMessage(writeJson("finishBreakTime"));
-    ui->pushButton_TiempoDescanso->setVisible(true);
-    ui->tabWidget->tabBar()->setCurrentIndex(0);
-    ui->lineEdit->clear();
 }
 
 void MainWindow::on_lineEdit_returnPressed()

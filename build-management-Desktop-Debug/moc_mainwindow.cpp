@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[13];
-    char stringdata0[299];
+    QByteArrayData data[14];
+    char stringdata0[334];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -43,7 +43,8 @@ QT_MOC_LITERAL(8, 104, 36), // "on_pushButton_searchEmployee_..."
 QT_MOC_LITERAL(9, 141, 40), // "on_pushButton_searchAllEmploy..."
 QT_MOC_LITERAL(10, 182, 48), // "on_comboBox_searchByEmployee_..."
 QT_MOC_LITERAL(11, 231, 32), // "on_pushButton_searchLogs_clicked"
-QT_MOC_LITERAL(12, 264, 34) // "on_pushButton_searchLogs_2_cl..."
+QT_MOC_LITERAL(12, 264, 34), // "on_pushButton_searchLogs_2_cl..."
+QT_MOC_LITERAL(13, 299, 34) // "on_pushButton_searchLogs_3_cl..."
 
     },
     "MainWindow\0on_pushButton_clicked\0\0go\0"
@@ -53,7 +54,8 @@ QT_MOC_LITERAL(12, 264, 34) // "on_pushButton_searchLogs_2_cl..."
     "on_pushButton_searchAllEmployees_clicked\0"
     "on_comboBox_searchByEmployee_currentIndexChanged\0"
     "on_pushButton_searchLogs_clicked\0"
-    "on_pushButton_searchLogs_2_clicked"
+    "on_pushButton_searchLogs_2_clicked\0"
+    "on_pushButton_searchLogs_3_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,7 +65,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -71,15 +73,16 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   59,    2, 0x08 /* Private */,
-       3,    0,   60,    2, 0x08 /* Private */,
-       4,    1,   61,    2, 0x08 /* Private */,
-       6,    1,   64,    2, 0x08 /* Private */,
-       8,    0,   67,    2, 0x08 /* Private */,
-       9,    0,   68,    2, 0x08 /* Private */,
-      10,    1,   69,    2, 0x08 /* Private */,
-      11,    0,   72,    2, 0x08 /* Private */,
-      12,    0,   73,    2, 0x08 /* Private */,
+       1,    0,   64,    2, 0x08 /* Private */,
+       3,    0,   65,    2, 0x08 /* Private */,
+       4,    1,   66,    2, 0x08 /* Private */,
+       6,    1,   69,    2, 0x08 /* Private */,
+       8,    0,   72,    2, 0x08 /* Private */,
+       9,    0,   73,    2, 0x08 /* Private */,
+      10,    1,   74,    2, 0x08 /* Private */,
+      11,    0,   77,    2, 0x08 /* Private */,
+      12,    0,   78,    2, 0x08 /* Private */,
+      13,    0,   79,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -89,6 +92,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    7,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -110,6 +114,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 6: _t->on_comboBox_searchByEmployee_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 7: _t->on_pushButton_searchLogs_clicked(); break;
         case 8: _t->on_pushButton_searchLogs_2_clicked(); break;
+        case 9: _t->on_pushButton_searchLogs_3_clicked(); break;
         default: ;
         }
     }
@@ -140,13 +145,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

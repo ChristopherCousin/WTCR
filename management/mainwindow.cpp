@@ -169,6 +169,10 @@ void MainWindow::configQTableWidgets()
     ui->tableWidget_logs->setColumnCount(columnCountLogs);
     ui->tableWidget_users->setColumnCount(columnCountUsers);
 
+    ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_logs->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_users->setSelectionBehavior(QAbstractItemView::SelectRows);
+
     ui->tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
     ui->tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Name"));
     ui->tableWidget->setHorizontalHeaderItem(2, new QTableWidgetItem("First surname"));
@@ -197,6 +201,7 @@ void MainWindow::configQTableWidgets()
 
 QString MainWindow::loginJson(QString user, QString password)
 {
+
     QString txtToReturn{""};
 
     try
@@ -249,6 +254,8 @@ QString MainWindow::searchEmployeesJson(QString searchBy, QString toSearch)
     }
     return txtToReturn;
 }
+
+
 
 QString MainWindow::searchLogsJson(QString searchBy, QString toSearch)
 {
@@ -417,5 +424,11 @@ void MainWindow::on_pushButton_searchLogs_clicked()
 void MainWindow::on_pushButton_searchLogs_2_clicked()
 {
     QString toSend = searchLogsJson("all", "all");
+    m_webSocket->sendTextMessage(toSend);
+}
+
+void MainWindow::on_pushButton_searchLogs_3_clicked()
+{
+    QString toSend = searchLogsJson("openLogs", "all");
     m_webSocket->sendTextMessage(toSend);
 }

@@ -47,6 +47,8 @@ private slots:
 
     void on_pushButton_searchLogs_2_clicked();
 
+    void on_pushButton_searchLogs_3_clicked();
+
 private:
     Ui::MainWindow *ui;
     Websocket *m_webSocket{};
