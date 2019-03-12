@@ -11,6 +11,7 @@
 #include "QtWebSockets/qwebsocketserver.h"
 #include "QtWebSockets/qwebsocket.h"
 #include "dbmanager.h"
+#include "ean.h"
 
 
 

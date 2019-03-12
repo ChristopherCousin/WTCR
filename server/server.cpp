@@ -21,6 +21,11 @@ TestServer::TestServer(quint16 port)
             &TestServer::onNewConnection);
         connect(m_pWebSocketServer, &QWebSocketServer::closed, this, &TestServer::closed);
     } // end if
+
+    QString ean13 = Ean::getEanCode("123456789041");
+    qDebug() <<  Ean::calculateCheckSum(ean13);
+    qDebug() << ean13;
+
 }
 
 TestServer::~TestServer()
@@ -28,6 +33,8 @@ TestServer::~TestServer()
     m_pWebSocketServer->close();
     qDeleteAll(m_clients.begin(), m_clients.end());
 }
+
+
 
 
 void TestServer::onNewConnection()
@@ -62,6 +69,7 @@ void TestServer::processTextMessage(QString message)
         } else {
             qDebug() << "No se ha podido encontrar el Action del JSON";
         }
+
 
 
         if(action == "checkSerial")
@@ -230,6 +238,8 @@ void TestServer::socketDisconnected()
         pClient->deleteLater();
     } // end if
 }
+
+
 
 int TestServer::getCurrentTime()
 {
