@@ -22,6 +22,8 @@ public:
     QString writeJson(QString message);
     void successfullyEnterOrExit(QString action, QString name, int hour);
     QString calculateMessageByHour(QString action, QString name, int time24);
+    QString checkSumDigit();
+    bool checkEmployeeInfo();
 
 
 private:

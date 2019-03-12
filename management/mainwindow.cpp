@@ -13,6 +13,7 @@
 #include <QStyle>
 #include <QDesktopWidget>
 #include <QWidget>
+#include <QList>
 #include <QRect>
 
 using json = nlohmann::json;
@@ -80,6 +81,15 @@ void MainWindow::textMessageArrived(QString message)
                 log.at("Action").get_to(action);
             }
         }
+        else if (j.find("serials") != j.end())
+        {
+            if(j.at("serials").is_array())
+            {
+                json log;
+                log = j.at("serials").at(0);
+                log.at("Action").get_to(action);
+            }
+        }
         else if (j.find("Action") != j.end())
         {
             j.at("Action").get_to(action);
@@ -117,10 +127,39 @@ void MainWindow::textMessageArrived(QString message)
     if(action == "loginSucces")
     {
         startConfig(false);
+        m_webSocket->sendTextMessage(searchSerialsJson("all","all"));
+
     }
     if(action == "logAdded")
     {
         on_pushButton_searchLogs_2_clicked();
+    }
+    if(action == "serialsDetails")
+    {
+       updateAllSerials(jso);
+    }
+    if(action == "sucessJson")
+    {
+        std::string type{""};
+
+        if (jso.find("type") != jso.end())
+                {
+                    jso.at("type").get_to(type);
+                }
+        if(type == "deactivate")
+        {
+            QMessageBox msgBox;
+            msgBox.setText("It has been deactivated correctly");
+            msgBox.exec();
+            on_pushButton_searchLogs_6_clicked();
+        }
+        else if(type == "activate")
+        {
+            QMessageBox msgBox;
+            msgBox.setText("It has been activated correctly");
+            msgBox.exec();
+            on_pushButton_searchLogs_6_clicked();
+        }
     }
 }
 
@@ -134,6 +173,8 @@ void MainWindow::startConfig(bool startConfig)
 {
     if(startConfig)
     {
+        ui->pushButton_activateSerial->setEnabled(false);
+        ui->pushButton_deactivateSerial->setEnabled(false);
         ui->tabWidget->setCurrentIndex(0);
         ui->tabWidget_users->setCurrentIndex(0);
         ui->tabWidget->tabBar()->hide();
@@ -160,18 +201,25 @@ void MainWindow::configQTableWidgets()
     int columnCountEmployees{10};
     int columnCountLogs{7};
     int columnCountUsers{4};
+    int columnCountSerials{5};
 
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget_logs->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget_users->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_serials->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->tableWidget->setColumnCount(columnCountEmployees);
     ui->tableWidget_logs->setColumnCount(columnCountLogs);
     ui->tableWidget_users->setColumnCount(columnCountUsers);
+    ui->tableWidget_serials->setColumnCount(columnCountSerials);
+
+    ui->tableWidget->setColumnWidth(3,110);
+    ui->tableWidget_serials->setColumnWidth(2,110);
 
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_logs->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_users->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_serials->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     ui->tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
     ui->tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Name"));
@@ -196,6 +244,13 @@ void MainWindow::configQTableWidgets()
     ui->tableWidget_users->setHorizontalHeaderItem(1, new QTableWidgetItem("Username"));
     ui->tableWidget_users->setHorizontalHeaderItem(2, new QTableWidgetItem("Password"));
     ui->tableWidget_users->setHorizontalHeaderItem(3, new QTableWidgetItem("Privilege"));
+
+    ui->tableWidget_serials->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
+    ui->tableWidget_serials->setHorizontalHeaderItem(1, new QTableWidgetItem("Type Name"));
+    ui->tableWidget_serials->setHorizontalHeaderItem(2, new QTableWidgetItem("Serial"));
+    ui->tableWidget_serials->setHorizontalHeaderItem(3, new QTableWidgetItem("is Active?"));
+    ui->tableWidget_serials->setHorizontalHeaderItem(4, new QTableWidgetItem("is Expired?"));
+
 
 }
 
@@ -235,6 +290,24 @@ QString MainWindow::searchAllEmployesJson()
     }
     return txtToReturn;
 }
+QString MainWindow::serialAction(QString action, QString id)
+{
+    QString txtToReturn{""};
+
+    try
+    {
+        json j2 = {
+          {"Action", "serialAction"},
+          {"message", action.toStdString()},
+            {"id", id.toStdString()}
+        };
+        std::string json = j2.dump();
+        txtToReturn =  QString::fromStdString(json);
+    } catch(int e) {
+
+    }
+    return txtToReturn;
+}
 
 QString MainWindow::searchEmployeesJson(QString searchBy, QString toSearch)
 {
@@ -265,6 +338,25 @@ QString MainWindow::searchLogsJson(QString searchBy, QString toSearch)
     {
         json j2 = {
           {"Action", "searchLogs"},
+          {"searchBy", searchBy.toStdString()},
+          {"toSearch", toSearch.toStdString()}
+        };
+        std::string json = j2.dump();
+        txtToReturn =  QString::fromStdString(json);
+    } catch(int e) {
+
+    }
+    return txtToReturn;
+}
+
+QString MainWindow::searchSerialsJson(QString searchBy, QString toSearch)
+{
+    QString txtToReturn{""};
+
+    try
+    {
+        json j2 = {
+          {"Action", "searchSerials"},
           {"searchBy", searchBy.toStdString()},
           {"toSearch", toSearch.toStdString()}
         };
@@ -357,6 +449,28 @@ void MainWindow::updateAllUsers(json jso)
     }
 }
 
+void MainWindow::updateAllSerials(json jso)
+{
+    json serialsTxt = jso["serials"];
+    ui->tableWidget_serials->setRowCount(serialsTxt.size());
+
+
+    for(int i{0}; i < serialsTxt.size(); i++)
+    {
+        json serialTxt = serialsTxt.at(i);
+        QTableWidgetItem *idItem = new QTableWidgetItem(QString::fromStdString(serialTxt["id"]));
+        ui->tableWidget_serials->setItem(i,0,idItem);
+        QTableWidgetItem *nameItem = new QTableWidgetItem(QString::fromStdString(serialTxt["type"]));
+        ui->tableWidget_serials->setItem(i,1,nameItem);
+        QTableWidgetItem *surnameItem = new QTableWidgetItem(QString::fromStdString(serialTxt["serial"]));
+        ui->tableWidget_serials->setItem(i,2,surnameItem);
+        QTableWidgetItem *identitynumberItem = new QTableWidgetItem(QString::fromStdString(serialTxt["active"]));
+        ui->tableWidget_serials->setItem(i,3,identitynumberItem);
+        QTableWidgetItem *dateidItem = new QTableWidgetItem(QString::fromStdString(serialTxt["expired"]));
+        ui->tableWidget_serials->setItem(i,4,dateidItem);
+    }
+}
+
 void MainWindow::on_tabWidget_users_currentChanged(int index)
 {
 
@@ -430,5 +544,45 @@ void MainWindow::on_pushButton_searchLogs_2_clicked()
 void MainWindow::on_pushButton_searchLogs_3_clicked()
 {
     QString toSend = searchLogsJson("openLogs", "all");
+    m_webSocket->sendTextMessage(toSend);
+}
+
+void MainWindow::on_tableWidget_clicked(const QModelIndex &index)
+{
+    QList<QTableWidgetItem *> list = ui->tableWidget->selectedItems();
+    for(int x{0};x < list.count(); x++)
+    {
+        QTableWidgetItem *item = list.at(x);
+        qDebug() << item->text();
+    }
+}
+
+void MainWindow::on_pushButton_searchLogs_6_clicked()
+{
+    m_webSocket->sendTextMessage(searchSerialsJson("all","all"));
+}
+
+void MainWindow::on_tableWidget_serials_clicked(const QModelIndex &index)
+{
+    ui->pushButton_activateSerial->setEnabled(true);
+    ui->pushButton_deactivateSerial->setEnabled(true);
+    ui->label_active_deactivate_serial->setVisible(false);
+}
+
+void MainWindow::on_pushButton_deactivateSerial_clicked()
+{
+    QList<QTableWidgetItem *> list = ui->tableWidget_serials->selectedItems();
+    QTableWidgetItem *idItem = list.at(0);
+
+    QString toSend = serialAction("deactivate",idItem->text());
+    m_webSocket->sendTextMessage(toSend);
+}
+
+void MainWindow::on_pushButton_activateSerial_clicked()
+{
+    QList<QTableWidgetItem *> list = ui->tableWidget_serials->selectedItems();
+    QTableWidgetItem *idItem = list.at(0);
+
+    QString toSend = serialAction("activate",idItem->text());
     m_webSocket->sendTextMessage(toSend);
 }

@@ -18,6 +18,7 @@ public:
 public slots:
     void onConnected();
     void processTextMessage(QString message);
+    bool isValid();
 
 signals:
      void textMessageArrived(QString message);

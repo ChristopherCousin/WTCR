@@ -116,7 +116,7 @@ QLineEdit:focus { background-color:rgb(192, 192, 255);}</string>
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget_users">
           <property name="currentIndex">
-           <number>1</number>
+           <number>4</number>
           </property>
           <property name="iconSize">
            <size>
@@ -506,6 +506,9 @@ color: white;
             </property>
            </widget>
            <widget class="QPushButton" name="pushButton_searchLogs_3">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>480</x>
@@ -626,6 +629,9 @@ color: white;
             </property>
            </widget>
            <widget class="QPushButton" name="pushButton_addUser">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>580</x>
@@ -804,6 +810,9 @@ color: white;
             </property>
            </widget>
            <widget class="QPushButton" name="pushButton_searchUser">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>620</x>
@@ -834,6 +843,9 @@ color: white;
             </property>
            </widget>
            <widget class="QPushButton" name="pushButton_searchUser_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>430</x>
@@ -908,6 +920,9 @@ color: white;
             </property>
            </widget>
            <widget class="QPushButton" name="pushButton_addUser_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>380</x>
@@ -1148,6 +1163,265 @@ color: white;
            <zorder>lineEdit_adduser_password_5</zorder>
            <zorder>label_22</zorder>
            <zorder>lineEdit_adduser_password_6</zorder>
+          </widget>
+          <widget class="QWidget" name="tab_7">
+           <attribute name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/new/prefix1/Resources/key.png</normaloff>:/new/prefix1/Resources/key.png</iconset>
+           </attribute>
+           <attribute name="title">
+            <string>Serial Storage</string>
+           </attribute>
+           <widget class="QPushButton" name="pushButton_searchLogs_4">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="geometry">
+             <rect>
+              <x>630</x>
+              <y>332</y>
+              <width>91</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Search</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/new/prefix1/Resources/ico_Search.png</normaloff>:/new/prefix1/Resources/ico_Search.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_23">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>310</y>
+              <width>41</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+background: solid black;
+color: white;
+}</string>
+            </property>
+            <property name="text">
+             <string>Serials</string>
+            </property>
+           </widget>
+           <widget class="QTableWidget" name="tableWidget_serials">
+            <property name="geometry">
+             <rect>
+              <x>44</x>
+              <y>6</y>
+              <width>661</width>
+              <height>301</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pushButton_searchLogs_6">
+            <property name="geometry">
+             <rect>
+              <x>590</x>
+              <y>392</y>
+              <width>141</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Search all serials</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/new/prefix1/Resources/ico_Search.png</normaloff>:/new/prefix1/Resources/ico_Search.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="comboBox_searchByLog_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="geometry">
+             <rect>
+              <x>120</x>
+              <y>334</y>
+              <width>121</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <item>
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ID</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Identity Number</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Date</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Hour</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>First surname</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QLabel" name="label_24">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>340</y>
+              <width>81</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Search by:</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="lineEdit_searchLogs_2">
+            <property name="geometry">
+             <rect>
+              <x>260</x>
+              <y>334</y>
+              <width>361</width>
+              <height>32</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_25">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>320</y>
+              <width>731</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+border: 1px solid #CBC8C8;
+border-radius: 15px;
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pushButton_deactivateSerial">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>400</y>
+              <width>141</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: red;</string>
+            </property>
+            <property name="text">
+             <string>Deactivate Serial</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/new/prefix1/Resources/addUser.png</normaloff>:/new/prefix1/Resources/addUser.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pushButton_activateSerial">
+            <property name="geometry">
+             <rect>
+              <x>190</x>
+              <y>400</y>
+              <width>131</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: green;</string>
+            </property>
+            <property name="text">
+             <string>Activate Serial</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/new/prefix1/Resources/activate.png</normaloff>:/new/prefix1/Resources/activate.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_active_deactivate_serial">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>380</y>
+              <width>301</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>! You must select a serial for use those buttons !</string>
+            </property>
+           </widget>
+           <zorder>label_25</zorder>
+           <zorder>pushButton_searchLogs_4</zorder>
+           <zorder>label_23</zorder>
+           <zorder>tableWidget_serials</zorder>
+           <zorder>pushButton_searchLogs_6</zorder>
+           <zorder>comboBox_searchByLog_2</zorder>
+           <zorder>label_24</zorder>
+           <zorder>lineEdit_searchLogs_2</zorder>
+           <zorder>pushButton_deactivateSerial</zorder>
+           <zorder>pushButton_activateSerial</zorder>
+           <zorder>label_active_deactivate_serial</zorder>
           </widget>
          </widget>
         </item>

@@ -500,12 +500,14 @@ compiler_rcc_clean:
 qrc_resources.cpp: ../management/resources.qrc \
 		/usr/lib64/qt5/bin/rcc \
 		../management/Resources/ico_Search.png \
+		../management/Resources/activate.png \
 		../management/Resources/addEmployee.png \
 		../management/Resources/Logs.png \
 		../management/Resources/User.png \
 		../management/Resources/addUser.png \
 		../management/Resources/employee.png \
 		../management/Resources/login.jpg \
+		../management/Resources/key.png \
 		../management/Resources/refresh.png
 	/usr/lib64/qt5/bin/rcc -name resources ../management/resources.qrc -o qrc_resources.cpp
 

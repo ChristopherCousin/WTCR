@@ -36,8 +36,10 @@ public:
     void employeesFoundedJson(std::string searchBy, std::string toSearch);
     void allLogsJson(std::string searchBy, std::string toSearch);
     QString employeeActionsJson(QString actionName, QString employeeName, int hour);
+    void allSerialsJson(std::string searchBy, std::string toSearch);
     QString logAdded();
     int getCurrentTime();
+    QString SuccessJson(QString type);
 
 
 signals:

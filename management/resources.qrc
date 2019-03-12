@@ -8,5 +8,8 @@
         <file>Resources/Logs.png</file>
         <file>Resources/addEmployee.png</file>
         <file>Resources/refresh.png</file>
+        <file>Resources/key.png</file>
+        <file>Resources/deactivate (2).png</file>
+        <file>Resources/activate.png</file>
     </qresource>
 </RCC>

@@ -7,6 +7,7 @@
 #include "employee.h"
 #include "log.h"
 #include "user.h"
+#include "serials.h"
 
 Dbmanager::Dbmanager()
 {
@@ -233,6 +234,63 @@ QVector<Log> Dbmanager::getLogs(std::string searchBy, std::string toSearch)
     return log;
 }
 
+QVector<Serial> Dbmanager::getSerials(std::string searchBy, std::string toSearch)
+{
+    QVector<Serial> serials{};
+    QSqlQuery query;
+    if(searchBy == "all")
+    {
+        query.prepare("SELECT t.id,serialtype.name,serial,active,expired"
+                      " from serialstorage t INNER JOIN serialtype ON t.typeid = serialtype.id;");
+        query.exec();
+    }
+
+    while (query.next())
+    {
+        if (query.isValid())
+        {
+
+            Serial e;
+            e.id = query.value(0).toString();
+            e.type = query.value(1).toString();
+            e.serial = query.value(2).toString();
+            e.active = query.value(3).toString();
+            e.expired = query.value(4).toString();
+            serials.push_back(e);
+        }
+        else
+        {
+
+        }
+    }
+    return serials;
+}
+
+bool Dbmanager::serialAction(QString messsage, QString id)
+{
+    bool valid = {false};
+    QSqlQuery query;
+    if(messsage == "deactivate")
+    {
+        query.prepare("UPDATE serialstorage set active = false where id = ?");
+        query.bindValue(0, id);
+        query.exec();
+    }
+    else if(messsage == "activate")
+    {
+        query.prepare("UPDATE serialstorage set active = true where id = ?");
+        query.bindValue(0, id);
+        query.exec();
+    }
+
+    if (query.lastError().type() == QSqlError::NoError)
+    {
+        valid = true;
+    } else {
+        valid = false;
+    }
+    return valid;
+}
 QVector<User> Dbmanager::getUsers(std::string searchBy, std::string toSearch)
 {
     QVector<User> user{};

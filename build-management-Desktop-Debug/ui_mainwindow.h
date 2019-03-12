@@ -98,6 +98,18 @@ public:
     QLineEdit *lineEdit_adduser_password_5;
     QLabel *label_22;
     QLineEdit *lineEdit_adduser_password_6;
+    QWidget *tab_7;
+    QPushButton *pushButton_searchLogs_4;
+    QLabel *label_23;
+    QTableWidget *tableWidget_serials;
+    QPushButton *pushButton_searchLogs_6;
+    QComboBox *comboBox_searchByLog_2;
+    QLabel *label_24;
+    QLineEdit *lineEdit_searchLogs_2;
+    QLabel *label_25;
+    QPushButton *pushButton_deactivateSerial;
+    QPushButton *pushButton_activateSerial;
+    QLabel *label_active_deactivate_serial;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QStatusBar *statusBar;
@@ -266,6 +278,7 @@ public:
         pushButton_searchLogs_2->setIconSize(QSize(24, 24));
         pushButton_searchLogs_3 = new QPushButton(tab_4);
         pushButton_searchLogs_3->setObjectName(QStringLiteral("pushButton_searchLogs_3"));
+        pushButton_searchLogs_3->setEnabled(false);
         pushButton_searchLogs_3->setGeometry(QRect(480, 390, 101, 41));
         pushButton_searchLogs_3->setStyleSheet(QLatin1String("QPushButton {\n"
 "color: green;\n"
@@ -304,6 +317,7 @@ public:
         lineEdit_adduser_password->setGeometry(QRect(510, 130, 211, 32));
         pushButton_addUser = new QPushButton(tab_5);
         pushButton_addUser->setObjectName(QStringLiteral("pushButton_addUser"));
+        pushButton_addUser->setEnabled(false);
         pushButton_addUser->setGeometry(QRect(580, 210, 91, 41));
         QFont font2;
         font2.setPointSize(12);
@@ -354,12 +368,14 @@ public:
         lineEdit_adduser_username_2->setGeometry(QRect(510, 310, 211, 32));
         pushButton_searchUser = new QPushButton(tab_5);
         pushButton_searchUser->setObjectName(QStringLiteral("pushButton_searchUser"));
+        pushButton_searchUser->setEnabled(false);
         pushButton_searchUser->setGeometry(QRect(620, 350, 101, 34));
         pushButton_searchUser->setFont(font2);
         pushButton_searchUser->setIcon(icon);
         pushButton_searchUser->setIconSize(QSize(24, 24));
         pushButton_searchUser_2 = new QPushButton(tab_5);
         pushButton_searchUser_2->setObjectName(QStringLiteral("pushButton_searchUser_2"));
+        pushButton_searchUser_2->setEnabled(false);
         pushButton_searchUser_2->setGeometry(QRect(430, 350, 111, 31));
         pushButton_searchUser_2->setFont(font2);
         pushButton_searchUser_2->setIcon(icon);
@@ -392,6 +408,7 @@ public:
         label_15->setFont(font3);
         pushButton_addUser_2 = new QPushButton(tab_6);
         pushButton_addUser_2->setObjectName(QStringLiteral("pushButton_addUser_2"));
+        pushButton_addUser_2->setEnabled(false);
         pushButton_addUser_2->setGeometry(QRect(380, 340, 141, 51));
         pushButton_addUser_2->setFont(font2);
         label_16 = new QLabel(tab_6);
@@ -464,6 +481,82 @@ public:
         lineEdit_adduser_password_5->raise();
         label_22->raise();
         lineEdit_adduser_password_6->raise();
+        tab_7 = new QWidget();
+        tab_7->setObjectName(QStringLiteral("tab_7"));
+        pushButton_searchLogs_4 = new QPushButton(tab_7);
+        pushButton_searchLogs_4->setObjectName(QStringLiteral("pushButton_searchLogs_4"));
+        pushButton_searchLogs_4->setEnabled(false);
+        pushButton_searchLogs_4->setGeometry(QRect(630, 332, 91, 34));
+        pushButton_searchLogs_4->setIcon(icon);
+        pushButton_searchLogs_4->setIconSize(QSize(24, 24));
+        label_23 = new QLabel(tab_7);
+        label_23->setObjectName(QStringLiteral("label_23"));
+        label_23->setGeometry(QRect(40, 310, 41, 18));
+        label_23->setStyleSheet(QLatin1String("QLabel{\n"
+"background: solid black;\n"
+"color: white;\n"
+"}"));
+        tableWidget_serials = new QTableWidget(tab_7);
+        tableWidget_serials->setObjectName(QStringLiteral("tableWidget_serials"));
+        tableWidget_serials->setGeometry(QRect(44, 6, 661, 301));
+        pushButton_searchLogs_6 = new QPushButton(tab_7);
+        pushButton_searchLogs_6->setObjectName(QStringLiteral("pushButton_searchLogs_6"));
+        pushButton_searchLogs_6->setGeometry(QRect(590, 392, 141, 41));
+        pushButton_searchLogs_6->setIcon(icon);
+        pushButton_searchLogs_6->setIconSize(QSize(24, 24));
+        comboBox_searchByLog_2 = new QComboBox(tab_7);
+        comboBox_searchByLog_2->setObjectName(QStringLiteral("comboBox_searchByLog_2"));
+        comboBox_searchByLog_2->setEnabled(false);
+        comboBox_searchByLog_2->setGeometry(QRect(120, 334, 121, 32));
+        label_24 = new QLabel(tab_7);
+        label_24->setObjectName(QStringLiteral("label_24"));
+        label_24->setGeometry(QRect(30, 340, 81, 21));
+        label_24->setFont(font1);
+        lineEdit_searchLogs_2 = new QLineEdit(tab_7);
+        lineEdit_searchLogs_2->setObjectName(QStringLiteral("lineEdit_searchLogs_2"));
+        lineEdit_searchLogs_2->setGeometry(QRect(260, 334, 361, 32));
+        label_25 = new QLabel(tab_7);
+        label_25->setObjectName(QStringLiteral("label_25"));
+        label_25->setGeometry(QRect(10, 320, 731, 131));
+        label_25->setStyleSheet(QLatin1String("QLabel {\n"
+"border: 1px solid #CBC8C8;\n"
+"border-radius: 15px;\n"
+"}"));
+        pushButton_deactivateSerial = new QPushButton(tab_7);
+        pushButton_deactivateSerial->setObjectName(QStringLiteral("pushButton_deactivateSerial"));
+        pushButton_deactivateSerial->setGeometry(QRect(30, 400, 141, 41));
+        pushButton_deactivateSerial->setStyleSheet(QStringLiteral("color: red;"));
+        pushButton_deactivateSerial->setIcon(icon3);
+        pushButton_deactivateSerial->setIconSize(QSize(24, 24));
+        pushButton_activateSerial = new QPushButton(tab_7);
+        pushButton_activateSerial->setObjectName(QStringLiteral("pushButton_activateSerial"));
+        pushButton_activateSerial->setGeometry(QRect(190, 400, 131, 41));
+        pushButton_activateSerial->setStyleSheet(QStringLiteral("color: green;"));
+        QIcon icon6;
+        icon6.addFile(QStringLiteral(":/new/prefix1/Resources/activate.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_activateSerial->setIcon(icon6);
+        pushButton_activateSerial->setIconSize(QSize(24, 24));
+        label_active_deactivate_serial = new QLabel(tab_7);
+        label_active_deactivate_serial->setObjectName(QStringLiteral("label_active_deactivate_serial"));
+        label_active_deactivate_serial->setGeometry(QRect(30, 380, 301, 18));
+        QFont font4;
+        font4.setBold(true);
+        font4.setWeight(75);
+        label_active_deactivate_serial->setFont(font4);
+        QIcon icon7;
+        icon7.addFile(QStringLiteral(":/new/prefix1/Resources/key.png"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget_users->addTab(tab_7, icon7, QString());
+        label_25->raise();
+        pushButton_searchLogs_4->raise();
+        label_23->raise();
+        tableWidget_serials->raise();
+        pushButton_searchLogs_6->raise();
+        comboBox_searchByLog_2->raise();
+        label_24->raise();
+        lineEdit_searchLogs_2->raise();
+        pushButton_deactivateSerial->raise();
+        pushButton_activateSerial->raise();
+        label_active_deactivate_serial->raise();
 
         gridLayout_2->addWidget(tabWidget_users, 0, 0, 1, 1);
 
@@ -487,7 +580,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(1);
-        tabWidget_users->setCurrentIndex(1);
+        tabWidget_users->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -572,6 +665,24 @@ public:
         label_22->setText(QApplication::translate("MainWindow", "Identity Num", Q_NULLPTR));
         lineEdit_adduser_password_6->setPlaceholderText(QApplication::translate("MainWindow", "Identity Num", Q_NULLPTR));
         tabWidget_users->setTabText(tabWidget_users->indexOf(tab_6), QApplication::translate("MainWindow", "Add Employee", Q_NULLPTR));
+        pushButton_searchLogs_4->setText(QApplication::translate("MainWindow", "Search", Q_NULLPTR));
+        label_23->setText(QApplication::translate("MainWindow", "Serials", Q_NULLPTR));
+        pushButton_searchLogs_6->setText(QApplication::translate("MainWindow", "Search all serials", Q_NULLPTR));
+        comboBox_searchByLog_2->clear();
+        comboBox_searchByLog_2->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "Name", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "ID", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Identity Number", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Date", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "Hour", Q_NULLPTR)
+         << QApplication::translate("MainWindow", "First surname", Q_NULLPTR)
+        );
+        label_24->setText(QApplication::translate("MainWindow", "Search by:", Q_NULLPTR));
+        label_25->setText(QString());
+        pushButton_deactivateSerial->setText(QApplication::translate("MainWindow", "Deactivate Serial", Q_NULLPTR));
+        pushButton_activateSerial->setText(QApplication::translate("MainWindow", "Activate Serial", Q_NULLPTR));
+        label_active_deactivate_serial->setText(QApplication::translate("MainWindow", "! You must select a serial for use those buttons !", Q_NULLPTR));
+        tabWidget_users->setTabText(tabWidget_users->indexOf(tab_7), QApplication::translate("MainWindow", "Serial Storage", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindow", "Fi&le", Q_NULLPTR));
     } // retranslateUi

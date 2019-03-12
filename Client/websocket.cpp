@@ -27,3 +27,7 @@ void Websocket::sendTextMessage(QString message)
 {
     m_webSocket->sendTextMessage(QString(message));
 }
+
+bool Websocket::isValid() {
+    return m_webSocket->isValid();
+}

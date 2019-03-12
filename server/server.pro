@@ -32,7 +32,8 @@ HEADERS += \
     json.h \
     employee.h \
     log.h \
-    user.h
+    user.h \
+    serials.h
 SOURCES += main.cpp \
     dbmanager.cpp \
     server.cpp \

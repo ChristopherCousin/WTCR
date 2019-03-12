@@ -7,6 +7,7 @@
 #include "employee.h"
 #include "log.h"
 #include "user.h"
+#include <serials.h>
 
 using json = nlohmann::json;
 
@@ -114,7 +115,6 @@ void TestServer::processTextMessage(QString message)
         {
             bool addLogCheck = dbManager.addLog(serial,2);
             bool changeIsWorkingStateCheck = dbManager.changeIsWorkingState(serial, false);
-
             if(addLogCheck && changeIsWorkingStateCheck)
             {
                 QString toSend = employeeActionsJson("finishWorkValid",name, time24);
@@ -214,9 +214,55 @@ void TestServer::processTextMessage(QString message)
             allLogsJson(searchBy, toSearch);
         }
     }
+    else if(action == "searchSerials")
+    {
+        std::string searchBy = {""};
+        std::string toSearch = {""};
+
+        if (json.find("searchBy") != json.end() && json.find("toSearch") != json.end())
+        {
+            json.at("toSearch").get_to(toSearch);
+            json.at("searchBy").get_to(searchBy);
+            allSerialsJson(searchBy, toSearch);
+        } //end if
+    }
+    else if(action == "serialAction")
+    {
+        std::string message = {""};
+        std::string id = {""};
+
+        if(json.find("id") != json.end() && json.find("id") != json.end())
+        {
+            json.at("id").get_to(id);
+            json.at("message").get_to(message);
+            if(message == "deactivate")
+            {
+                if(dbManager.serialAction(QString::fromStdString(message), QString::fromStdString(id)))
+                {
+                    QString toSend = SuccessJson("deactivate");
+                    pClient->sendTextMessage(toSend);
+
+                } else {
+                    qDebug() << "Error base de datos";
+                }
+            }
+            else if( message == "activate")
+            {
+                if(dbManager.serialAction(QString::fromStdString(message), QString::fromStdString(id)))
+                {
+                    QString toSend = SuccessJson("activate");
+                    pClient->sendTextMessage(toSend);
+
+                } else {
+                    qDebug() << "Error base de datos";
+                }
+            }
+        }
+    }
 
 
 }
+
 
 
 void TestServer::socketDisconnected()
@@ -292,6 +338,24 @@ QString TestServer::loginSuccesJson()
     }
     return toReturn;
 }
+
+QString TestServer::SuccessJson(QString type)
+{
+    QString toReturn{""};
+    try
+    {
+        json j2 = {
+      {"Action", "sucessJson"},
+        {"type", type.toStdString()}
+    };
+    std::string json = j2.dump();
+    toReturn = QString::fromStdString(json);
+    } catch(int e){
+
+    }
+    return toReturn;
+}
+
 QString TestServer::employeeActionsJson(QString actionName, QString employeeName, int hour)
 {
     QString toReturn{""};
@@ -398,6 +462,28 @@ void TestServer::allUserJson(std::string searchBy, std::string toSearch)
     } // end for
 
     document["users"] = usersJSON;
+    std::string message = document.dump();
+    pClient->sendTextMessage(QString::fromStdString(message));
+}
+void TestServer::allSerialsJson(std::string searchBy, std::string toSearch)
+{
+    QVector<Serial> serialsDetails = dbManager.getSerials(searchBy, toSearch);
+    json document;
+    json serialsJSON;
+    for (int i{ 0 }; i < serialsDetails.count(); i++)
+    {
+        Serial serial{ serialsDetails.at(i) };
+        json serialJSON;
+        serialJSON["Action"] = "serialsDetails";
+        serialJSON["id"] = serial.id.toStdString();
+        serialJSON["type"] = serial.type.toStdString();
+        serialJSON["serial"] = serial.serial.toStdString();
+        serialJSON["active"] = serial.active.toStdString();
+        serialJSON["expired"] = serial.expired.toStdString();
+        serialsJSON.push_back(serialJSON);
+    } // end for
+
+    document["serials"] = serialsJSON;
     std::string message = document.dump();
     pClient->sendTextMessage(QString::fromStdString(message));
 }

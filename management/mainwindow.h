@@ -21,6 +21,7 @@ public:
     QString loginJson(QString user, QString password);
     void updateAllEmployees(json jso);
     void updateAllLogs(json jso);
+    void updateAllSerials(json jso);
     void configQTableWidgets();
     void updateAllUsers(json jso);
     void startConfig(bool startConfig);
@@ -29,6 +30,8 @@ public:
     void setEmployeesFounded(json jso);
     void moveWindowToTheCenter();
     QString searchAllEmployesJson();
+    QString searchSerialsJson(QString searchBy, QString toSearch);
+    QString serialAction(QString action, QString id);
 
 private slots:
     void on_pushButton_clicked();
@@ -48,6 +51,16 @@ private slots:
     void on_pushButton_searchLogs_2_clicked();
 
     void on_pushButton_searchLogs_3_clicked();
+
+    void on_tableWidget_clicked(const QModelIndex &index);
+
+    void on_pushButton_searchLogs_6_clicked();
+
+    void on_tableWidget_serials_clicked(const QModelIndex &index);
+
+    void on_pushButton_deactivateSerial_clicked();
+
+    void on_pushButton_activateSerial_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -283,11 +283,63 @@ QString MainWindow::calculateMessageByHour(QString action, QString name, int tim
     return message;
 
 }
-
 void MainWindow::on_pushButton_Aceptar_clicked()
 {
-    pinReaded();
+    if(!m_webSocket->isValid())
+    {
+        QMessageBox msg;
+                msg.setText("No estás conectado al servidor");
+                msg.exec();
+    } else {
+        if(checkEmployeeInfo())
+        {
+                pinReaded();
+        }
+    }
 }
+
+bool MainWindow::checkEmployeeInfo()
+{
+    QString serial = ui->lineEdit->text();
+
+        // EAN13 must be numbers
+        for (int i = 0; i < serial.length(); i++) {
+            if (!serial.at(i).isDigit()) {
+                qDebug() << "deben ser numeros";
+                return false;
+            }
+        }
+
+        // must have 13 chars
+            if (serial.length() != 13)
+            {
+                qDebug() << "Tienen que ser 13 characteres";
+                return false;
+            }
+
+        // last digit is for validation
+                if (serial.at(serial.length()-1) != checkSumDigit()) {
+                    qDebug() << "No es un ean13 Valido!";
+                    return false;
+                }
+
+                return true;
+
+}
+
+QString MainWindow::checkSumDigit()
+{
+    int sum{0};
+    QString serial = ui->lineEdit->text();
+
+    for (int i = 0; i < serial.length()-1; i++) {
+        sum += serial.mid(i, 1).toInt() * ((i%2 == 0) ? 1 : 3);
+    }
+
+    int mod = sum%10;
+    return QString::number((mod == 0) ? 0 : 10 - mod);
+}
+
 
 void MainWindow::on_pushButton_TiempoDescanso_clicked()
 {
