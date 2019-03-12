@@ -23,9 +23,6 @@ TestServer::TestServer(quint16 port)
         connect(m_pWebSocketServer, &QWebSocketServer::closed, this, &TestServer::closed);
     } // end if
 
-    QString ean13 = Ean::getEanCode("123456789041");
-    qDebug() <<  Ean::calculateCheckSum(ean13);
-    qDebug() << ean13;
 
 }
 

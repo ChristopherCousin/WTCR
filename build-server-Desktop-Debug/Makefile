@@ -35,7 +35,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = server1.0.0
-DISTDIR = /home/chris/WTCR/build-server-Desktop-Debug/.tmp/server1.0.0
+DISTDIR = /home/chris/wtcr_c/WTCR/build-server-Desktop-Debug/.tmp/server1.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) -lQt5WebSockets -L/usr/lib64 -lQt5XmlPatterns -lQt5Network -lQt5Xml -lQt5Sql -lQt5Core -lpthread 
@@ -186,7 +186,7 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../server/employee.h \
 		../server/log.h \
 		../server/user.h \
-		../server/ean.h ../server/main.cpp \
+		../server/serials.h ../server/main.cpp \
 		../server/dbmanager.cpp \
 		../server/server.cpp \
 		../server/jsonmanager.cpp \
@@ -468,7 +468,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/dbmanager.h ../server/server.h ../server/jsonmanager.h ../server/json.h ../server/employee.h ../server/log.h ../server/user.h ../server/ean.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/dbmanager.h ../server/server.h ../server/jsonmanager.h ../server/json.h ../server/employee.h ../server/log.h ../server/user.h ../server/serials.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../server/main.cpp ../server/dbmanager.cpp ../server/server.cpp ../server/jsonmanager.cpp ../server/ean.cpp $(DISTDIR)/
 
 
@@ -508,11 +508,12 @@ moc_server.cpp: ../server/dbmanager.h \
 		../server/employee.h \
 		../server/log.h \
 		../server/user.h \
+		../server/serials.h \
 		../server/ean.h \
 		../server/server.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/WTCR/server -I/home/chris/WTCR/server -I/usr/include/qt5 -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtXmlPatterns -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../server/server.h -o moc_server.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/wtcr_c/WTCR/server -I/home/chris/wtcr_c/WTCR/server -I/usr/include/qt5 -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtXmlPatterns -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../server/server.h -o moc_server.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -531,13 +532,15 @@ main.o: ../server/main.cpp ../server/server.h \
 		../server/employee.h \
 		../server/log.h \
 		../server/user.h \
+		../server/serials.h \
 		../server/ean.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../server/main.cpp
 
 dbmanager.o: ../server/dbmanager.cpp ../server/dbmanager.h \
 		../server/employee.h \
 		../server/log.h \
-		../server/user.h
+		../server/user.h \
+		../server/serials.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dbmanager.o ../server/dbmanager.cpp
 
 server.o: ../server/server.cpp ../server/server.h \
@@ -545,6 +548,7 @@ server.o: ../server/server.cpp ../server/server.h \
 		../server/employee.h \
 		../server/log.h \
 		../server/user.h \
+		../server/serials.h \
 		../server/ean.h \
 		../server/json.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o ../server/server.cpp
