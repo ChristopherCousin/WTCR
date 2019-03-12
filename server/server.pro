@@ -33,8 +33,13 @@ HEADERS += \
     employee.h \
     log.h \
     user.h \
+<<<<<<< HEAD
     serials.h
+=======
+    ean.h
+>>>>>>> 731f8c18b0814a9946861076b20d50c2aa815d59
 SOURCES += main.cpp \
     dbmanager.cpp \
     server.cpp \
-    jsonmanager.cpp
+    jsonmanager.cpp \
+    ean.cpp

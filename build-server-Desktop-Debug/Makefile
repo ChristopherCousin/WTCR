@@ -53,11 +53,13 @@ OBJECTS_DIR   = ./
 SOURCES       = ../server/main.cpp \
 		../server/dbmanager.cpp \
 		../server/server.cpp \
-		../server/jsonmanager.cpp moc_server.cpp
+		../server/jsonmanager.cpp \
+		../server/ean.cpp moc_server.cpp
 OBJECTS       = main.o \
 		dbmanager.o \
 		server.o \
 		jsonmanager.o \
+		ean.o \
 		moc_server.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
@@ -183,10 +185,12 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		../server/json.h \
 		../server/employee.h \
 		../server/log.h \
-		../server/user.h ../server/main.cpp \
+		../server/user.h \
+		../server/ean.h ../server/main.cpp \
 		../server/dbmanager.cpp \
 		../server/server.cpp \
-		../server/jsonmanager.cpp
+		../server/jsonmanager.cpp \
+		../server/ean.cpp
 QMAKE_TARGET  = server
 DESTDIR       = 
 TARGET        = server
@@ -464,8 +468,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/dbmanager.h ../server/server.h ../server/jsonmanager.h ../server/json.h ../server/employee.h ../server/log.h ../server/user.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/main.cpp ../server/dbmanager.cpp ../server/server.cpp ../server/jsonmanager.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/dbmanager.h ../server/server.h ../server/jsonmanager.h ../server/json.h ../server/employee.h ../server/log.h ../server/user.h ../server/ean.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/main.cpp ../server/dbmanager.cpp ../server/server.cpp ../server/jsonmanager.cpp ../server/ean.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -504,6 +508,7 @@ moc_server.cpp: ../server/dbmanager.h \
 		../server/employee.h \
 		../server/log.h \
 		../server/user.h \
+		../server/ean.h \
 		../server/server.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
@@ -525,7 +530,8 @@ main.o: ../server/main.cpp ../server/server.h \
 		../server/dbmanager.h \
 		../server/employee.h \
 		../server/log.h \
-		../server/user.h
+		../server/user.h \
+		../server/ean.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../server/main.cpp
 
 dbmanager.o: ../server/dbmanager.cpp ../server/dbmanager.h \
@@ -539,12 +545,16 @@ server.o: ../server/server.cpp ../server/server.h \
 		../server/employee.h \
 		../server/log.h \
 		../server/user.h \
+		../server/ean.h \
 		../server/json.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o ../server/server.cpp
 
 jsonmanager.o: ../server/jsonmanager.cpp ../server/jsonmanager.h \
 		../server/json.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o jsonmanager.o ../server/jsonmanager.cpp
+
+ean.o: ../server/ean.cpp ../server/ean.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ean.o ../server/ean.cpp
 
 moc_server.o: moc_server.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_server.o moc_server.cpp
